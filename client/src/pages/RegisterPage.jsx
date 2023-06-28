@@ -9,7 +9,7 @@ const RegisterPage = () => {
 
   const handleForm=(e)=>{
        e.preventDefault()
-       axios.get('')
+       axios.get('/test')
   }
 
   return (
