@@ -22,4 +22,4 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
     console.log(err.message)
 })
 
-app.use('/airbnb',userRoutes)
+app.use(userRoutes)
