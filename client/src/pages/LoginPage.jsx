@@ -1,4 +1,5 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
@@ -9,11 +10,11 @@ const LoginPage = () => {
         e.preventDefault()
         const body = { email,password }
         try{
-          await axios.post('login',body)
-          res.status(201).json()
+        const user = await axios.post('login',body)
+          res.status(201).json(user)
         }
         catch(err){
-            console.log(err)
+            console.log(err.message)
         }
     }
   return (
