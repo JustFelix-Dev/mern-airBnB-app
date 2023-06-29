@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { userContext } from '../ContextHook/userContext'
 
 const Header = () => {
+    const {user} = useContext(userContext)
   return (
           <>
           <header className='px-10 py-3 flex justify-between'>
@@ -21,6 +23,9 @@ const Header = () => {
               <Link to={'/login'} className='flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1'>
                 <img src="images/svgexport-6.svg" alt="menu" height={20} width={17} />
                 <img src="images/svgexport-7.svg" alt="userIcon" height={30} width={30} />
+                <div>
+                    { user && user.name}
+                </div>
               </Link>
              </div>
          </header>

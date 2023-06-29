@@ -4,9 +4,11 @@ const { default: mongoose } = require('mongoose');
 const { configDotenv } = require('dotenv');
 configDotenv();
 const userRoutes = require('./routes/userRoutes')
+const cookieParser = require('cookie-parser');
 const app = express()
 
 // Middleware
+app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
     credentials: true,

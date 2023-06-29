@@ -1,19 +1,22 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { userContext } from '../ContextHook/userContext';
 
 const LoginPage = () => {
     const [ email,setEmail ] = useState('');
     const [ password,setPassword ] = useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const {setUser} = useContext(userContext);
    
     const handleForm=async(e)=>{
         e.preventDefault()
         const body = { email,password }
         try{
-         await axios.post('login',body).then((res)=>{
+          const response = await axios.post('login',body)
+          console.log(response)
+            setUser(response.data)
             navigate('/')
-        })
         }
         catch(err){
             console.log(err.message)

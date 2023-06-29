@@ -1,6 +1,12 @@
+const express = require('express');
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
+const app = express();
+
+// Middleware
+app.use(cookieParser())
 
  const registerUser = async(req,res)=>{
     try{
@@ -23,7 +29,7 @@ const loginUser = async(req,res)=>{
             if(isMatched){
                   jwt.sign({email:user.email,id:user._id},process.env.SECRET,(err,token)=>{
                     if(err) throw err;
-                    res.cookie('token',token).json('Credentials Okay!')
+                    res.cookie('token',token).json(user)
                   }) 
             }else{
                 res.status(402).json('Wrong credentials!')
@@ -36,4 +42,17 @@ const loginUser = async(req,res)=>{
         res.status(422).json(err)
     }
 }
-module.exports={registerUser,loginUser};
+
+const userProfile =(req,res)=>{
+      const  {token} = req.cookies;
+      if(token){
+          jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
+            if(err) throw err;
+            const {name,email,_id} = await userModel.findById(user.id)
+            res.json({name,email,_id})
+          })
+      }else{
+           res.json(null)
+      }
+}
+module.exports={registerUser,loginUser,userProfile};
