@@ -1,17 +1,19 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
     const [ email,setEmail ] = useState('');
     const [ password,setPassword ] = useState('');
+    const navigate = useNavigate()
    
     const handleForm=async(e)=>{
         e.preventDefault()
         const body = { email,password }
         try{
-        const user = await axios.post('login',body)
-          res.status(201).json(user)
+         await axios.post('login',body).then((res)=>{
+            navigate('/')
+        })
         }
         catch(err){
             console.log(err.message)
