@@ -55,4 +55,8 @@ const userProfile =(req,res)=>{
            res.json(null)
       }
 }
-module.exports={registerUser,loginUser,userProfile};
+
+ const logoutUser = (req,res)=>{
+      res.cookie('token','').json(true)
+ }
+module.exports={registerUser,loginUser,userProfile,logoutUser};

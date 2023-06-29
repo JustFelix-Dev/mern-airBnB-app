@@ -9,7 +9,7 @@ const Header = () => {
           <header className='px-10 py-3 flex justify-between'>
              <Link to='/' className='flex items-center gap-1'>
                  <img src="images/svgexport-2.svg" alt="airbnb_logo" />
-                 <span className='font-bold text-xl'>airbnb</span>
+                 <span className='font-bold text-xl text-primary'>airbnb</span>
              </Link>
              <div className='flex gap-2 items-center border border-gray-300 rounded-full px-5 py-2 shadow-md shadow-gray-200'>
                <div className=" border-r border-gray-300 pr-2">Anywhere</div>
