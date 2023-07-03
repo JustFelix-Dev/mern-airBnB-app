@@ -1,0 +1,32 @@
+const mongoose = require('mongoose');
+
+const locationSchema = new mongoose.Schema({
+    title: {
+        type: String,
+    },
+    address:{
+        type: String,
+    },
+    photos:{
+        type:[String],
+    },
+    description:{
+        type:String,
+    },
+    perks:{
+        type:[String],
+    },
+    checkIn:{
+        type:Number,
+    },
+    checkOut:{
+        type:Number,
+    },
+    guests:{
+        type:Number,
+    }
+})
+
+const Locationmodel = mongoose.model('location', locationSchema);
+
+module.exports = Locationmodel;
