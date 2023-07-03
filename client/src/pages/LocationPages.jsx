@@ -2,6 +2,14 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
+import { SiPrivateinternetaccess } from 'react-icons/si';
+import { AiOutlineWifi,AiFillCar } from 'react-icons/ai';
+import { FaUmbrellaBeach } from 'react-icons/fa';
+import { BsPersonWorkspace } from 'react-icons/bs';
+import { LuDog } from 'react-icons/lu';
+import { PiTelevisionSimple } from 'react-icons/pi';
+import { CgGym } from 'react-icons/cg';
+import { MdOutlineLocalLaundryService } from 'react-icons/md';
 
 const LocationPages = () => {
     const { id } = useParams();
@@ -29,8 +37,54 @@ const LocationPages = () => {
                         </div>
                         <label htmlFor="description">Description:</label>
                         <textarea name="" id="" cols="30" rows="10" placeholder='Enter your description...'></textarea>
-                        <label htmlFor="perks">Perks:</label>
-                        
+                        <label htmlFor="perks">What your place has to Offer:</label>
+                        <div>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <AiOutlineWifi/>
+                                <span>Wifi - 50Mbps</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <FaUmbrellaBeach/>
+                                <span>Beach Access</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <BsPersonWorkspace/>
+                                <span>Dedicated Workspace</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <AiFillCar/>
+                                <span>Free Parking</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <LuDog/>
+                                <span>Pets</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <PiTelevisionSimple/>
+                                <span>TV with standard cables</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <SiPrivateinternetaccess/>
+                                <span>Private Entrance</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <CgGym/>
+                                <span>Gym</span>
+                            </label>
+                            <label htmlFor="">
+                                <input type='checkbox' />
+                                <MdOutlineLocalLaundryService/>
+                                <span>Paid laundry</span>
+                            </label>
+                        </div>
                     </form>
                 )
              }
