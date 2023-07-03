@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 
 const locationSchema = new mongoose.Schema({
+    owner:
+        {type:mongoose.Schema.Types.ObjectId, ref:'User'},
     title: {
         type: String,
     },
