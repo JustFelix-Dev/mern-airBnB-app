@@ -4,7 +4,7 @@ const IndexPage = () => {
   return (
          <>
             <h1>
-                Welcome to the Index Page!
+                Welcome to AirBnb!
             </h1>
          </>
   )
