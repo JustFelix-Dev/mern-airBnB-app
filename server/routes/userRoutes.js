@@ -6,6 +6,5 @@ router.post('/register',registerUser)
 router.post('/login',loginUser)
 router.get('/profile',userProfile)
 router.post('/logout',logoutUser)
-router.post('/uploadByLink',uploadByLink)
 
 module.exports = router

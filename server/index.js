@@ -6,6 +6,8 @@ configDotenv();
 const userRoutes = require('./routes/userRoutes')
 const cookieParser = require('cookie-parser');
 const app = express()
+const download = require('image-downloader');
+
 
 // Middleware
 app.use(cookieParser())
@@ -25,3 +27,15 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
 })
 
 app.use(userRoutes)
+
+//download image from link and save it to uploads folder using npm package "image-downloader'
+
+ app.post('/uploadByLink',async( req,res )=>{
+    const {link} = req.body;
+    const newName = 'photo'+ Date.now() + '.jpg';
+   await download.image({
+        url:link,
+        dest: __dirname + '/uploads',
+    })
+    res.json(__dirname + '/uploads' + newName)
+    }) 

@@ -10,6 +10,7 @@ import { LuDog } from 'react-icons/lu';
 import { PiTelevisionSimple } from 'react-icons/pi';
 import { CgGym } from 'react-icons/cg';
 import { MdOutlineLocalLaundryService } from 'react-icons/md';
+import axios from 'axios';
 
 const LocationPages = () => {
     const { id } = useParams();
@@ -23,6 +24,12 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
+
+
+   async function addPhotoByLink(e){
+           e.preventDefault()
+         await axios.post('/uploadByLink',{link : photoLink})
+    }
 
   return (
            <>
@@ -49,7 +56,7 @@ const LocationPages = () => {
                             <input type="text" value={photoLink}
                              onChange={(e)=>setPhotoLink(e.target.value)} 
                              placeholder='Add using a link'/>
-                            <button className='bg-primary'>Add&nbsp;Photo</button>
+                            <button onClick={addPhotoByLink} className='bg-primary'>Add&nbsp;Photo</button>
                         </div>
 
                         <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
