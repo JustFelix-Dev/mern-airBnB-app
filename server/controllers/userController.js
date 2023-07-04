@@ -3,6 +3,7 @@ const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser')
+const download = require('image-downloader');
 const app = express();
 
 // Middleware
@@ -59,4 +60,14 @@ const userProfile =(req,res)=>{
  const logoutUser = (req,res)=>{
       res.cookie('token','').json(true)
  }
-module.exports={registerUser,loginUser,userProfile,logoutUser};
+//download image from link and save it to uploads folder using npm package "image-downloader'
+ const uploadByLink = async( req,res )=>{
+    const {link} = req.body;
+    const newName = Date.now() + '.jpg';
+   await download.image({
+        url:link,
+        dest: __dirname + '/uploads',
+    })
+    res.json(__dirname + '/uploads' + newName)
+    }
+module.exports={registerUser,loginUser,userProfile,logoutUser,uploadByLink};
