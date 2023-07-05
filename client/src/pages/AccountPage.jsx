@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../ContextHook/userContext'
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import LocationPages from './LocationPages';
 import { FaUserShield } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 import { BiLocationPlus } from 'react-icons/bi';
+import PlacesDetail from './PlacesDetail';
 
 
 const AccountPage = () => {
@@ -13,7 +14,11 @@ const AccountPage = () => {
     const [ redirected,setRedirected] = useState(false);
     const navigate = useNavigate()
     let {subPage} = useParams()
+    const {id} = useParams()
     
+    useEffect(()=>{
+        console.log(id)
+    },[])
     const logout =async()=>{
         await axios.post('/logout')
         setUser(null)
@@ -61,8 +66,12 @@ const AccountPage = () => {
                )
             }
             {
-                subPage === 'places' && (
+               !id && subPage === 'places' && (
                     <LocationPages/>
+                )
+            }{
+                id && (
+                    <PlacesDetail/>
                 )
             }
 

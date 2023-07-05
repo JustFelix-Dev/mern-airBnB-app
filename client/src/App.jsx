@@ -9,6 +9,7 @@ import RegisterPage from './pages/RegisterPage'
 import axios from 'axios'
 import { UserContextProvider } from './ContextHook/userContext'
 import AccountPage from './pages/AccountPage'
+import PlacesDetail from './pages/PlacesDetail'
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
