@@ -17,14 +17,16 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
-    const [ fectchedPlaces,setFetchedPlaces ] = useState(null);
+    const [ fetchedPlaces,setFetchedPlaces ] = useState(null);
     const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get('/places').then(({data})=>{
-                setFetchedPlaces(data)
+            console.log(data)
+            setFetchedPlaces(data)
+            console.log(fetchedPlaces)
         })
-    })
+    },[])
 
 
   const addPhotoByLink=async(e)=>{
