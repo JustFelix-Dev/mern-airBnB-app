@@ -17,7 +17,7 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
-    const [ fectchedPlaces,setFetchedPlaces ] = useState();
+    const [ fectchedPlaces,setFetchedPlaces ] = useState(null);
     const navigate = useNavigate();
 
     useEffect(()=>{
