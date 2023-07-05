@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
-;
 import axios from 'axios';
 import Perks from '../components/Perks';
 
