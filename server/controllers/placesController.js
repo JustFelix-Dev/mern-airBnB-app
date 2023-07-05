@@ -26,7 +26,7 @@ const postPlaces = async(req,res)=>{
           })
 }
 
-const getPlaces =async(req,res)=>{
+ const getPlaces =async(req,res)=>{
     const {token}= req.cookies;
     jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
         if(err) throw err;
@@ -37,4 +37,4 @@ const getPlaces =async(req,res)=>{
 }
 
 
-module.exports = {postPlaces,getPlaces};
+module.exports = { postPlaces, getPlaces };

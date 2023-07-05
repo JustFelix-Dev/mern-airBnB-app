@@ -17,14 +17,12 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
-    const [ fetchedPlaces,setFetchedPlaces ] = useState(null);
+    const [ fetchedPlaces,setFetchedPlaces ] = useState([]);
     const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get('/places').then(({data})=>{
-            console.log(data)
             setFetchedPlaces(data)
-            console.log(fetchedPlaces)
         })
     },[])
 
@@ -72,6 +70,21 @@ const LocationPages = () => {
              { id !== 'new' && (
                 <div className="text-center">
                 <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
+                 <div>
+                    {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
+                        <div className="flex gap-3 bg-gray-100 p-3">
+                            <div className='w-32 h-32 bg-gray-300 grow shrink-0'>
+                             { place.photos.length > 0 && (
+                                  <img src={place.photos[0]} alt='displayIcon'/>
+                             ) }
+                            </div>
+                            <div className='grow-0 shrink'>
+                                <h2 className='text-xl'>{place.title}</h2>
+                                <p className='text-sm mt-2'>{place.description}</p>
+                            </div>
+                        </div>
+                    ))}
+                 </div>
              </div>
              )
              }
