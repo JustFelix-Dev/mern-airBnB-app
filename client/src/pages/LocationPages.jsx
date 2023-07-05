@@ -72,17 +72,17 @@ const LocationPages = () => {
                 <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <div className="flex gap-3 bg-gray-100 p-3">
-                            <div className='w-32 h-32 bg-gray-300 grow shrink-0'>
+                        <Link to={'/account/places/' + place._id} className="flex gap-3 bg-gray-100 p-3">
+                            <div className='w-32 bg-gray-300 grow shrink-0'>
                              { place.photos.length > 0 && (
-                                  <img src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
+                                  <img className='object-fit' src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
                              ) }
                             </div>
                             <div className='grow-0 shrink'>
                                 <h2 className='text-xl'>{place.title}</h2>
                                 <p className='text-sm mt-2'>{place.description}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                  </div>
              </div>
