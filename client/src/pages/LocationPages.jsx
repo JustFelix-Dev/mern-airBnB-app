@@ -2,15 +2,9 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
-import { SiPrivateinternetaccess } from 'react-icons/si';
-import { AiOutlineWifi,AiFillCar } from 'react-icons/ai';
-import { FaUmbrellaBeach } from 'react-icons/fa';
-import { BsPersonWorkspace } from 'react-icons/bs';
-import { LuDog } from 'react-icons/lu';
-import { PiTelevisionSimple } from 'react-icons/pi';
-import { CgGym } from 'react-icons/cg';
-import { MdOutlineLocalLaundryService } from 'react-icons/md';
+;
 import axios from 'axios';
+import Perks from '../components/Perks';
 
 const LocationPages = () => {
     const { id } = useParams();
@@ -26,9 +20,30 @@ const LocationPages = () => {
     const [ maxGuests,setMaxGuests] = useState(1);
 
 
-   async function addPhotoByLink(e){
+  const addPhotoByLink=async(e)=>{
            e.preventDefault()
-         await axios.post('/uploadByLink',{link : photoLink})
+        const {data:filename} = await axios.post('/uploadByLink',{link : photoLink})
+         setPhotos(prev=>{
+            return [...prev,filename]
+         })
+           setPhotoLink('')
+    }
+
+    const uploadFile=(e)=>{
+        e.preventDefault()
+        const files = e.target.files;
+        const data = new FormData();
+        for(let i=0;i < files.length; i++){
+             data.append('photos',files[i])
+        }
+        axios.post('/upload',data,{
+            headers: {'Content-Type':'multipart/form-data'}
+        }).then(response=>{
+               const {data:filename} = response;
+               setPhotos(prev=>{
+                return [...prev,...filename]
+             })
+        })
     }
 
   return (
@@ -59,8 +74,17 @@ const LocationPages = () => {
                             <button onClick={addPhotoByLink} className='bg-primary'>Add&nbsp;Photo</button>
                         </div>
 
-                        <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                            <button className='bg-transparent flex items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'><SlCloudUpload/>Upload</button>
+                        <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                            {
+                              photos.length > 0 && photos.map(link=>(
+                                <div className='h-32 flex'>
+                                    <img className=' w-full object-center rounded-2xl' src={'http://localhost:8000/uploads/'+ link} alt="icon" />
+                                </div>
+                              ))
+                            }
+                            <label className='h-32 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
+                                <input type="file" multiple className='hidden' onChange={uploadFile}/>
+                                <SlCloudUpload/>Upload</label>
                         </div>
                         <label htmlFor="description">Description:</label>
                         <textarea name="" id="" cols="30" rows="10" 
@@ -68,54 +92,7 @@ const LocationPages = () => {
                         value={description}
                         onChange={(e)=>setDescription(e.target.value)}
                         ></textarea>
-                        <label htmlFor="perks">What your place has to Offer:</label>
-                        <div className='grid grid-cols-3 gap-3 mx-auto max-w-6xl'>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer'  htmlFor="">
-                                <input type='checkbox' />
-                                <AiOutlineWifi/>
-                                <span>Wifi - 50Mbps</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <FaUmbrellaBeach/>
-                                <span>Beach Access</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <BsPersonWorkspace/>
-                                <span>Dedicated Workspace</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <AiFillCar/>
-                                <span>Free Parking</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <LuDog/>
-                                <span>Pets</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <PiTelevisionSimple/>
-                                <span>TV with standard cables</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <SiPrivateinternetaccess/>
-                                <span>Private Entrance</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <CgGym/>
-                                <span>Gym</span>
-                            </label>
-                            <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' />
-                                <MdOutlineLocalLaundryService/>
-                                <span>Paid laundry</span>
-                            </label>
-                        </div>
+                           <Perks selected={perks} onChange={setPerks}/>
                            <label htmlFor="extraInfo">Other Informations:</label>
                              <textarea name="extraInfo" id="extraInfo" 
                              cols="30" rows="10"
