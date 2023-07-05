@@ -3,7 +3,8 @@ const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const { configDotenv } = require('dotenv');
 configDotenv();
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoutes');
+const placesRoutes = require('./routes/placesRoutes');
 const cookieParser = require('cookie-parser');
 const app = express()
 const download = require('image-downloader');
@@ -30,6 +31,7 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
 })
 
 app.use(userRoutes)
+app.use(placesRoutes)
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")

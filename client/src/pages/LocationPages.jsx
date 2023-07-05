@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
 ;
@@ -18,6 +18,7 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
+    const navigate = useNavigate();
 
 
   const addPhotoByLink=async(e)=>{
@@ -46,6 +47,18 @@ const LocationPages = () => {
         })
     }
 
+    const handleFormPlaces=async(e)=>{
+          e.preventDefault()
+          const formBody={
+                       title,address,photos,
+                       photoLink,description,perks,
+                       extraInfo,checkIn,checkOut,maxGuests
+                         }
+
+      const {data} = await axios.post('/places',formBody)
+                 navigate('/account/places')
+    }
+
   return (
            <>
              { id !== 'new' && (
@@ -55,7 +68,7 @@ const LocationPages = () => {
              )
              }
              { id == 'new' && (
-                    <form>
+                    <form onSubmit={handleFormPlaces}>
                         <label htmlFor="title">Title:</label>
                         <input type="text" value={title}
                          onChange={(e)=>setTitle(e.target.value)} 
