@@ -8,7 +8,8 @@ const app = express();
 // Middleware
 app.use(cookieParser())
 
-const places = async(req,res)=>{
+const postPlaces = async(req,res)=>{
+
           const {token}= req.cookies;
           const { title,address,photos,
             photoLink,description,perks,
@@ -25,4 +26,15 @@ const places = async(req,res)=>{
           })
 }
 
-module.exports = {places};
+const getPlaces =async(req,res)=>{
+    const {token}= req.cookies;
+    jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
+        if(err) throw err;
+             const {id} = user;
+             const places = await Location.find({owner:id})
+             res.json(places)
+           })
+}
+
+
+module.exports = {postPlaces,getPlaces};

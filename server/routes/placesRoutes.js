@@ -1,7 +1,8 @@
 const express = require('express');
-const { places } = require('../controllers/placesController');
+const { postPlaces, getPlaces } = require('../controllers/placesController');
 const router = express.Router()
 
-router.post('/places',places)
+router.post('/places',postPlaces)
+router.get('/places',getPlaces)
 
 module.exports = router;
