@@ -1,3 +1,4 @@
+const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
@@ -18,7 +19,7 @@ const places = async(req,res)=>{
                         owner: user.id,
                         title,address,photos,
                         photoLink,description,perks,
-                        extraInfo,checkIn,checkOut,maxGuests
+                        extraInfo,checkIn,checkOut,guests:maxGuests
                })
                res.json(placeDoc)
           })

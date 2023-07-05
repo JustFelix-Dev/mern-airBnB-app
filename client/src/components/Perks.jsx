@@ -11,55 +11,60 @@ import { MdOutlineLocalLaundryService } from 'react-icons/md';
 const Perks = ({ selected,onChange }) => {
 
     const handleClick=(e)=>{
-        console.log(e.target.checked)
+        const {checked,name} = e.target;
+        if (checked) {
+          onChange([...selected,name]);
+        } else {
+          onChange([...selected.filter(selectedName => selectedName !== name)]);
+        }
+      }
 
-    }
   return (
         <>
          <label htmlFor="perks">What your place has to Offer:</label>
                         <div className='grid grid-cols-3 gap-3 mx-auto max-w-6xl'>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer'  htmlFor="">
-                                <input type='checkbox' onChange={handleClick} />
+                                <input type='checkbox' name='wifi' onChange={handleClick} />
                                 <AiOutlineWifi/>
                                 <span>Wifi - 50Mbps</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick} />
+                                <input type='checkbox' name='beach' onChange={handleClick} />
                                 <FaUmbrellaBeach/>
                                 <span>Beach Access</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick} />
+                                <input type='checkbox' name='workspace' onChange={handleClick} />
                                 <BsPersonWorkspace/>
                                 <span>Dedicated Workspace</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick}/>
+                                <input type='checkbox' name='parking' onChange={handleClick}/>
                                 <AiFillCar/>
                                 <span>Free Parking</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick}/>
+                                <input type='checkbox' name='pet' onChange={handleClick}/>
                                 <LuDog/>
                                 <span>Pets</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick} />
+                                <input type='checkbox' name='tv' onChange={handleClick} />
                                 <PiTelevisionSimple/>
                                 <span>TV with standard cables</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick}/>
+                                <input type='checkbox' name='entrance' onChange={handleClick}/>
                                 <SiPrivateinternetaccess/>
                                 <span>Private Entrance</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick}/>
+                                <input type='checkbox' name='gym' onChange={handleClick}/>
                                 <CgGym/>
                                 <span>Gym</span>
                             </label>
                             <label className='flex gap-2 items-center p-3 border border-gray-400 cursor-pointer' htmlFor="">
-                                <input type='checkbox' onChange={handleClick} />
+                                <input type='checkbox' name='laundry' onChange={handleClick} />
                                 <MdOutlineLocalLaundryService/>
                                 <span>Paid laundry</span>
                             </label>

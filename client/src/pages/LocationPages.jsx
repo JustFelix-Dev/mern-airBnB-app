@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
@@ -18,7 +18,14 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
+    const [ fectchedPlaces,setFetchedPlaces ] = useState();
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        axios.get('/places').then(({data})=>{
+                setFetchedPlaces(data)
+        })
+    })
 
 
   const addPhotoByLink=async(e)=>{
