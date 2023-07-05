@@ -75,7 +75,7 @@ const LocationPages = () => {
                         <div className="flex gap-3 bg-gray-100 p-3">
                             <div className='w-32 h-32 bg-gray-300 grow shrink-0'>
                              { place.photos.length > 0 && (
-                                  <img src={place.photos[0]} alt='displayIcon'/>
+                                  <img src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
                              ) }
                             </div>
                             <div className='grow-0 shrink'>
