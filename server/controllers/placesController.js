@@ -26,6 +26,12 @@ const postPlaces = async(req,res)=>{
           })
 }
 
+        const getAllPlaces = async(req,res)=>{
+
+            const allPlaces = await Location.find()
+            res.json(allPlaces)
+        }
+
  const getPlaces =async(req,res)=>{
     const {token}= req.cookies;
     jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
@@ -42,4 +48,4 @@ const getEachPlace = async(req,res)=>{
       res.json(doc)
 }
 
-module.exports = { postPlaces, getPlaces, getEachPlace};
+module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces};
