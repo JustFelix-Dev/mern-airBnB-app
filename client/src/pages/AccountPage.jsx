@@ -64,13 +64,13 @@ const AccountPage = () => {
                )
             }
             {
-               !id && subPage === 'places' && (
+               subPage === 'places' && (
                     <LocationPages/>
                 )
             }{
-                id && (
-                    <PlacesDetail/>
-                )
+                // id !== 'new' && (
+                //     <PlacesDetail/>
+                // )
             }
 
          </>

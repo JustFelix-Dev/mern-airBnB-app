@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
+import { HiOutlineTrash } from 'react-icons/hi';
+import { AiOutlineStar,AiFillStar } from 'react-icons/ai';
 import axios from 'axios';
 import Perks from '../components/Perks';
 
@@ -35,6 +37,18 @@ const LocationPages = () => {
          })
            setPhotoLink('')
     }
+
+ const removePhoto=(e,file)=>{
+    e.preventDefault()
+    setPhotos([...photos.filter(photo=> photo!== file)])
+ }
+
+ const selectPhoto=(e,file)=>{
+    e.preventDefault()
+    const photosnotSelected = photos.filter(photo=> photo !== file)
+    const newPhotos = [file,...photosnotSelected]
+       setPhotos(newPhotos)
+     }
 
     const uploadFile=(e)=>{
         e.preventDefault()
@@ -72,10 +86,10 @@ const LocationPages = () => {
                 <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <Link to={'/account/places/' + place._id} className="flex gap-3 bg-gray-100 p-3">
-                            <div className='w-32 bg-gray-300 grow shrink-0'>
+                        <Link to={'/account/places/each/' + place._id} className="flex gap-3 bg-gray-100 p-3">
+                            <div className='flex w-32 bg-gray-300 grow shrink-0'>
                              { place.photos.length > 0 && (
-                                  <img className='object-fit' src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
+                                  <img className='object-cover' src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
                              ) }
                             </div>
                             <div className='grow-0 shrink'>
@@ -111,8 +125,17 @@ const LocationPages = () => {
                         <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                             {
                               photos.length > 0 && photos.map(link=>(
-                                <div className='h-32 flex' key={link}>
+                                <div className='h-32  relative flex' key={link}>
                                     <img className=' w-full object-center rounded-2xl' src={'http://localhost:8000/uploads/'+ link} alt="icon" />
+                                    <button onClick={(e)=>removePhoto(e,link)} className='absolute text-red-500 bg-white p-1 rounded-lg cursor-pointer right-1 top-2'>
+                                        <HiOutlineTrash/>
+                                    </button>
+                                    <button onClick={(e)=>selectPhoto(e,link)} className='absolute text-red-500 bg-white p-1 rounded-lg cursor-pointer left-1 top-2'>
+                                        {
+                                       
+                                        link === photos[0] ? <AiFillStar/> : <AiOutlineStar/>
+                                        }
+                                    </button>
                                 </div>
                               ))
                             }
@@ -127,6 +150,7 @@ const LocationPages = () => {
                         onChange={(e)=>setDescription(e.target.value)}
                         ></textarea>
                            <Perks selected={perks} onChange={setPerks}/>
+
                            <label htmlFor="extraInfo">Other Informations:</label>
                              <textarea name="extraInfo" id="extraInfo" 
                              cols="30" rows="10"
