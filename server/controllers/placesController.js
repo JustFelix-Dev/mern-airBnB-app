@@ -36,5 +36,10 @@ const postPlaces = async(req,res)=>{
            })
 }
 
+const getEachPlace = async(req,res)=>{
+      const {id} = req.params;
+      const doc = await Location.findById(id)
+      res.json(doc)
+}
 
-module.exports = { postPlaces, getPlaces };
+module.exports = { postPlaces, getPlaces, getEachPlace};

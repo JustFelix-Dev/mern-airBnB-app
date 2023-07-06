@@ -16,9 +16,7 @@ const AccountPage = () => {
     let {subPage} = useParams()
     const {id} = useParams()
     
-    useEffect(()=>{
-        console.log(id)
-    },[])
+   
     const logout =async()=>{
         await axios.post('/logout')
         setUser(null)
