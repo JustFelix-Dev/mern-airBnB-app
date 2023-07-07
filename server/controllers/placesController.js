@@ -13,14 +13,14 @@ const postPlaces = async(req,res)=>{
           const {token}= req.cookies;
           const { title,address,photos,
             photoLink,description,perks,
-            extraInfo,checkIn,checkOut,maxGuests} = req.body;
+            extraInfo,checkIn,checkOut,maxGuests,price} = req.body;
           jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
             if(err) throw err;
             const placeDoc = await Location.create({
                         owner: user.id,
                         title,address,photos,
                         photoLink,description,perks,
-                        extraInfo,checkIn,checkOut,guests:maxGuests
+                        extraInfo,checkIn,checkOut,guests:maxGuests,price
                })
                res.json(placeDoc)
           })

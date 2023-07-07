@@ -26,7 +26,7 @@ function App() {
           <Route path='register' element={<RegisterPage/>}/>
           <Route path='account/:subPage?' element={<AccountPage/>}/> 
           <Route path='account/:subPage/:id' element={<AccountPage/>}/>
-          <Route path='account/:subPage/each/:id' element={<PlacesDetail/>}/>
+          <Route path='place/:id' element={<PlacesDetail/>}/>
 
           </Route>
         </Routes>

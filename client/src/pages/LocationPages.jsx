@@ -19,6 +19,7 @@ const LocationPages = () => {
     const [ checkIn,setCheckIn ] = useState('');
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
+    const [ price,setPrice ] = useState(100);
     const [ fetchedPlaces,setFetchedPlaces ] = useState([]);
     const navigate = useNavigate();
 
@@ -72,7 +73,7 @@ const LocationPages = () => {
           const formBody={
                        title,address,photos,
                        photoLink,description,perks,
-                       extraInfo,checkIn,checkOut,maxGuests
+                       extraInfo,checkIn,checkOut,maxGuests,price
                          }
 
       const {data} = await axios.post('/places',formBody)
@@ -86,7 +87,7 @@ const LocationPages = () => {
                 <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <Link to={'/account/places/each/' + place._id} className="flex gap-3 bg-gray-100 p-3">
+                        <Link to={'/account/places/update/' + place._id} className="flex gap-3 bg-gray-100 p-3">
                             <div className='flex w-32 bg-gray-300 grow shrink-0'>
                              { place.photos.length > 0 && (
                                   <img className='object-cover' src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
@@ -182,6 +183,13 @@ const LocationPages = () => {
                                       name='guest'
                                       value={maxGuests}
                                       onChange={(e)=>setMaxGuests(e.target.value)}
+                                       />
+                                    <label htmlFor="price">Price[$]:</label>
+                                     <input type="number" min='100' 
+                                     inputMode='decimal' step='0.01'
+                                      name='price'
+                                      value={price}
+                                      onChange={(e)=>setPrice(e.target.value)}
                                        />
                                     </div>
                                 </div>
