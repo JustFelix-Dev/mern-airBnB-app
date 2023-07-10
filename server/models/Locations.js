@@ -27,6 +27,9 @@ const locationSchema = new mongoose.Schema({
     guests:{
         type:Number,
     },
+    extraInfo:{
+        type:String,
+    },
     price:{
         type:Number,
     }
