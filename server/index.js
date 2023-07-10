@@ -4,6 +4,7 @@ const { default: mongoose } = require('mongoose');
 const { configDotenv } = require('dotenv');
 configDotenv();
 const userRoutes = require('./routes/userRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const cookieParser = require('cookie-parser');
 const app = express()
@@ -32,6 +33,7 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
 
 app.use(userRoutes)
 app.use(placesRoutes)
+app.use(bookingRoutes)
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")
