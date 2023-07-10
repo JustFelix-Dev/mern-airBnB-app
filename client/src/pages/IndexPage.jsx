@@ -9,7 +9,7 @@ const IndexPage = () => {
       .then(response=>{
         setAllPlaces([...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data,...response.data])
       })
-  })
+  },[])
   return (
          <>
            <div className="mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
