@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const BookingWidget = ({place}) => {
+
+    const [ checkIn,setCheckIn ] = useState('');
+    const [ checkOut,setCheckOut ] = useState('');
+    const [ guestNum,setGuestNum ] = useState(1);
+    
   return (
           <>
            <div className="bg-white shadow p-4 rounded-2xl">

@@ -26,7 +26,7 @@ if(showAllPhotos){
           <div className='absolute inset-0 bg-black text-white min-h-screen'>
             <div className='bg-black p-8 grid gap-4'>
                 <div>
-                    <h1 className='text-3xl mr-36'>Photos of {place.title}</h1>
+                    <h1 className='text-3xl mr-48'>Photos of {place.title}</h1>
                     <button onClick={()=> setShowAllPhotos(false)} className='fixed flex items-center right-12 top-8 flex gap-2 py-2 px-4 rounded-2xl bg-white text-black'><AiFillCloseCircle/>Close Photo</button>
                 </div>
                  {place?.photos?.length > 0 && place.photos.map(photo=>(
