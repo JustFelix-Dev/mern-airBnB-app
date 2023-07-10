@@ -7,6 +7,7 @@ import { FaUserShield } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 import { BiLocationPlus } from 'react-icons/bi';
 import PlacesDetail from './PlacesDetail';
+import BookingList from '../components/BookingList';
 
 
 const AccountPage = () => {
@@ -67,10 +68,11 @@ const AccountPage = () => {
                subPage === 'places' && (
                     <LocationPages/>
                 )
-            }{
-                // id !== 'new' && (
-                //     <PlacesDetail/>
-                // )
+            }
+            {
+               subPage === 'bookings' && (
+                       <BookingList/>
+               )  
             }
 
          </>

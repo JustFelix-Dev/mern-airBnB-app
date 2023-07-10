@@ -10,6 +10,7 @@ import axios from 'axios'
 import { UserContextProvider } from './ContextHook/userContext'
 import AccountPage from './pages/AccountPage'
 import PlacesDetail from './pages/PlacesDetail'
+import BookingPlace from './pages/BookingPlace'
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -24,6 +25,7 @@ function App() {
           <Route index element={<IndexPage/>}/>
           <Route path='login' element={<LoginPage/>}/>
           <Route path='register' element={<RegisterPage/>}/>
+          <Route path='account/bookings/:id' element={<BookingPlace/>}/>
           <Route path='account/:subPage?' element={<AccountPage/>}/> 
           <Route path='account/:subPage/:id' element={<AccountPage/>}/>
           <Route path='place/:id' element={<PlacesDetail/>}/>

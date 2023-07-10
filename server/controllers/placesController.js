@@ -9,7 +9,6 @@ const app = express();
 app.use(cookieParser())
 
 const postPlaces = async(req,res)=>{
-
           const {token}= req.cookies;
           const { title,address,photos,
             photoLink,description,perks,
@@ -27,7 +26,6 @@ const postPlaces = async(req,res)=>{
 }
 
         const getAllPlaces = async(req,res)=>{
-
             const allPlaces = await Location.find()
             res.json(allPlaces)
         }
