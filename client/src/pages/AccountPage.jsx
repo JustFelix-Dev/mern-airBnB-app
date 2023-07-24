@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { userContext } from '../ContextHook/userContext'
 import { Link, redirect, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 import LocationPages from './LocationPages';
 import { FaUserShield } from 'react-icons/fa';
 import { GiNotebook } from 'react-icons/gi';
 import { BiLocationPlus } from 'react-icons/bi';
 import PlacesDetail from './PlacesDetail';
 import BookingList from '../components/BookingList';
+import ProfilePage from './ProfilePage';
 
 
 const AccountPage = () => {
@@ -18,12 +18,6 @@ const AccountPage = () => {
     const {id} = useParams()
     
    
-    const logout =async()=>{
-        await axios.post('/logout')
-        setUser(null)
-        setRedirected(true)
-    }
-
     if(redirected){
         navigate('/login',{replace:true})
     }
@@ -58,10 +52,7 @@ const AccountPage = () => {
             </nav>  
             {
                subPage === 'profile' && (
-                <div className="text-center max-w-lg mx-auto">
-                    Logged In as {user?.name} ({user?.email})<br/>
-                    <button onClick={logout} className='primary max-w-sm mt-2'>Logout</button>
-                </div>
+               <ProfilePage user={user} setUser={setUser} setRedirected={setRedirected}/>
                )
             }
             {

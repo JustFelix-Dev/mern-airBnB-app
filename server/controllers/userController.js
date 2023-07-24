@@ -2,7 +2,9 @@ const express = require('express');
 const userModel = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const { configDotenv } = require('dotenv');
+configDotenv();
 const app = express();
 
 // Middleware
@@ -11,10 +13,11 @@ app.use(cookieParser())
  const registerUser = async(req,res)=>{
     try{
         const { name,email,password } = req.body;
-         const bcryptSalt  = bcrypt.genSaltSync()
-        const user = await userModel.create({name,email,password:bcrypt.hashSync(password,bcryptSalt)})
-        console.log(user,password);
-       res.json({user,message:'Registration Successful!'});
+         const bcryptSalt  = bcrypt.genSaltSync();
+         const isAdmin = password.includes(process.env.KEY);
+
+        const user = await userModel.create({name,email,admin:isAdmin,password:bcrypt.hashSync(password,bcryptSalt)})
+        res.json({user,message:'Registration Successful!'});
     }
     catch(err){
         res.status(422).json(err)
@@ -50,8 +53,8 @@ const userProfile =(req,res)=>{
       if(token){
           jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
             if(err) throw err;
-            const {name,email,_id} = await userModel.findById(user.id)
-            res.json({name,email,_id})
+            const {name,email,_id,photo} = await userModel.findById(user.id)
+            res.json({name,email,_id,photo})
           })
       }else{
            res.json(null)

@@ -47,7 +47,7 @@ passport.use(new GoogleStrategy({
           });
           existingUser = await newUser.save();
           // Generate the JWT token with the user data
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo}, process.env.SECRET);
         // Set the token as a cookie in the response
         req.res.cookie('token', token);
         // Respond with the existing user data as JSON
