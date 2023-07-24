@@ -30,7 +30,7 @@ const getBooking =async(req,res)=>{
     jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
         if(err) throw err;
              const {id} = user;
-             const bookings = await bookingModel.find({user:id})
+             const bookings = await bookingModel.find({user:id}).populate('place')
              res.json(bookings) 
            })
 }

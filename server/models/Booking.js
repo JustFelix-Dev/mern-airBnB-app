@@ -8,7 +8,8 @@ const BookingSchema = new mongoose.Schema({
       },
       place: {
         type: mongoose.Schema.Types.ObjectId, 
-        required:true
+        required:true,
+        ref: 'location'
       },
       numOfGuests:{
         type:Number,

@@ -6,6 +6,7 @@ import { HiOutlineTrash } from 'react-icons/hi';
 import { AiOutlineStar,AiFillStar } from 'react-icons/ai';
 import axios from 'axios';
 import Perks from '../components/Perks';
+import PlacesImage from '../components/PlacesImage';
 
 const LocationPages = () => {
     const { id } = useParams();
@@ -87,11 +88,9 @@ const LocationPages = () => {
                 <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <Link to={'/account/places/update/' + place._id} className="flex gap-3 bg-gray-100 p-3">
+                        <Link to={'/place/'+ place._id} className="flex gap-3 bg-gray-100 p-3">
                             <div className='flex w-32 bg-gray-300 grow shrink-0'>
-                             { place.photos.length > 0 && (
-                                  <img className='object-cover' src={'http://localhost:8000/uploads/'+place.photos[0]} alt='displayIcon'/>
-                             ) }
+                               <PlacesImage place={place}/>
                             </div>
                             <div className='grow-0 shrink'>
                                 <h2 className='text-xl'>{place.title}</h2>

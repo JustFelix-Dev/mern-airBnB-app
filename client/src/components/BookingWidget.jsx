@@ -18,7 +18,7 @@ const BookingWidget = ({place}) => {
           setFullName(user.name)
         }
     },[user])
-    
+
     let numOfNight = 0;
     if(checkIn && checkOut){
         numOfNight = differenceInCalendarDays(new Date(checkOut),new Date(checkIn));
@@ -41,31 +41,37 @@ const BookingWidget = ({place}) => {
                 <label htmlFor="checkIn">Check-In:</label>
                 <input type="date"
                  value={checkIn}
-                  onChange={(e)=>setCheckIn(e.target.value)} />
+                  onChange={(e)=>setCheckIn(e.target.value)} required />
             </div>
             <div className=' py-3 px-4 border-l'>
                 <label htmlFor="checkOut">Check-Out:</label>
                 <input type="date" 
                 value={checkOut}
-                 onChange={(e)=>setCheckOut(e.target.value)} />
+                 onChange={(e)=>setCheckOut(e.target.value)} required />
             </div>
                 </div>
             <div className=' py-3 px-4 border-t'>
                 <label htmlFor="guests">Number of Guests:</label>
                 <input type="number" 
                 value={guestNum} min={1} max={place.guests}
-                onChange={(e)=>setGuestNum(e.target.value)} />
+                onChange={(e)=>setGuestNum(e.target.value)}
+                  required
+                />
             </div>
             {numOfNight > 0 &&(
                <div className=' py-3 px-4 border-t'>
                <label htmlFor="guests">Full Name</label>
                <input type="text" 
                value={fullName} 
-               onChange={(e)=>setFullName(e.target.value)} />
+               onChange={(e)=>setFullName(e.target.value)}
+                required
+                />
                 <label htmlFor="guests">Phone Number</label>
                <input type="tel" 
                value={mobile} 
-               onChange={(e)=>setMobile(e.target.value)} />
+               onChange={(e)=>setMobile(e.target.value)}
+                 required
+               />
            </div>
             )}
             </div>

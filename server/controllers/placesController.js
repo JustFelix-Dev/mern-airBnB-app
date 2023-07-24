@@ -25,7 +25,7 @@ const postPlaces = async(req,res)=>{
           })
 }
 
-        const getAllPlaces = async(req,res)=>{
+const getAllPlaces = async(req,res)=>{
             const allPlaces = await Location.find()
             res.json(allPlaces)
         }
