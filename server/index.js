@@ -6,11 +6,16 @@ configDotenv();
 const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const placesRoutes = require('./routes/placesRoutes');
+const authRoutes = require('./routes/auth');
 const cookieParser = require('cookie-parser');
 const app = express()
 const download = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
+const session = require('express-session');
+const passportsetUp = require('./passport');
+// const cookieSession = require('cookie-session');
+const passport = require('passport');
 
 
 // Middleware
@@ -21,6 +26,16 @@ app.use(cors({
     credentials: true,
        origin:'http://localhost:5173'
     }))
+
+// Social Auth
+    app.use(session({
+        secret: 'felix',
+        resave: false,
+        saveUninitialized: false,
+   }))
+   
+   app.use(passport.initialize());
+   app.use(passport.session());
 
 // Connect to Db
 mongoose.connect(process.env.MONGOURL).then(()=>{
@@ -34,6 +49,8 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
 app.use(userRoutes)
 app.use(placesRoutes)
 app.use(bookingRoutes)
+app.use('/auth',authRoutes)
+
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")

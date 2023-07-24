@@ -13,6 +13,7 @@ app.use(cookieParser())
         const { name,email,password } = req.body;
          const bcryptSalt  = bcrypt.genSaltSync()
         const user = await userModel.create({name,email,password:bcrypt.hashSync(password,bcryptSalt)})
+        console.log(user,password);
        res.json({user,message:'Registration Successful!'});
     }
     catch(err){
@@ -30,6 +31,7 @@ const loginUser = async(req,res)=>{
                   jwt.sign({email:user.email,id:user._id},process.env.SECRET,(err,token)=>{
                     if(err) throw err;
                     res.cookie('token',token).json(user)
+                    console.log(user)
                   }) 
             }else{
                 res.status(402).json('Wrong credentials!')

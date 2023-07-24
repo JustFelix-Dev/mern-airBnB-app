@@ -24,7 +24,7 @@ const Header = () => {
                 <img src="images/svgexport-6.svg" alt="menu" height={20} width={17} />
                 <img src="images/svgexport-7.svg" alt="userIcon" height={30} width={30} />
                 <div>
-                    { user && user.name}
+                    { user && user?.name || user?.displayName}
                 </div>
               </Link>
              </div>
