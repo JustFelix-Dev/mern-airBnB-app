@@ -1,6 +1,13 @@
 const passport = require('passport');
+const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
+const userModel = require('./models/user');
+const  jwt  = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
+app.use(cookieParser())
+
 // const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Google
@@ -19,32 +26,76 @@ const GITHUB_CLIENT_SECRET = 'e0e50b88299eef50f97ac8990747715836e1f2ad';
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
+    callbackURL: "/auth/google/callback",
+    passReqToCallback: true
   },
-  function(accessToken, refreshToken, profile, done){
-    done(null,profile)
+  async function(req,accessToken, refreshToken, profile, done){
+    //   Check If user exists
+    try{
+       let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+       if(existingUser){
+        const token = jwt.sign({email:existingUser.email,id:existingUser._id},process.env.SECRET);
+        req.res.cookie('token',token);
+        console.log(existingUser)
+          return done(null,existingUser)
+       }
+       if(!existingUser){
+          const newUser = new userModel({
+              name: profile.displayName,
+              email: profile.emails[0].value,
+              photo: profile.photos[0].value,
+          });
+          existingUser = await newUser.save();
+          // Generate the JWT token with the user data
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
+        // Set the token as a cookie in the response
+        req.res.cookie('token', token);
+        // Respond with the existing user data as JSON
+        return done(null, existingUser);
+       }
+    }catch(err){
+        return done(err)
+    }
+    
   }
 ));
 
 passport.use(new GithubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "/auth/github/callback"
+    callbackURL: "/auth/github/callback",
+    passReqToCallback: true
+
   },
-  function(accessToken, refreshToken, profile, done){
-    done(null,profile)
+  async function(req,accessToken, refreshToken, profile, done){
+    //   Check If user exists
+    try{
+        let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+        if(existingUser){
+         const token = jwt.sign({email:existingUser.email,id:existingUser._id},process.env.SECRET);
+         req.res.cookie('token',token);
+         console.log(existingUser)
+           return done(null,existingUser)
+        }
+        if(!existingUser){
+           const newUser = new userModel({
+               name: profile.displayName,
+               email: profile.emails[0].value,
+               photo: profile.photos[0].value,
+           });
+           existingUser = await newUser.save();
+           // Generate the JWT token with the user data
+         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
+         // Set the token as a cookie in the response
+         req.res.cookie('token', token);
+         // Respond with the existing user data as JSON
+         return done(null, existingUser);
+        }
+     }catch(err){
+         return done(err)
+     }
   }
 ));
-
-// passport.use(new FacebookStrategy({
-//   clientID: FACEBOOK_APP_ID,
-//   clientSecret: FACEBOOK_APP_SECRET,
-//   callbackURL: "/auth/facebook/callback"
-// },
-// function(accessToken, refreshToken, profile, done){
-//   done(null,profile)
-// }
-// ));
 
 passport.serializeUser((user,done)=>{
       done(null,user)

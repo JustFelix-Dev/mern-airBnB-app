@@ -1,14 +1,22 @@
+const express = require('express');
+const app = express();
+const cookieParser = require('cookie-parser');
 const router = require('express').Router();
 const passport = require('passport');
+
+app.use(cookieParser());
+
 
 const CLIENT_URI = 'http://localhost:5173/'
 
 router.get('/login/success',(req,res)=>{
+    const token = req.cookies.token
     if(req.user){
         res.status(200).json({
             success: true,
             message: 'successful',
             user: req.user,
+            token:token
         })
     }
 })
