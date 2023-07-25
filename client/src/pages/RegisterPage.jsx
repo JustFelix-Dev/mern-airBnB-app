@@ -37,9 +37,6 @@ const uploadPhoto = (e) => {
       console.error('Error uploading photo:', error);
     });
 };
-// const handlefacebook= ()=>{
-//     window.open('http://localhost:8000/auth/facebook','_self')
-// }
 
   const handleForm=async(e)=>{
        e.preventDefault()
@@ -85,7 +82,7 @@ const uploadPhoto = (e) => {
                       <input type="file" className='hidden' onChange={uploadPhoto} required/>
                       {
                       photo && photo.length > 0 ? 
-                          <img src={"http://localhost:8000/userPhoto/" + photo} alt="userPhoto" width={30} height={30} />
+                          <img src={"http://localhost:8000/userPhoto/" + photo} alt="userPhoto" width={30} height={30} style={{borderRadius:'10px'}} />
                          : <><SlCloudUpload/>Upload</>
                       }
                         </label>
