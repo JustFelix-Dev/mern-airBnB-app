@@ -22,7 +22,7 @@ const Header = () => {
               <div><img src="images/svgexport-5.svg" alt="" /></div>
               <Link to={ user ? '/account' : '/login'} className='flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1'>
                 <img src="images/svgexport-6.svg" alt="menu" height={20} width={17} />
-                <img src= {user ? user?.photo:'images/svgexport-7.svg'} alt="userIcon" height={30} width={30} style={{borderRadius:'20px'}} />
+                <img src= {user ? (`http:localhost:8000/userPhoto/${user?.photo}`) || user?.photo : ('images/svgexport-7.svg')} alt="userIcon" height={30} width={30} style={{borderRadius:'20px'}} />
                 <div>
                     { user && user.name.split(' ')[0]}
                 </div>

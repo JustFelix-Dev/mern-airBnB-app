@@ -12,11 +12,11 @@ app.use(cookieParser())
 
  const registerUser = async(req,res)=>{
     try{
-        const { name,email,password } = req.body;
+        const { name,email,password,photo } = req.body;
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
 
-        const user = await userModel.create({name,email,admin:isAdmin,password:bcrypt.hashSync(password,bcryptSalt)})
+        const user = await userModel.create({name,email,admin:isAdmin,photo,password:bcrypt.hashSync(password,bcryptSalt)})
         res.json({user,message:'Registration Successful!'});
     }
     catch(err){
@@ -31,7 +31,7 @@ const loginUser = async(req,res)=>{
          if(user){
             const isMatched = bcrypt.compareSync(password, user.password)
             if(isMatched){
-                  jwt.sign({email:user.email,id:user._id},process.env.SECRET,(err,token)=>{
+                  jwt.sign({email:user.email,id:user._id,photo:user.photo,admin:user.admin},process.env.SECRET,(err,token)=>{
                     if(err) throw err;
                     res.cookie('token',token).json(user)
                     console.log(user)

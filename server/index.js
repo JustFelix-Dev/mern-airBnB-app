@@ -22,6 +22,8 @@ const passport = require('passport');
 app.use(cookieParser())
 app.use(express.json())
 app.use('/uploads',express.static(__dirname+'/uploads'))
+app.use('/userPhoto',express.static(__dirname+'/userPhoto'))
+
 app.use(cors({
     credentials: true,
        origin:'http://localhost:5173'
@@ -67,6 +69,20 @@ app.use('/auth',authRoutes)
     }) 
 
     const photosMiddleware = multer({dest:'uploads/'});
+    const photoMiddleware = multer({dest:'userPhoto/'});
+
+    app.post('/userPhoto',photoMiddleware.single('photo'),(req,res)=>{
+        const { path, originalname } = req.file;
+        console.log(req.file);
+      
+        const parts = originalname.split('.');
+        const format = parts[parts.length - 1];
+        const newPath = path + '.' + format;
+        fs.renameSync(path, newPath);
+        const uploadedFile = newPath.replace('userPhoto', '');
+        console.log(uploadedFile);
+        res.json({ photo: uploadedFile });
+        })
 
 app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
         const uploadedFiles = [];

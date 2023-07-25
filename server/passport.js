@@ -2,6 +2,8 @@ const passport = require('passport');
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+const { configDotenv } = require('dotenv');
+configDotenv();
 const userModel = require('./models/user');
 const  jwt  = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -11,12 +13,12 @@ app.use(cookieParser())
 // const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Google
-const GOOGLE_CLIENT_ID = '189603413224-v2asu2r2onph2aer3c9l5kqfnemop424.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID ;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET;
 
 // GitHub 
-const GITHUB_CLIENT_ID = '263c7a8a5a758db87e78';
-const GITHUB_CLIENT_SECRET = 'e0e50b88299eef50f97ac8990747715836e1f2ad';
+const GITHUB_CLIENT_ID = process.env.GITHUB_ID;
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_SECRET;
 
 // Facebook
 // const FACEBOOK_APP_ID='';
@@ -34,7 +36,7 @@ passport.use(new GoogleStrategy({
     try{
        let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
        if(existingUser){
-        const token = jwt.sign({email:existingUser.email,id:existingUser._id},process.env.SECRET);
+        const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
         req.res.cookie('token',token);
         console.log(existingUser)
           return done(null,existingUser)
@@ -44,10 +46,11 @@ passport.use(new GoogleStrategy({
               name: profile.displayName,
               email: profile.emails[0].value,
               photo: profile.photos[0].value,
+              admin: false
           });
           existingUser = await newUser.save();
           // Generate the JWT token with the user data
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo}, process.env.SECRET);
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo,admin:existingUser.admin}, process.env.SECRET);
         // Set the token as a cookie in the response
         req.res.cookie('token', token);
         // Respond with the existing user data as JSON

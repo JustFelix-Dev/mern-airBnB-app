@@ -1,11 +1,14 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { SlCloudUpload } from 'react-icons/sl';
+
 
 const RegisterPage = () => {
   const [ name,setName ] = useState('');
   const [ email,setEmail ] = useState('');
   const [ password,setPassword ] = useState('');
+  const [ photo,setPhoto] = useState('');
   const navigate = useNavigate();
 
   const handleGoogle = ()=>{
@@ -14,6 +17,26 @@ const RegisterPage = () => {
 const handleGithub = ()=>{
     window.open('http://localhost:8000/auth/github','_self')
 }
+const uploadPhoto = (e) => {
+  e.preventDefault();
+  const file = e.target.files[0];
+  const data = new FormData();
+  data.append('photo', file);
+
+  axios
+    .post('/userPhoto', data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+    .then((response) => {
+      const { data: { photo } } = response;
+      // Update the state with the photo path
+      setPhoto(photo);
+      console.log(photo);
+    })
+    .catch((error) => {
+      console.error('Error uploading photo:', error);
+    });
+};
 // const handlefacebook= ()=>{
 //     window.open('http://localhost:8000/auth/facebook','_self')
 // }
@@ -22,7 +45,7 @@ const handleGithub = ()=>{
        e.preventDefault()
        try{
          await axios.post('/register',{
-              name,email,password
+              name,email,password,photo
           }).then((res)=>{
             console.log(res.data)
             navigate('/login')
@@ -58,6 +81,14 @@ const handleGithub = ()=>{
                        onChange={(e)=> setPassword(e.target.value)}
                        required
                 />
+                 <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
+                      <input type="file" className='hidden' onChange={uploadPhoto} required/>
+                      {
+                      photo && photo.length > 0 ? 
+                          <img src={"http://localhost:8000/userPhoto/" + photo} alt="userPhoto" width={30} height={30} />
+                         : <><SlCloudUpload/>Upload</>
+                      }
+                        </label>
                 <button className='primary'>Register</button>
                 <div className='text-center py-2 text-gray-400'>
                     Already have an account ? <Link className='text-black underline' to={'/login'}>Login here</Link>
