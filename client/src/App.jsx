@@ -11,7 +11,8 @@ import { UserContextProvider } from './ContextHook/userContext'
 import AccountPage from './pages/AccountPage'
 import PlacesDetail from './pages/PlacesDetail'
 import BookingPlace from './pages/BookingPlace'
-
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
@@ -32,6 +33,7 @@ function App() {
           </Route>
         </Routes>
         </UserContextProvider>
+        <ToastContainer/>
         </>
   )
 }

@@ -51,6 +51,7 @@ const LoginPage = () => {
                 <div className='text-center py-2 text-gray-400'>
                     Don't have an account yet ? <Link className='text-black underline' to={'/register'}>Register here</Link>
                 </div>
+                   <div className='text-center'><Link className='text-black underline' to={'/forgotPassword'}>Forgot Password ?</Link></div>
              </form>
              <div >
                 <div className='flex items-center gap-2 justify-center'>

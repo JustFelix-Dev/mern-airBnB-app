@@ -19,3 +19,16 @@ button.primary{
     @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
 
+/* .Toastify__toast-body {
+    font-size: .1rem;
+  } */
+  .Toastify__toast-body svg {
+    fill: #FF385C;
+  } 
+.Toastify__toast--success{
+    @apply text-black;
+}
+.Toastify__progress-bar {
+    background: linear-gradient(to right, #FF385C,#f0516e);
+  }
+  

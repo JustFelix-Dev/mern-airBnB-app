@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SlCloudUpload } from 'react-icons/sl';
+import {toast} from 'react-toastify';
 
 
 const RegisterPage = () => {
@@ -44,7 +45,7 @@ const uploadPhoto = (e) => {
          await axios.post('/register',{
               name,email,password,photo
           }).then((res)=>{
-            console.log(res.data)
+           toast
             navigate('/login')
           })
 
@@ -54,11 +55,15 @@ const uploadPhoto = (e) => {
        }
   }
 
+  const showToast = ()=>{
+      toast.success('Successful!')
+  }
+
   return (
           <>
           <div className="grow flex mt-10 items-center justify-around">
             <div className="">
-             <h1 className='text-4xl text-center mb-4'>Register</h1>
+             <h1 onClick={showToast} className='text-4xl text-center mb-4'>Register</h1>
              <form className='max-w-md mx-auto'onSubmit={handleForm} >
                  <input type="text" placeholder='John Doe'
                         name='name'
