@@ -45,25 +45,21 @@ const uploadPhoto = (e) => {
          await axios.post('/register',{
               name,email,password,photo
           }).then((res)=>{
-           toast
+           toast.success('Check your e-mail for login details!')
             navigate('/login')
           })
-
        }
        catch(err){
         console.log(err)
        }
   }
 
-  const showToast = ()=>{
-      toast.success('Successful!')
-  }
 
   return (
           <>
           <div className="grow flex mt-10 items-center justify-around">
             <div className="">
-             <h1 onClick={showToast} className='text-4xl text-center mb-4'>Register</h1>
+             <h1 className='text-4xl text-center mb-4'>Register</h1>
              <form className='max-w-md mx-auto'onSubmit={handleForm} >
                  <input type="text" placeholder='John Doe'
                         name='name'

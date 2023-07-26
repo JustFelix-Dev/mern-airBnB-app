@@ -8,6 +8,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const authRoutes = require('./routes/auth');
 const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 const app = express()
 const download = require('image-downloader');
 const multer = require('multer');
@@ -16,6 +17,7 @@ const session = require('express-session');
 const passportsetUp = require('./passport');
 // const cookieSession = require('cookie-session');
 const passport = require('passport');
+const userModel = require('./models/user');
 
 
 // Middleware
@@ -99,4 +101,26 @@ app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
           console.log(uploadedFiles)
       }
         res.json(uploadedFiles)
+})
+
+app.post('/forgotPassword',async(req,res)=>{
+    const {email} = req.body;
+    try{
+        const existingUser = await userModel.findOne({email}) 
+        if(!existingUser){
+            res.status(401).json('Email does not exist!')
+        }
+        if(!existingUser.password){
+            res.status(401).json('You have a social Auth registration!')
+        }
+        const SECRET = process.env.SECRET;
+        const secret = SECRET + existingUser?.password;
+        const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:'10m'});
+        const link = `http://localhost:8000/forgotPassword/${existingUser._id}/${token}`;
+        //send email with the reset password url to the registered mail id
+        
+
+      }catch(err){
+
+      }
 })
