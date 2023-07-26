@@ -174,6 +174,7 @@ app.post('/reset-password/:id/:token',async( req,res )=>{
     res.render('success',{email:verify.email})
 
    }catch(error){
-          res.status(400).json('Something went wrong!');
+    res.render('genericFailure',{email:verify.email})
+        
    }
 })
