@@ -12,7 +12,7 @@
     }
     .container{
         border:2px solid gray;
-        width: 80%;
+        width: 60%;
         margin: 0 auto;
         box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
@@ -22,7 +22,10 @@
         color: #fff;
         border: 0;
         outline: 0;
-        border-radius: 10px;
+        border-radius: 5px;
+    }
+    form{
+        padding: 1rem 3rem;
     }
     h3{
         color: green;
@@ -30,10 +33,12 @@
 </style>
 <body>
         <div class="container">
-            <img src="/emailHeader.jpg" alt="airbnbHeader" style="display: block;object-fit: cover;height:200px;">
+            <img src="/emailHeader.jpg" alt="airbnbHeader" style="display: block;object-fit: cover;height:100px;width:100%;">
             <form method="post">
-              <h3><%= email%></h3>
+              <h3>User - <%= email%></h3>
+              <label for="password">New Password:</label> <br>
                 <input type="text" name="password" id="password" required> <br>
+              <label for="password">Confirm Password:</label> <br>
                 <input type="text" name="confirmPassword" id="confirmPassword" required> <br>
                  <input type="submit" value="submit">
             </form>
