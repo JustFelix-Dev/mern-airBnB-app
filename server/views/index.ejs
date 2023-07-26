@@ -5,12 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirBnb | Reset-Password</title>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+    *{
+        font-family: 'Mukta', sans-serif;
+    }
+    .container{
+        border:2px solid gray;
+        width: 80%;
+        margin: 0 auto;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    button,input[type ='submit']{
+        padding: .3rem 1rem;
+        background-color: #FF385C;
+        color: #fff;
+        border-radius: 10px;
+    }
+    h3{
+        color: green;
+    }
+</style>
 <body>
-      <form method="post">
-        <h3><%= email%></h3>
-          <input type="text" name="password" id="password" required> <br>
-          <input type="text" name="confirmPassword" id="confirmPassword" required> <br>
-           <input type="submit" value="submit">
-      </form>
+        <div class="container">
+            <img src="/server/public/emailHeader.jpg" alt="airbnbHeader" style="display: block;object-fit: cover;height:200px;">
+            <form method="post">
+              <h3><%= email%></h3>
+                <input type="text" name="password" id="password" required> <br>
+                <input type="text" name="confirmPassword" id="confirmPassword" required> <br>
+                 <input type="submit" value="submit">
+            </form>
+        </div>
 </body>
 </html>

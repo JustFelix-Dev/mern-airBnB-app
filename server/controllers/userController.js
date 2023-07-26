@@ -101,8 +101,8 @@ const userProfile =(req,res)=>{
       if(token){
           jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
             if(err) throw err;
-            const {name,email,_id,photo} = await userModel.findById(user.id)
-            res.json({name,email,_id,photo})
+            const {name,email,_id,photo,admin} = await userModel.findById(user.id)
+            res.json({name,email,_id,photo,admin})
           })
       }else{
            res.json(null)

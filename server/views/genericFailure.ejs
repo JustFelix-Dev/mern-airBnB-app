@@ -5,11 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirBnb | GenericFailure</title>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+    *{
+        font-family: 'Mukta', sans-serif;
+    }
+    .container{
+        border:2px solid gray;
+        width: 80%;
+        margin: 0 auto;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    button{
+        padding: .3rem 1rem;
+        background-color: #FF385C;
+        color: #fff;
+        border-radius: 10px;
+    }
+    h3{
+        color: green;
+    }
+</style>
 <body>
-    <h3>User - <%= email%></h3>
-    <h2>Something went wrong!</h2>
-    <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
-    <button id="goBackButton">Go Back</button>
+    <div class="container">
+        <img src="/server/public/emailHeader.jpg" alt="airbnbHeader" style="display: block;object-fit: cover;height:200px;">
+        <h3>User - <%= email%></h3>
+        <h2>Something went wrong!</h2>
+        <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
+        <button id="goBackButton">Go Back</button>
+    </div>
 </body>
 <script>
      document.getElementById('goBackButton').addEventListener('click', function() {

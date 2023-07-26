@@ -25,6 +25,7 @@ const nodemailer = require('nodemailer');
 // Middleware
 app.use(cookieParser())
 app.use(express.json())
+app.use(express.static('public'));
 app.use('/uploads',express.static(__dirname+'/uploads'))
 app.use('/userPhoto',express.static(__dirname+'/userPhoto'))
 app.set('view engine','ejs')

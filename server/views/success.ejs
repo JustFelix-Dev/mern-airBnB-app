@@ -5,10 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirBnb | Success</title>
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+    *{
+        font-family: 'Mukta', sans-serif;
+    }
+    .container{
+        border:2px solid gray;
+        width: 80%;
+        margin: 0 auto;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    }
+    button,input[type ='submit']{
+        padding: .3rem 1rem;
+        background-color: #FF385C;
+        color: #fff;
+        border-radius: 10px;
+    }
+    h3{
+        color: green;
+    }
+</style>
 <body>
-    <h3>User - <%= email%></h3>
-    <h2>Your password has been changed successfully!</h2>
-    <button onclick="handleLogin()">Go to Login</button>
+    <div class="container">
+        <img src="/server/public/emailHeader.jpg" alt="airbnbHeader" style="display: block;object-fit: cover;height:200px;">
+        <h3>User - <%= email%></h3>
+        <h2>Your password has been changed successfully!</h2>
+        <button onclick="handleLogin()">Go to Login</button>
+    </div>
 </body>
 <script>
     const handleLogin=()=>{
