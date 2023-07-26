@@ -3,15 +3,15 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ResetPassword = () => {
-    const [ email,setEmail ] = useState('')
-    //  console.log(email)
+    const [ email,setEmail ] = useState('');
+
     const handleSubmit=(e)=>{
         e.preventDefault();
        axios.post('/forgotPassword',{email})
        .then((data)=>{
           console.log(data, 'userRegister')
        })
-    
+       setEmail('');
     }
     return (  
             <>
@@ -27,7 +27,7 @@ const ResetPassword = () => {
                     <div >
                         <form onSubmit={handleSubmit}>
                             <h2>Enter your email and we'll send you a link to reset your password:</h2>
-                            <input type="email" name="email"onChange={(e)=>setEmail(e.target.value)} placeholder="e.g,someone@example.com" />
+                            <input type="email" value={email} name="email" onChange={(e)=>setEmail(e.target.value)} placeholder="e.g,someone@example.com" />
                             <button className="primary">Submit</button>
                              <div className="text-center mt-4">
                             <Link to='/login' className="underline font-medium">Back to Login</Link>

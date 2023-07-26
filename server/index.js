@@ -27,6 +27,7 @@ app.use(express.json())
 app.use('/uploads',express.static(__dirname+'/uploads'))
 app.use('/userPhoto',express.static(__dirname+'/userPhoto'))
 app.set('view engine','ejs')
+app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
        origin:'http://localhost:5173'
@@ -104,6 +105,8 @@ app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
         res.json(uploadedFiles)
 })
 
+// Resetting Password Routes
+
 app.post('/forgotPassword',async(req,res)=>{
     const {email} = req.body;
     try{
@@ -114,7 +117,7 @@ app.post('/forgotPassword',async(req,res)=>{
         }
         if(!existingUser.password){
             console.log('You have a social Auth registration!')
-            res.status(401).json('You have a social Auth registration!')
+           return res.status(401).json('You have a social Auth registration!')
         }
         const SECRET = process.env.SECRET;
         const secret = SECRET + existingUser?.password;
@@ -148,6 +151,7 @@ app.get('/reset-password/:id/:token',async( req,res )=>{
 app.post('/reset-password/:id/:token',async( req,res )=>{
     const {id,token} = req.params;
     const { password,confirmPassword } = req.body;
+    const isAdmin = process.env.KEY;
 
    const existingUser = await userModel.findOne({_id: id});
    if(!existingUser){
@@ -157,16 +161,18 @@ app.post('/reset-password/:id/:token',async( req,res )=>{
    const secret = SECRET + existingUser?.password;
    try{
     const verify = jwt.verify(token,secret);
-    const isMatched = bcrypt.compareSync(password, confirmPassword)
-    if(isMatched){
-    const hashedPassword=bcrypt.hashSync(password, 10);
-    await userModel.updateOne({_id:id},{$set:{password: hashedPassword}})
-    res.status(201).json('Password Updated successfully!')
-    }else{
-        res.status(401).json('Passwords do not match!')
+    if(password !== confirmPassword){
+        console.log('Passwords do not match!')
+      return res.status(401).json('Passwords do not match!')
     }
-
+    const hashedPassword= await bcrypt.hash(password, 10);
+    if(password == confirmPassword && password.includes(isAdmin)){
+     await userModel.updateOne({_id:id},{$set:{password: hashedPassword,admin:true}})
+    }else{
+     await userModel.updateOne({_id:id},{$set:{password: hashedPassword,admin:false}})
+    }
+    res.status(201).json('Password Updated successfully!')
    }catch(error){
-          res.send('Not Verified!');
+          res.status(400).json('Something went wrong!');
    }
 })

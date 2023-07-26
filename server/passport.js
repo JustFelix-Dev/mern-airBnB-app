@@ -75,7 +75,7 @@ passport.use(new GithubStrategy({
     try{
         let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
         if(existingUser){
-         const token = jwt.sign({email:existingUser.email,id:existingUser._id},process.env.SECRET);
+         const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
          req.res.cookie('token',token);
          console.log(existingUser)
            return done(null,existingUser)
@@ -85,13 +85,11 @@ passport.use(new GithubStrategy({
                name: profile.displayName,
                email: profile.emails[0].value,
                photo: profile.photos[0].value,
+               admin:false
            });
            existingUser = await newUser.save();
-           // Generate the JWT token with the user data
          const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
-         // Set the token as a cookie in the response
          req.res.cookie('token', token);
-         // Respond with the existing user data as JSON
          return done(null, existingUser);
         }
      }catch(err){
