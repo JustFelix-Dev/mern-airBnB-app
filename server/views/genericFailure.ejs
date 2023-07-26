@@ -31,14 +31,14 @@
         border-radius: 5px;
         margin-top: 15px;
     }
-    form{
+    form,.form{
         padding: 2rem 7rem;
     }
     h3{
         color: green;
     }
     @media screen and (max-width:620px){
-        form{
+        form,.form{
             padding:2rem 1rem;
         }
     }
@@ -53,10 +53,12 @@
         <div class="imageHolder">
             <img src="/airbnb-logo.png" alt="airbnbHeader" style="text-align:center;display:block;height:150px;width:200px;">
         </div>
-        <h3>User - <%= email%></h3>
-        <h2>Something went wrong!</h2>
-        <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
-        <button id="goBackButton">Go Back</button>
+        <div class="form">
+            <h3>User - <%= email%></h3>
+            <h2>Something went wrong!</h2>
+            <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
+            <button id="goBackButton">Go Back</button>
+        </div>
     </div>
 </body>
 <script>

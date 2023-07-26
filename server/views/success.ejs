@@ -31,14 +31,14 @@
         border-radius: 5px;
         margin-top: 15px;
     }
-    form{
+    form,.form{
         padding: 2rem 7rem;
     }
     h3{
         color: green;
     }
     @media screen and (max-width:620px){
-        form{
+        form,.form{
             padding:2rem 1rem;
         }
     }
@@ -53,9 +53,11 @@
         <div class="imageHolder">
             <img src="/airbnb-logo.png" alt="airbnbHeader" style="text-align:center;display:block;height:150px;width:200px;">
         </div>
-        <h3>User - <%= email%></h3>
-        <h2>Your password has been changed successfully!</h2>
-        <button onclick="handleLogin()">Go to Login</button>
+        <div class="form">
+            <h3>User - <%= email%></h3>
+            <h2>Your password has been changed successfully!</h2>
+            <button onclick="handleLogin()">Go to Login</button>
+        </div>
     </div>
 </body>
 <script>
