@@ -9,12 +9,13 @@
     <h3>User - <%= email%></h3>
     <h2>Your Passwords do not match!. Carefully check through!</h2>
     <h3>Please note that your link has an expiration of 3 minutes right from the time it was sent to you.</h3>
-    <button onclick="handleHistory()">Go Back</button>
+    <button id="goBackButton">Go Back</button>
 </body>
 <script>
-    const handleHistory=()=>{
-        window.history.back();
-    }
+     document.getElementById('goBackButton').addEventListener('click', function() {
+            window.history.back();
+        });
+  
 </script>
 </body>
 </html>

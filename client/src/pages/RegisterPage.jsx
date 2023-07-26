@@ -1,9 +1,8 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SlCloudUpload } from 'react-icons/sl';
 import {toast} from 'react-toastify';
-
 
 const RegisterPage = () => {
   const [ name,setName ] = useState('');
@@ -11,6 +10,18 @@ const RegisterPage = () => {
   const [ password,setPassword ] = useState('');
   const [ photo,setPhoto] = useState('');
   const navigate = useNavigate();
+  const imageRef = useRef();
+  const inputRef = useRef();
+
+  const changeInputType=()=>{
+       if(inputRef.current.type == "password"){
+        inputRef.current.type = 'text';
+        imageRef.current.src = '/images/eye-open.png';
+      }else{
+        inputRef.current.type='password';
+        imageRef.current.src='/images/eye-close.png';
+      }
+  }
 
   const handleGoogle = ()=>{
     window.open('http://localhost:8000/auth/google','_self')
@@ -57,7 +68,7 @@ const uploadPhoto = (e) => {
 
   return (
           <>
-          <div className="grow flex mt-10 items-center justify-around">
+          <div className="grow flex mt-10   items-center justify-around">
             <div className="">
              <h1 className='text-4xl text-center mb-4'>Register</h1>
              <form className='max-w-md mx-auto'onSubmit={handleForm} >
@@ -73,12 +84,18 @@ const uploadPhoto = (e) => {
                        onChange={(e)=> setEmail(e.target.value)}
                        required
                 />
+                 <div className='relative'>
                 <input type="password" placeholder='password'
                        name='password'
                        value={password}
+                       ref={inputRef}
                        onChange={(e)=> setPassword(e.target.value)}
                        required
                 />
+                      <div className='absolute top-[35%] right-3 opacity-50'>
+                <img ref={imageRef} onClick={changeInputType} src="images/eye-close.png" alt="passwordIcon" height={25} width={25}/>
+                      </div>
+                 </div>
                  <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
                       <input type="file" className='hidden' onChange={uploadPhoto} required/>
                       {

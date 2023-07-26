@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userContext } from '../ContextHook/userContext';
 
@@ -8,6 +8,18 @@ const LoginPage = () => {
     const [ password,setPassword ] = useState('');
     const navigate = useNavigate();
     const {setUser} = useContext(userContext);
+    const imageRef = useRef();
+    const inputRef = useRef();
+  
+    const changeInputType=()=>{
+         if(inputRef.current.type == "password"){
+          inputRef.current.type = 'text';
+          imageRef.current.src = '/images/eye-open.png';
+        }else{
+          inputRef.current.type='password';
+          imageRef.current.src='/images/eye-close.png';
+        }
+    }
 
     const handleGoogle = ()=>{
       window.open('http://localhost:8000/auth/google','_self')
@@ -41,12 +53,18 @@ const LoginPage = () => {
                        onChange={(e)=>setEmail(e.target.value)}
                        required
                 />
+                <div className='relative'>
                 <input type="password" placeholder='password'
                        name='password'
                        value={password}
+                       ref={inputRef}
                        onChange={(e)=> setPassword(e.target.value)}
                        required
-                  />
+                />
+                      <div className='absolute top-[35%] right-3 opacity-50'>
+                <img ref={imageRef} onClick={changeInputType} src="images/eye-close.png" alt="passwordIcon" height={25} width={25}/>
+                      </div>
+                 </div>
                 <button className='primary'>Login</button>
                 <div className='text-center py-2 text-gray-400'>
                     Don't have an account yet ? <Link className='text-black underline' to={'/register'}>Register here</Link>

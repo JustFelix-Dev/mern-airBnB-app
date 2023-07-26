@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {toast} from 'react-toastify';
 
 const ResetPassword = () => {
     const [ email,setEmail ] = useState('');
@@ -8,8 +9,10 @@ const ResetPassword = () => {
     const handleSubmit=(e)=>{
         e.preventDefault();
        axios.post('/forgotPassword',{email})
-       .then((data)=>{
-          console.log(data, 'userRegister')
+       .then((res)=>{
+          toast.success(`${res.data}`)
+       }).catch((err)=>{
+          toast.error(`${err.message}`)
        })
        setEmail('');
     }

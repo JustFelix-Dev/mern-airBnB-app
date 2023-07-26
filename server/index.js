@@ -19,6 +19,7 @@ const passportsetUp = require('./passport');
 // const cookieSession = require('cookie-session');
 const passport = require('passport');
 const userModel = require('./models/user');
+const nodemailer = require('nodemailer');
 
 
 // Middleware
@@ -61,6 +62,47 @@ app.use('/auth',authRoutes)
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")
 // })
+
+// Registration Email
+const resetPasswordEmail=async(name,email,link)=>{
+    const html = `<style>
+                   @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700&display=swap');
+                   *{
+                     box-sizing:border-box;
+                     font-family: 'Mukta', sans-serif;
+                   }
+                   </style>
+                   <div style='width:80%;margin:0 auto;font-family: Arial, Helvetica, sans-serif;'>
+                   <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+                     <h2>Hii ${name.split(' ')[0]},</h2>
+                   <p style='max-width:80ch'>You requested to change your password. Here's the link to follow to change your password.</p>
+                   <p> ${link}</p>
+                     <p><strong>N.B:</strong>Note that this link would expire in <strong>3</strong> minutes.</p>
+                     
+                   </div>`;
+   const transporter = nodemailer.createTransport({
+          host: "smtp.gmail.com",
+          port: 465,
+          secure: true,
+          auth:{
+              user: 'owolabifelix78@gmail.com',
+              pass: process.env.GOOGLE_PASS
+          }
+      })
+   const info = await transporter.sendMail({
+          from: 'AirBnb <owolabifelix78@gmail.com>',
+          to: email,
+          subject:'AirBnb - Password Reset!',
+          html: html,
+          attachments:[{
+                filename: 'emailHeader.jpg',
+                path: './emailImages/emailHeader.jpg',
+                cid: 'airbnbHeader'
+          }]
+   })
+   console.log('Message Sent:' + info.messageId);
+   
+}
 //download image from link and save it to uploads folder using npm package "image-downloader';
  app.post('/uploadByLink',async( req,res )=>{
     const {link} = req.body;
@@ -123,9 +165,9 @@ app.post('/forgotPassword',async(req,res)=>{
         const secret = SECRET + existingUser?.password;
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
         const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
-        console.log(link)
         //send email with the reset password url to the registered mail id
-
+        resetPasswordEmail(existingUser.name,existingUser.email,link)
+        res.status(200).json('Reset Link sent successfully!')
       }catch(err){
 
       }
@@ -159,8 +201,8 @@ app.post('/reset-password/:id/:token',async( req,res )=>{
    }
    const SECRET = process.env.SECRET;
    const secret = SECRET + existingUser?.password;
+   const verify = jwt.verify(token,secret);
    try{
-    const verify = jwt.verify(token,secret);
     if(password !== confirmPassword){
       return res.render('failed',{email:verify.email})
     }
