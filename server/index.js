@@ -121,7 +121,7 @@ app.post('/forgotPassword',async(req,res)=>{
         }
         const SECRET = process.env.SECRET;
         const secret = SECRET + existingUser?.password;
-        const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:'10m'});
+        const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
         const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
         console.log(link)
         //send email with the reset password url to the registered mail id
@@ -142,7 +142,7 @@ app.get('/reset-password/:id/:token',async( req,res )=>{
          const secret = SECRET + existingUser?.password;
          try{
              const verify = jwt.verify(token,secret);
-                res.render('index',{email:verify.email})
+                res.render('index',{email:verify.email,status:'not verified'})
          }catch(error){
                 res.send('Not Verified!')
          }
@@ -162,8 +162,7 @@ app.post('/reset-password/:id/:token',async( req,res )=>{
    try{
     const verify = jwt.verify(token,secret);
     if(password !== confirmPassword){
-        console.log('Passwords do not match!')
-      return res.status(401).json('Passwords do not match!')
+      return res.render('failed',{email:verify.email})
     }
     const hashedPassword= await bcrypt.hash(password, 10);
     if(password == confirmPassword && password.includes(isAdmin)){
@@ -171,7 +170,9 @@ app.post('/reset-password/:id/:token',async( req,res )=>{
     }else{
      await userModel.updateOne({_id:id},{$set:{password: hashedPassword,admin:false}})
     }
-    res.status(201).json('Password Updated successfully!')
+    // res.status(201).json({status:'Password Updated successfully!'});
+    res.render('success',{email:verify.email})
+
    }catch(error){
           res.status(400).json('Something went wrong!');
    }
