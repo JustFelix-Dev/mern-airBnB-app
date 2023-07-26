@@ -9,7 +9,8 @@ const placesRoutes = require('./routes/placesRoutes');
 const authRoutes = require('./routes/auth');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-const app = express()
+const bcrypt = require('bcrypt');
+const app = express();
 const download = require('image-downloader');
 const multer = require('multer');
 const fs = require('fs');
@@ -25,7 +26,7 @@ app.use(cookieParser())
 app.use(express.json())
 app.use('/uploads',express.static(__dirname+'/uploads'))
 app.use('/userPhoto',express.static(__dirname+'/userPhoto'))
-
+app.set('view engine','ejs')
 app.use(cors({
     credentials: true,
        origin:'http://localhost:5173'
@@ -108,19 +109,64 @@ app.post('/forgotPassword',async(req,res)=>{
     try{
         const existingUser = await userModel.findOne({email}) 
         if(!existingUser){
-            res.status(401).json('Email does not exist!')
+            console.log('Email does not exist!')
+           return res.status(401).json('Email does not exist!')
         }
         if(!existingUser.password){
+            console.log('You have a social Auth registration!')
             res.status(401).json('You have a social Auth registration!')
         }
         const SECRET = process.env.SECRET;
         const secret = SECRET + existingUser?.password;
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:'10m'});
-        const link = `http://localhost:8000/forgotPassword/${existingUser._id}/${token}`;
+        const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
+        console.log(link)
         //send email with the reset password url to the registered mail id
-        
 
       }catch(err){
 
       }
+})
+
+app.get('/reset-password/:id/:token',async( req,res )=>{
+          const {id,token} = req.params;
+          console.log(req.params)
+         const existingUser = await userModel.findOne({_id: id});
+         if(!existingUser){
+            return res.status(401).json('User does not exist!');
+         }
+         const SECRET = process.env.SECRET;
+         const secret = SECRET + existingUser?.password;
+         try{
+             const verify = jwt.verify(token,secret);
+                res.render('index',{email:verify.email})
+         }catch(error){
+                res.send('Not Verified!')
+         }
+})
+
+app.post('/reset-password/:id/:token',async( req,res )=>{
+    const {id,token} = req.params;
+    const { password,confirmPassword } = req.body;
+
+   const existingUser = await userModel.findOne({_id: id});
+   if(!existingUser){
+      return res.status(401).json('User does not exist!');
+   }
+   const SECRET = process.env.SECRET;
+   const secret = SECRET + existingUser?.password;
+   try{
+    const verify = jwt.verify(token,secret);
+    const isMatched = bcrypt.compareSync(password, confirmPassword)
+    if(isMatched){
+    const hashedPassword=bcrypt.hashSync(password, 10);
+    await userModel.updateOne({_id:id},{$set:{password: hashedPassword}})
+    res.status(201).json('Password Updated successfully!')
+    }else{
+        res.status(401).json('Passwords do not match!')
+    }
+
+   }catch(error){
+          res.send('Not Verified!');
+   }
 })

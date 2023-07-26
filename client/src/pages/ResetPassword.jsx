@@ -1,6 +1,18 @@
+import axios from "axios";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const ResetPassword = () => {
+    const [ email,setEmail ] = useState('')
+    //  console.log(email)
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+       axios.post('/forgotPassword',{email})
+       .then((data)=>{
+          console.log(data, 'userRegister')
+       })
+    
+    }
     return (  
             <>
               <div className="flex justify-center items-center min-h-[80vh] ">
@@ -13,9 +25,9 @@ const ResetPassword = () => {
                         <img src="images/forgotPassword.svg" alt="forgotPasswordImg" height={300} width={300}/>
                     </div>
                     <div >
-                        <form >
+                        <form onSubmit={handleSubmit}>
                             <h2>Enter your email and we'll send you a link to reset your password:</h2>
-                            <input type="email" placeholder="e.g,someone@example.com" />
+                            <input type="email" name="email"onChange={(e)=>setEmail(e.target.value)} placeholder="e.g,someone@example.com" />
                             <button className="primary">Submit</button>
                              <div className="text-center mt-4">
                             <Link to='/login' className="underline font-medium">Back to Login</Link>
