@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+*{
+    font-family: 'Mukta', sans-serif;
+}
 input[type="text"],input[type="password"],
 input[type="email"],input[type="number"],
 input[type="tel"],
