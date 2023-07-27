@@ -103,6 +103,7 @@ const LocationPages = () => {
              )
              }
              { id == 'new' && (
+                     <div className='border-t-2 border-primary shadow-2xl p-4 mx-auto max-w-6xl'>
                     <form onSubmit={handleFormPlaces}>
                         <label htmlFor="title">Title:</label>
                         <input type="text" value={title}
@@ -193,7 +194,8 @@ const LocationPages = () => {
                                     </div>
                                 </div>
                                 <button className='bg-primary text-white rounded-lg p-2 my-3 w-full' >Save</button>
-                             </form>
+                     </form>
+                     </div>
                 )
              }
            </>

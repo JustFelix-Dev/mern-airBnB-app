@@ -12,7 +12,7 @@ textarea{
     @apply w-full border  my-1 py-2 px-3 rounded-lg focus:outline-0 hover:border-primary;
 }
 textarea{
-    height: 140px;
+    height: 100px;
 }
 button{
     @apply bg-gray-300 hover:opacity-80 transition-all;
