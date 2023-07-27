@@ -22,6 +22,7 @@ const LocationPages = () => {
     const [ maxGuests,setMaxGuests] = useState(1);
     const [ price,setPrice ] = useState(100);
     const [ fetchedPlaces,setFetchedPlaces ] = useState([]);
+    const [ isLoading,setIsLoading ] = useState(false);
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -85,7 +86,7 @@ const LocationPages = () => {
            <>
              { id !== 'new' && (
                 <div className="text-center">
-                <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-black py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
+                <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-white py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
                         <Link to={'/place/'+ place._id} className="flex gap-3 bg-gray-100 p-3">
@@ -103,7 +104,7 @@ const LocationPages = () => {
              )
              }
              { id == 'new' && (
-                     <div className='border-t-2 border-primary shadow-2xl p-4 mx-auto max-w-6xl'>
+                     <div className='border-t-2 border-primary shadow-2xl py-6 px-10 mx-auto '>
                     <form onSubmit={handleFormPlaces}>
                         <label htmlFor="title">Title:</label>
                         <input type="text" value={title}
@@ -120,7 +121,7 @@ const LocationPages = () => {
                             <input type="text" value={photoLink}
                              onChange={(e)=>setPhotoLink(e.target.value)} 
                              placeholder='Add using a link'/>
-                            <button onClick={addPhotoByLink} className='bg-primary'>Add&nbsp;Photo</button>
+                            <button onClick={addPhotoByLink} className='bg-primary text-white rounded-md px-2'>Add&nbsp;Photo</button>
                         </div>
 
                         <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -140,7 +141,7 @@ const LocationPages = () => {
                                 </div>
                               ))
                             }
-                            <label className='h-32 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
+                            <label className='bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-lg p-4 '>
                                 <input type="file" multiple className='hidden' onChange={uploadFile}/>
                                 <SlCloudUpload/>Upload</label>
                         </div>
@@ -159,7 +160,7 @@ const LocationPages = () => {
                              onChange={(e)=>setExtraInfo(e.target.value)}
                              ></textarea>
                              <label htmlFor="check">Check In & Check Out:</label>
-                                <div className='grid sm:grid-cols-3'>
+                                <div className='grid grid-cols-2 gap-2 '>
                                     <div>
                                     <label htmlFor="checkIn">Check In:</label>
                                      <input type="text" name='checkIn'
@@ -184,6 +185,8 @@ const LocationPages = () => {
                                       value={maxGuests}
                                       onChange={(e)=>setMaxGuests(e.target.value)}
                                        />
+                                    </div>
+                                    <div>
                                     <label htmlFor="price">Price[$]:</label>
                                      <input type="number" min='100' 
                                      inputMode='decimal' step='0.01'
@@ -193,7 +196,15 @@ const LocationPages = () => {
                                        />
                                     </div>
                                 </div>
-                                <button className='bg-primary text-white rounded-lg p-2 my-3 w-full' >Save</button>
+                                <button className='bg-primary text-white rounded-lg p-2 my-3 w-full' >{isLoading ?
+                                (<div className="newtons-cradle">
+                                <div className="newtons-cradle__dot"></div>
+                                <div className="newtons-cradle__dot"></div>
+                                <div className="newtons-cradle__dot"></div>
+                                <div className="newtons-cradle__dot"></div>
+                                </div>):(<div className='flex items-center justify-center gap-2'><span>Save</span><span ><svg width={20} height={20} fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path>
+                              </svg></span></div>)}</button>
                      </form>
                      </div>
                 )

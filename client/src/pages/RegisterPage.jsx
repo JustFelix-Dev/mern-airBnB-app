@@ -25,6 +25,7 @@ const RegisterPage = () => {
   }
 
   const handleGoogle = ()=>{
+    setIsLoading(true)
     window.open('http://localhost:8000/auth/google','_self')
 }
 const handleGithub = ()=>{

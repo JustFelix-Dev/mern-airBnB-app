@@ -5,6 +5,12 @@
     font-family: 'Mukta', sans-serif;
     user-select: none;
 }
+::-webkit-scrollbar{
+    width:.4rem;
+}
+::-webkit-scrollbar-thumb{
+    @apply bg-primary rounded-full;
+}
 input[type="text"],input[type="password"],
 input[type="email"],input[type="number"],
 input[type="tel"],
@@ -15,7 +21,7 @@ textarea{
     height: 100px;
 }
 button{
-    @apply bg-gray-300 hover:opacity-80 transition-all;
+    @apply bg-gray-300 hover:opacity-80 hover:scale-95 transition-all;
 }
 button.primary{
     background-color: #FF385C;

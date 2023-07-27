@@ -48,22 +48,23 @@ const AccountPage = () => {
                 <Link className={linkClasses('profile')} to={'/account'}>
                     <FaUserShield/> My Profile</Link>
                 <Link className={linkClasses('bookings')} to={'/account/bookings'}>  <GiNotebook/>My bookings</Link>
-                <Link className={linkClasses('places')} to={'/account/places'}><BiLocationPlus/>My accommodations</Link>
+               { user?.admin &&  <Link className={linkClasses('places')} to={'/account/places'}><BiLocationPlus/>My accommodations</Link>}
             </nav>  
             {
                subPage === 'profile' && (
                <ProfilePage user={user} setUser={setUser} setRedirected={setRedirected}/>
                )
             }
-            {
-               subPage === 'places' && (
-                    <LocationPages/>
-                )
-            }
+           
             {
                subPage === 'bookings' && (
                        <BookingList/>
                )  
+            }
+             {
+               subPage === 'places' &&  (
+                    <LocationPages/>
+                )
             }
 
          </>
