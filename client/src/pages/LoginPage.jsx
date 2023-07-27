@@ -7,6 +7,7 @@ const LoginPage = () => {
     const [ email,setEmail ] = useState('');
     const [ password,setPassword ] = useState('');
     const navigate = useNavigate();
+    const [ isLoading,setIsLoading ] = useState(false);
     const {setUser} = useContext(userContext);
     const imageRef = useRef();
     const inputRef = useRef();
@@ -44,7 +45,7 @@ const LoginPage = () => {
   return (
          <>
            <div className="mt-4 grow flex items-center justify-around">
-            <div className="mt-8">
+            <div className="mt-8 shadow-2xl border-t-2 border-primary  py-1 px-6 rounded-2xl">
              <h1 className='text-4xl text-center mb-4'>Login</h1>
              <form className='max-w-md mx-auto' onSubmit={handleForm}>
                 <input type="email" placeholder='someone@gmail.com'
@@ -65,7 +66,16 @@ const LoginPage = () => {
                 <img ref={imageRef} onClick={changeInputType} src="images/eye-close.png" alt="passwordIcon" height={25} width={25}/>
                       </div>
                  </div>
-                <button className='primary'>Login</button>
+                <button className='primary'>{ isLoading ? 
+                        (<div className="newtons-cradle">
+                        <div className="newtons-cradle__dot"></div>
+                        <div className="newtons-cradle__dot"></div>
+                        <div className="newtons-cradle__dot"></div>
+                        <div className="newtons-cradle__dot"></div>
+                        </div>) : (<div className='flex items-center justify-center gap-1'><span>Login</span><span><svg fill="none" width={20} height={20} stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"></path>
+                      </svg></span></div>)
+                }</button>
                 <div className='text-center py-2 text-gray-400'>
                     Don't have an account yet ? <Link className='text-black underline' to={'/register'}>Register here</Link>
                 </div>
