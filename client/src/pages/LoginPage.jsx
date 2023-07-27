@@ -30,6 +30,7 @@ const LoginPage = () => {
   }
    
     const handleForm=async(e)=>{
+      setIsLoading(true)
         e.preventDefault()
         const body = { email,password }
         try{
@@ -37,6 +38,7 @@ const LoginPage = () => {
           console.log(response)
             setUser(response.data)
             navigate('/')
+            setIsLoading(false)
         }
         catch(err){
             console.log(err.message)

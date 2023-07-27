@@ -52,6 +52,7 @@ const uploadPhoto = (e) => {
 };
 
   const handleForm=async(e)=>{
+         setIsLoading(true)
        e.preventDefault()
        try{
          await axios.post('/register',{
@@ -59,6 +60,7 @@ const uploadPhoto = (e) => {
           }).then((res)=>{
            toast.success('Check your e-mail for login details!')
             navigate('/login')
+            setIsLoading(false)
           })
        }
        catch(err){
@@ -104,7 +106,7 @@ const uploadPhoto = (e) => {
                          : <><SlCloudUpload/>Upload</>
                       }
                         </label>
-                <button className='primary'>{ !isLoading ?
+                <button className='primary'>{ isLoading ?
                  (<div className="newtons-cradle">
                   <div className="newtons-cradle__dot"></div>
                   <div className="newtons-cradle__dot"></div>
