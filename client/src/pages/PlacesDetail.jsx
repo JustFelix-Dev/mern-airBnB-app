@@ -22,7 +22,7 @@ useEffect(()=>{
   return (
          <>
          {place && 
-            (<div className='mt-4 bg-gray-100 px-8 pt-8'>
+            (<div className='mt-4 max-w-6xl shadow-lg  mx-auto px-8 pt-8'>
                 <h1 className='text-3xl'>{place.title}</h1>
                    <AddressLink>{place.address}</AddressLink>
                    <Gallery place={place}/>
@@ -32,9 +32,11 @@ useEffect(()=>{
                     <h2 className="font-semibold text-2xl"> Description </h2>
                     <p>{place.description || 'No description available' }</p>
                      </div>
+                        <div className='bg-primary text-white font-medium'>
                         <p>Check-In: {place.checkIn}</p>
                         <p>Check-Out: {place.checkOut}</p>
                         <p>Number of Guests: {place.guests}</p>
+                        </div>
                     </div>
                       <div className='flex items-center'>
                         <BookingWidget place={place}/>

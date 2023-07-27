@@ -33,8 +33,8 @@ const BookingWidget = ({place}) => {
 
   return (
           <>
-           <div className="bg-white shadow p-4 rounded-2xl">
-            <p className='text-2xl text-center'>${place.price}/per night</p>
+           <div className="bg-white shadow-2xl border-t-2 border-primary p-4 rounded-2xl">
+            <p className='text-2xl text-center'>${place.price}/<span className='text-gray-500'>night</span></p>
             <div className="border rounded-2xl mt-4">
             <div className="flex">
             <div className=' py-3 px-4'>
@@ -76,8 +76,7 @@ const BookingWidget = ({place}) => {
             )}
             </div>
             <button onClick={handleBooking} className="primary">
-                Book this place
-
+                Reserve
                 {numOfNight > 0 &&  (
                     <span> :${numOfNight * place.price }</span>
                 )}

@@ -25,8 +25,8 @@ const Gallery = ({place}) => {
 
   return (
          <>
-          <div className="relative">
-                  <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
+          <div className="mx-auto max-w-5xl relative">
+                  <div className=" grid gap-2  grid-cols-[2fr_1fr_1fr] rounded-2xl overflow-hidden">
                     <div>
                         {place.photos?.[0] && (
                             <div>
@@ -41,6 +41,16 @@ const Gallery = ({place}) => {
                             <div className='overflow-hidden'>
                          {place.photos?.[2] && (
                                 <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={'http://localhost:8000/uploads/'+place.photos[2]}/>
+                                )}
+                            </div>
+                    </div>
+                    <div className='grid '>
+                       {place.photos?.[3] && (
+                            <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={'http://localhost:8000/uploads/'+place.photos[3]}/>
+                        )}
+                            <div className='overflow-hidden'>
+                         {place.photos?.[4] && (
+                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={'http://localhost:8000/uploads/'+place.photos[4]}/>
                                 )}
                             </div>
                     </div>
