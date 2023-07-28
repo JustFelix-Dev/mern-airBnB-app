@@ -27,8 +27,10 @@ const BookingPayment = ({ booking }) => {
           </div>
            <div >
             <h1 className='underline px-2 rounded-sm text-black my-1'>Number of Nights:</h1>
+            <div className='flex items-center gap-2'>
             <MdModeNight/>
           <p>{differenceInCalendarDays(new Date(booking.checkOut), new Date(booking.checkIn))} night(s)</p> 
+            </div>
           {/* Price: ${booking.price} */}
         </div>
             </div>
