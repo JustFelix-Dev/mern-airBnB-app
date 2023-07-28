@@ -20,6 +20,7 @@ const passportsetUp = require('./passport');
 const passport = require('passport');
 const userModel = require('./models/user');
 const nodemailer = require('nodemailer');
+const stripe = require('stripe')(process.env.STRIPE);
 
 
 // Middleware
