@@ -4,28 +4,32 @@ const orderSchema = new mongoose.Schema({
     userId:{
         type: String,
     },
-    id:{
+    paymentIntentId:{
         type: String,
-    },
-    numOfGuests:{
-        type: Number,
-    },
-    checkIn:{
-        type:String,
-    },
-    checkOut:{
-        type: String,
-    },
-    fullName:{
-        type: String,
-    },
-    mobile:{
-        type: String,
-    },
-    price:{
-        type: Number,
         required: true
     },
+    details:[{
+        numOfGuests:{
+            type: Number,
+        },
+        checkIn:{
+            type:String,
+        },
+        checkOut:{
+            type: String,
+        },
+        fullName:{
+            type: String,
+        },
+        mobile:{
+            type: String,
+        },
+        price:{
+            type: Number,
+            required: true
+        },
+    }
+    ],
     email:{
         type: String,
     },
@@ -43,6 +47,7 @@ const orderSchema = new mongoose.Schema({
     },
     country:{
         type: String,
+        required: true,
     }
 
 },{timestamps: true});

@@ -1,4 +1,5 @@
 const express = require('express');
+const Order = require('../models/order');
 const router = express.Router()
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE);
@@ -41,7 +42,25 @@ router.post('/create-checkout-session', async (req, res) => {
 
 //   Create order using the Order Model
      const createOrder =async(customer,data)=>{
-        const items = JSON.parse(customer.metadata.booking)
+        const details = JSON.parse(customer.metadata.booking)
+
+        const newOrder = new Order({
+            userId: customer.metadata.userId,
+            customerId: data.customer,
+            paymentIntentId: data.payment_intent,
+            details: details,
+            email: data.email,
+            country: data.customer_details.address.country,
+            status: data.status,
+            payment_status: data.payment_status
+        })
+        try{
+              const savedUser = await newOrder.save();
+              console.log('Processed Order:',savedUser)
+            //   email - nodemailer
+        }catch(err){
+            console.log(err)
+        }
      }
 
 // server.js
