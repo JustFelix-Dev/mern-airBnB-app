@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SlCloudUpload } from 'react-icons/sl';
 import {toast} from 'react-toastify';
 import Splash from '../components/Splash';
-import { AnimatePresence,motion } from 'framer-motion';
 
 const RegisterPage = () => {
   const [ name,setName ] = useState('');
