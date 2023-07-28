@@ -1,3 +1,6 @@
+const express = require('express');
+const stripe = require('stripe')(process.env.STRIPE);
+
 app.post('/create-checkout-session', async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items: [
