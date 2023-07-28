@@ -1,8 +1,10 @@
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SlCloudUpload } from 'react-icons/sl';
 import {toast} from 'react-toastify';
+import Splash from '../components/Splash';
+import { AnimatePresence,motion } from 'framer-motion';
 
 const RegisterPage = () => {
   const [ name,setName ] = useState('');
@@ -10,6 +12,7 @@ const RegisterPage = () => {
   const [ password,setPassword ] = useState('');
   const [ photo,setPhoto] = useState('');
   const [ isLoading,setIsLoading ] = useState(false);
+  const [ splashScreen,setSplashScreen] = useState(true);
   const navigate = useNavigate();
   const imageRef = useRef();
   const inputRef = useRef();
@@ -67,6 +70,19 @@ const uploadPhoto = (e) => {
        catch(err){
         console.log(err)
        }
+  }
+
+  useEffect(()=>{
+    setTimeout(()=>{
+        setSplashScreen(false)
+    },5000)
+  },[])
+
+
+  if(splashScreen){
+    return(
+       <Splash/>
+    )
   }
 
   return (

@@ -9,7 +9,7 @@
     width:.4rem;
 }
 ::-webkit-scrollbar-thumb{
-    @apply bg-primary rounded-full;
+    @apply bg-[#333] rounded-full;
 }
 input[type="text"],input[type="password"],
 input[type="email"],input[type="number"],
