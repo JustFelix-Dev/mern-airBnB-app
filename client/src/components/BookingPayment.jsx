@@ -2,11 +2,24 @@ import React from 'react';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { FcCalendar } from 'react-icons/fc';
 import { MdModeNight } from 'react-icons/md';
+import axios from 'axios';
 
 const BookingPayment = ({ booking }) => {
   // Custom format string: 'd EEE,MMMM yyyy'
   const formattedCheckInDate = format(new Date(booking.checkIn), 'd EEE,MMMM yyyy');
   const formattedCheckOutDate = format(new Date(booking.checkOut), 'd EEE,MMMM yyyy');
+
+  const handleCheckOut=({booking})=>{
+          axios.post('/create-checkout-session',{booking})
+          .then((res)=>{
+            if(res.data.url){
+                window.location.href = res.data.url;
+            }
+          })
+          .catch((err)=>{
+            console.log(err.message)
+          })
+  }
 
   return (
     <>
@@ -36,7 +49,7 @@ const BookingPayment = ({ booking }) => {
             </div>
             <div className='flex flex-col items-center justify-between'>
                 <h1>Total Price: <span className='text-2xl font-medium'>${booking.price}</span></h1>
-                <button className='bg-primary px-4 py-1 text-white rounded-xs'>Proceed to Payment</button>
+                <button onClick={()=>handleCheckOut({booking})} className='bg-primary px-4 py-1 text-white rounded-xs'>Proceed to Payment</button>
             </div>
         </div>
       </div>

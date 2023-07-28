@@ -17,9 +17,10 @@ const BookingPlace = () => {
                 setBooking(foundBooking)
               }
             })
-         }
-    },[id])
-
+          }
+        },[id])
+        
+        console.log(booking)
     if(!booking){
         return '';
     }

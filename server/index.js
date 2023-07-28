@@ -7,6 +7,7 @@ const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const authRoutes = require('./routes/auth');
+const stripeRoute = require('./routes/stripe');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -54,10 +55,12 @@ mongoose.connect(process.env.MONGOURL).then(()=>{
     console.log(err.message)
 })
 
+// Routes
 app.use(userRoutes)
 app.use(placesRoutes)
 app.use(bookingRoutes)
 app.use('/auth',authRoutes)
+app.use(stripeRoute)
 
 
 // app.get('/test',(req,res)=>{

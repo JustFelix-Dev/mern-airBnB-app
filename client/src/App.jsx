@@ -14,6 +14,7 @@ import BookingPlace from './pages/BookingPlace'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ResetPassword from './pages/ResetPassword'
+import CheckOutSuccess from './pages/CheckOutSuccess'
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='account/:subPage?' element={<AccountPage/>}/> 
           <Route path='account/:subPage/:id' element={<AccountPage/>}/>
           <Route path='place/:id' element={<PlacesDetail/>}/>
+          <Route path='checkout-success' element={<CheckOutSuccess/>}/>
           <Route path='/forgotPassword' element={<ResetPassword/>}/>
           </Route>
         </Routes>
