@@ -67,6 +67,10 @@ app.get('/getOrder/:id',async(req,res)=>{
     const {id} = req.params;
     try{
         const order = await Order.findOne({bookingId: id })
+        if(!order ||!order._id ){
+            res.status(402).json('Order not found.Something went wrong!.')
+        }
+        console.log(order)
 
     }catch(err){
         console.log(err.message)

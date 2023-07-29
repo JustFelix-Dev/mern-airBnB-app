@@ -12,6 +12,14 @@ const orderSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    bookingPlace:{
+        type: String,
+        required: true,
+    },
+    bookingAddress:{
+        type: String,
+        required: true,
+    },
     details:[{
         numOfGuests:{
             type: Number,

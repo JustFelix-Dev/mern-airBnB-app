@@ -11,6 +11,8 @@ router.post('/create-checkout-session', async (req, res) => {
         metadata: {
             userId: booking.user,
             bookingId: booking._id,
+            bookingPlace: booking.place.title,
+            bookingAddress: booking.place.address,
             booking: JSON.stringify(usefulInfo)
         }
     })
@@ -48,6 +50,8 @@ router.post('/create-checkout-session', async (req, res) => {
         const newOrder = new Order({
             userId: customer.metadata.userId,
             bookingId: customer.metadata.bookingId,
+            bookingPlace: customer.metadata.bookingPlace,
+            bookingAddress: customer.metadata.bookingAddress,
             customerId: data.customer,
             paymentIntentId: data.payment_intent,
             details: details,
