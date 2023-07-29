@@ -21,6 +21,7 @@ const passportsetUp = require('./passport');
 const passport = require('passport');
 const userModel = require('./models/user');
 const nodemailer = require('nodemailer');
+const Order = require('./models/order');
 
 
 // Middleware
@@ -62,6 +63,15 @@ app.use(bookingRoutes)
 app.use('/auth',authRoutes)
 app.use(stripeRoute)
 
+app.get('/getOrder/:id',async(req,res)=>{
+    const {id} = req.params;
+    try{
+        const order = await Order.findOne({bookingId: id })
+
+    }catch(err){
+        console.log(err.message)
+    }
+})
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")

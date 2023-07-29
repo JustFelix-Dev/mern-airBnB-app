@@ -8,6 +8,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    bookingId:{
+        type:String,
+        required: true
+    },
     details:[{
         numOfGuests:{
             type: Number,

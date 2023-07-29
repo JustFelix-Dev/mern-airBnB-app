@@ -10,6 +10,7 @@ router.post('/create-checkout-session', async (req, res) => {
     const customer = await stripe.customers.create({
         metadata: {
             userId: booking.user,
+            bookingId: booking._id,
             booking: JSON.stringify(usefulInfo)
         }
     })
@@ -33,7 +34,7 @@ router.post('/create-checkout-session', async (req, res) => {
       ],
       customer: customer.id,
       mode: 'payment',
-      success_url: 'http://localhost:5173/checkout-success',
+      success_url: `http://localhost:5173/checkout-success/${booking._id}`,
       cancel_url: 'http://localhost:5173/account/bookings',
     });
   
@@ -46,6 +47,7 @@ router.post('/create-checkout-session', async (req, res) => {
 
         const newOrder = new Order({
             userId: customer.metadata.userId,
+            bookingId: customer.metadata.bookingId,
             customerId: data.customer,
             paymentIntentId: data.payment_intent,
             details: details,
@@ -67,8 +69,7 @@ router.post('/create-checkout-session', async (req, res) => {
 //
 // Use this sample code to handle webhook events in your integration.
 let endpointSecret;
-// endpointSecret = "whsec_5169f87898658ac54a7bf5bb19547e0ceb4ca59cf454763537d3ca16b645825f";
-// whsec_5169f87898658ac54a7bf5bb19547e0ceb4ca59cf454763537d3ca16b645825f
+// endpointSecret = ;
 
 router.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
   const sig = req.headers['stripe-signature'];
