@@ -2,6 +2,7 @@ import React from 'react';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { FcCalendar } from 'react-icons/fc';
 import { MdModeNight } from 'react-icons/md';
+import { BsFillPatchCheckFill } from 'react-icons/bs';
 import axios from 'axios';
 
 const BookingPayment = ({ booking }) => {
@@ -49,7 +50,12 @@ const BookingPayment = ({ booking }) => {
             </div>
             <div className='flex flex-col items-center justify-between'>
                 <h1>Total Price: <span className='text-2xl font-medium'>${booking.price}</span></h1>
-                <button onClick={()=>handleCheckOut({booking})} className='bg-primary px-4 py-1 text-white rounded-xs'>Proceed to Payment</button>
+                <div>
+                  {
+                    booking.status && booking.status == "Paid" ? (<span  className='bg-green-800 flex items-center gap-1 px-4 py-1 text-white rounded-md'>View Reservation<BsFillPatchCheckFill/></span>) : (<button onClick={()=>handleCheckOut({booking})} className='bg-primary px-4 py-1 text-white rounded-xs'>Proceed to Payment</button>)
+                  }
+                </div>
+                
             </div>
         </div>
       </div>

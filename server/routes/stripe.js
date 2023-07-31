@@ -5,6 +5,7 @@ require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE);
 const nodemailer = require('nodemailer');
 const {format} = require('date-fns');
+const bookingModel = require('../models/Booking');
 
 router.post('/create-checkout-session', async (req, res) => {
     const {booking} = req.body;
@@ -49,16 +50,16 @@ router.post('/create-checkout-session', async (req, res) => {
 const OrderEmail=async(customer,data)=>{
     const details = JSON.parse(customer.metadata.booking)
     const html = `
-    <div style="width: 80%; margin: 0 auto; box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);">
+    <div style="width: 80%; margin: 0 auto;box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);text-align:center;">
     <img src="cid:airbnbHeader" alt="headerImg" style="display: block; object-fit: cover" width="100%" height="200px" />
-    <div style="margin:0 auto; width="50%">
-      <img src="cid:airbnbImg" alt="headerImg" style="display: block; object-fit: cover" width="150px" height="150px" />
+    <div class='myImage' style="margin:0 auto;width="50%;text-align:center;">
+      <img src="cid:airbnbImg" alt="headerImg" width="150px" height="150px" />
     </div>
     <h1 style="padding-top: 8px; padding-bottom: 8px; border-bottom-width: 2px; text-align: center; font-size: 1.5rem; border-color: #48bb78;">Reservation Details</h1>
     <div style="background-color: #48bb78; color: #ffffff; font-weight: 600; text-align: center; padding: 1rem;">
       Status: <span>${data.status}</span>
     </div>
-    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; color: #fff;">Customer:</h1>
+    <h1 style="border-radius:15px;background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; color: #fff;">Customer:</h1>
     <table style="width: 100%; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
       <tr>
         <td>Full-Name:</td>
@@ -78,7 +79,7 @@ const OrderEmail=async(customer,data)=>{
       </tr>
     </table>
   
-    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Payments:</h1>
+    <h1 style="border-radius:15px;background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Payments:</h1>
     <table style="width: 100%; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
       <tr>
         <td>Payment-Intent:</td>
@@ -90,7 +91,7 @@ const OrderEmail=async(customer,data)=>{
       </tr>
       <tr>
         <td>Amount Paid:</td>
-        <td>${details.price}</td>
+        <td>$${details.price}</td>
       </tr>
       <tr>
         <td>Payment-Time:</td>
@@ -98,7 +99,7 @@ const OrderEmail=async(customer,data)=>{
       </tr>
     </table>
   
-    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Bookings:</h1>
+    <h1 style="border-radius:15px;background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Bookings:</h1>
     <table style="width: 100%; color: #666;">
       <tr>
         <td>Booking Number:</td>
@@ -155,6 +156,16 @@ const info = await transporter.sendMail({
 console.log('Message Sent:' + info.messageId);
 
 }
+
+// Update Payment Status
+ const updatePaymentStatus=async(customer)=>{
+        try{
+          await bookingModel.updateOne({ _id: customer.metadata.bookingId},{$set:{status:'Paid'}}) 
+          console.log('Payment Successful!')
+        }catch(err){
+          console.log(err.message)
+        }
+  }
 
 //   Create order using the Order Model
      const createOrder =async(customer,data)=>{
@@ -219,6 +230,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
        stripe.customers.retrieve(data.customer).then((customer)=>{
         createOrder(customer,data)
         OrderEmail(customer,data)
+        updatePaymentStatus(customer)
        }).catch((err)=>{
           console.log(err.message)
        })

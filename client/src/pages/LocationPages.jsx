@@ -86,8 +86,8 @@ const LocationPages = () => {
            <>
              { id !== 'new' && (
                 <div className="text-center">
-                <Link to={'/account/places/new'} className='inline-flex items-center gap-1 bg-primary text-white py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
-                 <div>
+                <Link to={'/account/places/new'} className='inline-flex items-center gap-1 mb-4 bg-primary text-white py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
+                 <div className='max-w-7xl mx-auto'>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
                         <Link to={'/place/'+ place._id} className="flex gap-3 bg-gray-100 p-3">
                             <div className='flex w-32 bg-gray-300 grow shrink-0'>
