@@ -49,73 +49,84 @@ router.post('/create-checkout-session', async (req, res) => {
 const OrderEmail=async(customer,data)=>{
     const details = JSON.parse(customer.metadata.booking)
     const html = `
-    <div style="width:80%;margin:0 auto;;box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);">
-    <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
-    <div style="display: flex; justify-content: center; padding: 16px;">
-        <svg width="80" height="80" fill="none" stroke="#FF385C" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path style="stroke-linecap: round; stroke-linejoin: round;" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
+    <div style="width: 80%; margin: 0 auto; box-shadow: 0 7px 30px -10px rgba(150, 170, 180, 0.5);">
+    <img src="cid:airbnbHeader" alt="headerImg" style="display: block; object-fit: cover" width="100%" height="200px" />
+    <div style="margin:0 auto; width="50%">
+      <img src="cid:airbnbImg" alt="headerImg" style="display: block; object-fit: cover" width="150px" height="150px" />
     </div>
     <h1 style="padding-top: 8px; padding-bottom: 8px; border-bottom-width: 2px; text-align: center; font-size: 1.5rem; border-color: #48bb78;">Reservation Details</h1>
-</div>
-<span
-    style="display: flex; margin: 1rem 0; padding: 1rem; width: 100%; max-width: 100%; border-radius: 0.5rem; background-color: #48bb78; color: #ffffff; font-weight: 600;text-align:center;align-items: center; justify-content: center;"
->
-    Status: <span>${data.status}</span>
-</span>
-<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; color: #333;">Customer:</h1>
-<div style="display:flex;flex-direction:column;color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
-    <div style="display:flex;border:2px solid red;justify-content:space-between;">
-       <div>Full-Name:</div><div>${details.fullName}</div>
+    <div style="background-color: #48bb78; color: #ffffff; font-weight: 600; text-align: center; padding: 1rem;">
+      Status: <span>${data.status}</span>
     </div>
-    <div style="display: flex; justify-content: space-between;">
-        <div>Country:</div><div>${data.customer_details.address.country}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-       <div> Phone-Number: </div><div>${details.mobile}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-       <div>Email:</div><div>${data.customer_details.email}</div>
-    </div>
-</div>
+    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; color: #fff;">Customer:</h1>
+    <table style="width: 100%; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
+      <tr>
+        <td>Full-Name:</td>
+        <td>${details.fullName}</td>
+      </tr>
+      <tr>
+        <td>Country:</td>
+        <td>${data.customer_details.address.country}</td>
+      </tr>
+      <tr>
+        <td>Phone-Number:</td>
+        <td>${details.mobile}</td>
+      </tr>
+      <tr>
+        <td>Email:</td>
+        <td>${data.customer_details.email}</td>
+      </tr>
+    </table>
+  
+    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Payments:</h1>
+    <table style="width: 100%; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
+      <tr>
+        <td>Payment-Intent:</td>
+        <td>${data.payment_intent}</td>
+      </tr>
+      <tr>
+        <td>Payment-Status:</td>
+        <td>${data.payment_status}</td>
+      </tr>
+      <tr>
+        <td>Amount Paid:</td>
+        <td>${details.price}</td>
+      </tr>
+      <tr>
+        <td>Payment-Time:</td>
+        <td>${format(new Date(data.created * 1000), 'dd MMMM, yyyy HH:mm:ss a')}</td>
+      </tr>
+    </table>
+  
+    <h1 style="background-color:rgba(128,0,0,0.5);font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #fff;">Bookings:</h1>
+    <table style="width: 100%; color: #666;">
+      <tr>
+        <td>Booking Number:</td>
+        <td>${data.customer}</td>
+      </tr>
+      <tr>
+        <td>Booking Location:</td>
+        <td>${customer.metadata.bookingPlace}</td>
+      </tr>
+      <tr>
+        <td>Booking Address:</td>
+        <td>${customer.metadata.bookingAddress}</td>
+      </tr>
+      <tr>
+        <td>Guests:</td>
+        <td>${details.numOfGuests}</td>
+      </tr>
+      <tr>
+        <td>Check-In Time:</td>
+        <td>${format(new Date(details.checkIn), 'dd EEEE MMMM, yyyy')}</td>
+      </tr>
+      <tr>
+        <td>Check-Out Time:</td>
+        <td>${format(new Date(details.checkOut), 'dd EEEE MMMM, yyyy')}</td>
+      </tr>
+    </table>
+  </div>
 
-<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #333;">Payments:</h1>
-<div style="display: block; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
-    <div style="display: flex; justify-content: space-between;">
-        Payment-Intent: <div>${data.payment_intent}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Payment-Status: <div>${data.payment_status}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Amount Paid: <div>${details.price}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Payment-Time: <div>${format(new Date(data.created * 1000), 'dd MMMM, yyyy HH:mm:ss a')}</div>
-    </div>
-</div>
-
-<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #333;">Bookings:</h1>
-<div style="display: block; color: #666;">
-    <div style="display: flex; justify-content: space-between;">
-        Booking Number:<div>${data.customer}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Booking Location:<div>${customer.metadata.bookingPlace}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Booking Address:<div>${customer.metadata.bookingAddress}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Guests: <div>${details.numOfGuests}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Check-In Time:<div>${format(new Date(details.checkIn), 'dd EEEE MMMM, yyyy')}</div>
-    </div>
-    <div style="display: flex; justify-content: space-between;">
-        Check-Out Time:<div>${format(new Date(details.checkOut), 'dd EEEE MMMM, yyyy')}</div>
-    </div>
-</div>
   `;
 const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",
@@ -135,7 +146,11 @@ const info = await transporter.sendMail({
                 filename: 'emailHeader.jpg',
                 path: './emailImages/emailHeader.jpg',
                 cid: 'airbnbHeader'
-        }]
+        },{
+            filename: 'emailCheck.jpg',
+            path: './emailImages/emailCheck.jpg',
+            cid: 'airbnbImg'
+    }]
 })
 console.log('Message Sent:' + info.messageId);
 
