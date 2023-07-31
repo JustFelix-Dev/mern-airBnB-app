@@ -70,7 +70,7 @@ app.get('/getOrder/:id',async(req,res)=>{
         if(!order ||!order._id ){
             res.status(402).json('Order not found.Something went wrong!.')
         }
-        console.log(order)
+        res.status(200).json(order)
 
     }catch(err){
         console.log(err.message)

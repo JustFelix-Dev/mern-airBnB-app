@@ -3,6 +3,8 @@ const Order = require('../models/order');
 const router = express.Router()
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE);
+const nodemailer = require('nodemailer');
+const {format} = require('date-fns');
 
 router.post('/create-checkout-session', async (req, res) => {
     const {booking} = req.body;
@@ -43,6 +45,102 @@ router.post('/create-checkout-session', async (req, res) => {
     res.send({url: session.url})
   });
 
+//   Send Order Email to the user/customer
+const OrderEmail=async(customer,data)=>{
+    const details = JSON.parse(customer.metadata.booking)
+    const html = `
+    <div style="width:80%;margin:0 auto;;box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);">
+    <img src='cid:airbnbHeader' alt='headerImg' style='display:block;object-fit:cover' width='100%' height='200px'/>
+    <div style="display: flex; justify-content: center; padding: 16px;">
+        <svg width="80" height="80" fill="none" stroke="#FF385C" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path style="stroke-linecap: round; stroke-linejoin: round;" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    </div>
+    <h1 style="padding-top: 8px; padding-bottom: 8px; border-bottom-width: 2px; text-align: center; font-size: 1.5rem; border-color: #48bb78;">Reservation Details</h1>
+</div>
+<span
+    style="display: flex; margin: 1rem 0; padding: 1rem; width: 100%; max-width: 100%; border-radius: 0.5rem; background-color: #48bb78; color: #ffffff; font-weight: 600;text-align:center;align-items: center; justify-content: center;"
+>
+    Status: <span>${data.status}</span>
+</span>
+<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; color: #333;">Customer:</h1>
+<div style="display:flex;flex-direction:column;color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
+    <div style="display:flex;border:2px solid red;justify-content:space-between;">
+       <div>Full-Name:</div><div>${details.fullName}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        <div>Country:</div><div>${data.customer_details.address.country}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+       <div> Phone-Number: </div><div>${details.mobile}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+       <div>Email:</div><div>${data.customer_details.email}</div>
+    </div>
+</div>
+
+<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #333;">Payments:</h1>
+<div style="display: block; color: #666; border-bottom: 2px solid #ddd; padding-bottom: 0.5rem;">
+    <div style="display: flex; justify-content: space-between;">
+        Payment-Intent: <div>${data.payment_intent}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Payment-Status: <div>${data.payment_status}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Amount Paid: <div>${details.price}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Payment-Time: <div>${format(new Date(data.created * 1000), 'dd MMMM, yyyy HH:mm:ss a')}</div>
+    </div>
+</div>
+
+<h1 style="font-size: 1.25rem; padding-bottom: 0.5rem; padding-top: 0.5rem; color: #333;">Bookings:</h1>
+<div style="display: block; color: #666;">
+    <div style="display: flex; justify-content: space-between;">
+        Booking Number:<div>${data.customer}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Booking Location:<div>${customer.metadata.bookingPlace}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Booking Address:<div>${customer.metadata.bookingAddress}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Guests: <div>${details.numOfGuests}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Check-In Time:<div>${format(new Date(details.checkIn), 'dd EEEE MMMM, yyyy')}</div>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        Check-Out Time:<div>${format(new Date(details.checkOut), 'dd EEEE MMMM, yyyy')}</div>
+    </div>
+</div>
+  `;
+const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth:{
+            user: 'owolabifelix78@gmail.com',
+            pass: process.env.GOOGLE_PASS
+        }
+    })
+const info = await transporter.sendMail({
+        from: 'AirBnb <owolabifelix78@gmail.com>',
+        to: data.customer_details.email,
+        subject:'Reservation Successfully Confirmed!',
+        html: html,
+        attachments:[{
+                filename: 'emailHeader.jpg',
+                path: './emailImages/emailHeader.jpg',
+                cid: 'airbnbHeader'
+        }]
+})
+console.log('Message Sent:' + info.messageId);
+
+}
+
 //   Create order using the Order Model
      const createOrder =async(customer,data)=>{
         const details = JSON.parse(customer.metadata.booking)
@@ -54,14 +152,17 @@ router.post('/create-checkout-session', async (req, res) => {
             bookingAddress: customer.metadata.bookingAddress,
             customerId: data.customer,
             paymentIntentId: data.payment_intent,
+            paymentTime: data.created,
             details: details,
-            email: data.email,
+            email: data.customer_details.email,
             country: data.customer_details.address.country,
             status: data.status,
             payment_status: data.payment_status
         })
         try{
               const savedUser = await newOrder.save();
+              console.log('Data:', data)
+              console.log('Customer:', customer)
               console.log('Processed Order:',savedUser)
             //   email - nodemailer
         }catch(err){
@@ -102,6 +203,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
    if(eventType === 'checkout.session.completed'){
        stripe.customers.retrieve(data.customer).then((customer)=>{
         createOrder(customer,data)
+        OrderEmail(customer,data)
        }).catch((err)=>{
           console.log(err.message)
        })
@@ -110,6 +212,8 @@ router.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
   // Return a 200 res to acknowledge receipt of the event
   res.send().end();
 });
+
+
 
 
   module.exports = router;

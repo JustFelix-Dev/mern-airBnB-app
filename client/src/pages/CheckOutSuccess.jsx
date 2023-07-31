@@ -17,7 +17,7 @@ const CheckOutSuccess = () => {
                 <p className="text-gray-700">Your reservation has been processed successfully and you would be able to print your payment receipt shortly. Please note that it takes a few minutes for this change to occur. </p>
                 <p className="text-gray-500">An email confirmation would be sent to you shortly with your order details.</p>
                 <Link to={`/order-status/${id}`}>
-                <button className="bg-primary p-2 text-white rounded-lg mt-4">Check Order Status</button>
+                <button className="bg-primary p-2 text-white rounded-lg mt-4">View Reservation</button>
                 </Link>
              </div>
             </div>
