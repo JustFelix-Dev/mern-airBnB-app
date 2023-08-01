@@ -41,8 +41,8 @@ button.primary{
     background: linear-gradient(to right, #FF385C,#f0516e);
   }
   .activeIcon{
-    height: 7px;
-    width: 7px;
+    height: 2px;
+    width: 2px;
     background-color: #FF385C;
     border-radius: 50%;
     box-shadow: 0 0 0 5px #FF385C;

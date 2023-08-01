@@ -35,4 +35,17 @@ const getBooking =async(req,res)=>{
            })
 }
 
-module.exports = { makeBooking,getBooking}
+const deleteBooking = async(req,res)=>{
+       const {id} = req.params;
+       try{
+         const deletedItem =  await bookingModel.findOneAndDelete({_id: id})
+         if(!deletedItem){
+          return res.status(401).json('Booking Not Found!')
+         }
+            res.status(201).json("Booking successfully deleted!")
+       }catch(err){
+         return  res.status(503).json('Server Error!')
+       }
+}
+
+module.exports = { makeBooking,getBooking,deleteBooking}

@@ -14,10 +14,10 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
 
     return ( 
              <>
-              <div className="text-center max-w-lg relative h-[27rem]
-               bg-primary px-24 border border-primary overflow-hidden
-               shadow-2xl rounded-lg mx-auto">
-                  <div className='flex justify-center p-4 bg-primary h-38'>
+             <div className='text-center max-w-lg  p-4 overflow-hidden
+               shadow-2xl rounded-lg mx-auto' >
+              <div className=" border border-dashed border-primary overflow-hidden rounded-xl ">
+                  <div className='flex justify-center p-4'>
                   <img 
                         src={
                           user && user.photo
@@ -33,8 +33,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                       />
                   </div>{
                         user && (
-                                <div className='text-left absolute bottom-0
-                                right-0 left-0 top-[42%]  p-4 leading-8 bg-white rounded-t-3xl font-semibold'>
+                                <div className='text-left p-4 leading-8 bg-white rounded-t-3xl font-semibold'>
                                     <h2>Basic Information:</h2>
                                     {user.admin &&(<div className='bg-primary rounded-lg text-white text-sm py-1 max-w-[5rem] select-none px-4'>Admin</div>)}
                                      <div><span>Name: </span>{user.name}</div>
@@ -53,6 +52,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                         )
                     }
                 </div>
+             </div>
              </>
      );
 }

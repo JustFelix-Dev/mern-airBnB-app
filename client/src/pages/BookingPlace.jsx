@@ -20,7 +20,7 @@ const BookingPlace = () => {
           }
         },[id])
         
-        console.log(booking)
+        // console.log(booking)
     if(!booking){
         return '';
     }
@@ -32,6 +32,7 @@ const BookingPlace = () => {
              <div className="bg-primary text-white p-4 mb-4 rounded-2xl">
                 <h2>Your Booking Information:</h2>
                   <BookingPayment booking={booking}/>
+                      
              </div>
                <h2 className='text-xl font-medium p-4'>Where you would be staying :</h2>
              <Gallery place={booking.place}/>

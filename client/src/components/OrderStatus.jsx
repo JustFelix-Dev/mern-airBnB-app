@@ -2,6 +2,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { format } from 'date-fns';
 
 const OrderStatus = () => {
     const {id} = useParams();
@@ -49,7 +50,7 @@ const OrderStatus = () => {
                           <span className="flex justify-between">Payment-Intent: <span>{order.paymentIntentId}</span></span>
                           <span className="flex justify-between">Payment-Status: <span>{order.payment_status}</span></span>
                           <span className="flex justify-between">Amount Paid: <span>${order.details[0].price}</span></span>
-                          <span className="flex justify-between">Payment-Time: <span>{order.paymentTime}</span></span>
+                          <span className="flex justify-between">Payment-Time: <span>{format(new Date(order.paymentTime *1000),'dd MMMM, yyyy HH:mm:ss a')}</span></span>
                           </div>
                             <h1 className="text-xl pb-2 pt-2 text-gray-900">Bookings:</h1>
                             <div className="flex flex-col text-gray-700 ">
@@ -57,8 +58,8 @@ const OrderStatus = () => {
                           <span className="flex justify-between">Booking Location: <span>{order.bookingPlace}</span> </span>
                           <span className="flex justify-between">Booking Address:<span>{order.bookingAddress}</span></span> 
                           <span className="flex justify-between">Guests: <span>{order.details[0].numOfGuests}</span></span>
-                          <span className="flex justify-between">Check-In Time: <span>{order.details[0].checkIn}</span></span>
-                          <span className="flex justify-between">Check-Out Time: <span>{order.details[0].checkOut}</span></span>
+                          <span className="flex justify-between">Check-In Time: <span>{ format(new Date(order.details[0].checkIn),'dd EEEE MMMM, yyyy')}</span></span>
+                          <span className="flex justify-between">Check-Out Time: <span>{ format(new Date(order.details[0].checkOut),'dd EEEE MMMM, yyyy')}</span></span>
                             </div>
                          
                           <div className="flex my-2 justify-center">
@@ -71,7 +72,12 @@ const OrderStatus = () => {
                 <div>
                 </div>
              </div>
-           
+             { order && (
+                  <div className="mx-auto max-w-2xl bg-gray-200 p-8 rounded-lg m-6">
+                      <h1>Hii,<span className='text-green-500 font-bold'>{order.details[0].fullName}</span>. Here's a confirmation detail of your successful transaction.Kindly ensure to keep this information safe as it is very important. Details about your host and explicit information about the instructions you need to adhere to as regards your reservation would be forwarded to you shortly.Enjoy!</h1>
+                  </div>
+             )
+             }
            </>
      );
 }
