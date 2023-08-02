@@ -8,7 +8,7 @@ import axios from 'axios';
 import Perks from '../components/Perks';
 import PlacesImage from '../components/PlacesImage';
 
-const LocationPages = () => {
+const EditPlace = () => {
     const { id } = useParams();
     const [ title,setTitle ] = useState('');
     const [ address,setAddress ] = useState('');
@@ -21,16 +21,30 @@ const LocationPages = () => {
     const [ checkOut,setCheckOut ] = useState('');
     const [ maxGuests,setMaxGuests] = useState(1);
     const [ price,setPrice ] = useState(100);
-    const [ fetchedPlaces,setFetchedPlaces ] = useState([]);
+    const [ fetchedPlace,setFetchedPlace ] = useState(null);
     const [ isLoading,setIsLoading ] = useState(false);
     const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get('/places').then(({data})=>{
-            setFetchedPlaces(data)
+            const foundPlace = data.find(({_id})=> _id === id)
+            if(foundPlace){
+              setFetchedPlace(foundPlace)
+              setPhotos(foundPlace.photos)
+              setTitle(foundPlace.title)
+              setAddress(foundPlace.address)
+              setDescription(foundPlace.description)
+              setPerks(foundPlace.perks)
+              setExtraInfo(foundPlace.extraInfo)
+              setCheckIn(foundPlace.checkIn)
+              setCheckOut(foundPlace.checkOut)
+              setMaxGuests(foundPlace.guests)
+              setPrice(foundPlace.price)
+            }
         })
-    },[])
-
+    },[id])
+    console.log(fetchedPlace)
+    
 
   const addPhotoByLink=async(e)=>{
            e.preventDefault()
@@ -75,36 +89,17 @@ const LocationPages = () => {
           const formBody={
                        title,address,photos,
                        photoLink,description,perks,
-                       extraInfo,checkIn,checkOut,maxGuests,price
-                         }
+                       extraInfo,checkIn,checkOut,guests:maxGuests,price
+                        }
 
-      const {data} = await axios.post('/places',formBody)
+      const {data} = await axios.put(`/editPlace/${id}`,formBody)
                  navigate('/account/places')
     }
 
   return (
            <>
-             { id !== 'new' && (
-                <div className="text-center">
-                <Link to={`/account/places/new`} className='inline-flex items-center gap-1 bg-primary mb-4 text-white py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
-                 <div className='max-w-7xl mx-auto'>
-                    {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <Link to={`/account/places/edit/${place._id}`} className="flex gap-3 bg-gray-100 p-3">
-                            <div className='flex w-32 bg-gray-300 grow shrink-0'>
-                               <PlacesImage place={place}/>
-                            </div>
-                            <div className='grow-0 shrink'>
-                                <h2 className='text-xl'>{place.title}</h2>
-                                <p className='text-sm mt-2'>{place.description}</p>
-                            </div>
-                        </Link>
-                    ))}
-                 </div>
-             </div>
-             )
-             }
-             { id == 'new' && (
-                     <div className='border-t-2 border-primary shadow-2xl py-6 px-10 mx-auto '>
+                   <h1 className='text-xl bg-primary text-white font-medium max-w-xl mx-auto rounded-lg text-center py-1 px-8 mt-4'>Edit Place:</h1>
+                    { fetchedPlace &&  <div className='border-t-2 border-primary max-w-6xl mt-4 shadow-2xl py-6 px-10 mx-auto '>
                     <form onSubmit={handleFormPlaces}>
                         <label htmlFor="title">Title:</label>
                         <input type="text" value={title}
@@ -202,15 +197,13 @@ const LocationPages = () => {
                                 <div className="newtons-cradle__dot"></div>
                                 <div className="newtons-cradle__dot"></div>
                                 <div className="newtons-cradle__dot"></div>
-                                </div>):(<div className='flex items-center justify-center gap-2'><span>Save</span><span ><svg width={20} height={20} fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                </div>):(<div className='flex items-center justify-center gap-2'><span>Update</span><span ><svg width={20} height={20} fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path>
                               </svg></span></div>)}</button>
                      </form>
-                     </div>
-                )
-             }
+                     </div>}
            </>
   )
 }
 
-export default LocationPages
+export default EditPlace

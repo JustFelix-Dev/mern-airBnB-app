@@ -5,6 +5,7 @@
     font-family: 'Mukta', sans-serif;
     user-select: none;
 }
+
 ::-webkit-scrollbar{
     width:.4rem;
 }
@@ -134,5 +135,10 @@ button.primary{
      transform: rotate(-70deg);
      animation-timing-function: ease-in;
     }
+   }
+
+   /* Modal-Confirm */
+   .modal-confirm{
+    box-shadow: 0 0 0   1000px rgba(0 0 0 /0.1);
    }
    

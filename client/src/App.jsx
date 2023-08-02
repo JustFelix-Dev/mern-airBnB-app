@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ResetPassword from './pages/ResetPassword'
 import CheckOutSuccess from './pages/CheckOutSuccess'
 import OrderStatus from './components/OrderStatus'
+import EditPlace from './pages/EditPlace'
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='register' element={<RegisterPage/>}/>
           <Route path='account/bookings/:id' element={<BookingPlace/>}/>
           <Route path='account/:subPage?' element={<AccountPage/>}/> 
+          <Route path='account/places/edit/:id' element={<EditPlace/>}/> 
           <Route path='account/:subPage/:id' element={<AccountPage/>}/>
           <Route path='place/:id' element={<PlacesDetail/>}/>
           <Route path='checkout-success/:id' element={<CheckOutSuccess/>}/>

@@ -46,4 +46,18 @@ const getEachPlace = async(req,res)=>{
       res.json(doc)
 }
 
-module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces};
+const editPlace = async(req,res)=>{
+      const {id} = req.params;
+       const {formBody}  = req.body;
+       try{
+        const updatedItem =   await Location.findOneAndUpdate({_id: id},{$set:{...req.body,formBody}})
+        if(!updatedItem){
+         return res.status(400).json("Location not found!")
+        }
+        res.status(200).json('Location Updated Successfully!')
+       }catch(err){
+           res.status(500).json('Something went wrong!')
+       }
+}
+
+module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces,editPlace};
