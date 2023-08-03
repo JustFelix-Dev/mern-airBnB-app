@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     },
     photo:{
         type: String,
+    },
+    rewardPoint:{
+        type: Number,
+        required: true,
     }
 
 })

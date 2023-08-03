@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const ProfilePage = ({user,setUser,setRedirected}) => {
     const [ isLoading,setIsLoading ] = useState(false);
@@ -11,7 +12,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
     const id = user._id;
 
     useEffect(()=>{
-         axios.get(`/getOrders/${id}`).then(({data})=>{
+         axios.get(`/getUserOrder/${id}`).then(({data})=>{
             console.log(data)
             setFetchedOrders(data)
          }).catch((err)=>{
@@ -77,17 +78,37 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                            </div>
                            <div>
                             <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
-                            <span>{"0/500"}</span> <span className='text-gray-700'>points</span> 
+                            <span>{"0/600"}</span> <span className='text-gray-700'>points</span> 
                             <div className='mt-2' >
                             <progress className='custom-progress' value={'20'} max={'100'} ></progress>
                             </div>
                            </div>
-                           <div>
-                            <h1 className='bg-gray-100 py-1 px-2 text-primary rounded-md border border-primary'>Recent Reservations:</h1>
-                           </div>
+                          
                         </div>
                         <div className='bg-primary font-medium self-start text-white py-1 px-4 rounded-md'>{dayList[day]}</div>
                      </div>
+                     <div className='mt-2 grow'>
+                            <h1 className='bg-gray-100 max-w-xs my-2 text-center py-1 px-2 text-primary rounded-md border'>Recent Reservations:</h1>
+                            <div className=' h-[110px] overflow-auto'>
+                              {
+                                fetchOrders && fetchOrders.length > 0 &&
+                                      fetchOrders.sort((a,b)=>b.createdAt - a.createdAt).map((order,idx)=>(
+                                        <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
+                                              <div className='flex '>
+                                                <img className='object-cover' src={`http://localhost:8000/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
+                                              </div>
+                                              <div className='grow'>
+                                                <p>{order.bookingPlace}</p>
+                                                <div className='flex justify-between'>
+                                                  <span>Status: <span className='bg-green-800 px-4 text-sm text-white rounded-md'>{order.payment_status}</span></span>
+                                                  <span>Date: {format(new Date(order.paymentTime * 1000),"dd MMM. ''yy")}</span>
+                                                </div>
+                                              </div>
+                                        </div>
+                                      ))
+                              }
+                            </div>
+                           </div>
                 </div>
 
                 </div>

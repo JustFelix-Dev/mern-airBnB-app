@@ -6,6 +6,7 @@ const stripe = require('stripe')(process.env.STRIPE);
 const nodemailer = require('nodemailer');
 const {format} = require('date-fns');
 const bookingModel = require('../models/Booking');
+const userModel = require('../models/user');
 
 router.post('/create-checkout-session', async (req, res) => {
     const {booking} = req.body;
@@ -15,6 +16,7 @@ router.post('/create-checkout-session', async (req, res) => {
             userId: booking.user,
             bookingId: booking._id,
             bookingPlace: booking.place.title,
+            orderPhoto: booking.place.photos[0],
             bookingAddress: booking.place.address,
             booking: JSON.stringify(usefulInfo)
         }
@@ -174,6 +176,7 @@ console.log('Message Sent:' + info.messageId);
         const newOrder = new Order({
             userId: customer.metadata.userId,
             bookingId: customer.metadata.bookingId,
+            orderPhoto: customer.metadata.orderPhoto,
             bookingPlace: customer.metadata.bookingPlace,
             bookingAddress: customer.metadata.bookingAddress,
             customerId: data.customer,
@@ -185,7 +188,16 @@ console.log('Message Sent:' + info.messageId);
             status: data.status,
             payment_status: data.payment_status
         })
+
+        // Reward/Point Logic
         try{
+          const rewardPoints = 10;
+             const rewardUser = await userModel.findOne({_id: customer.metadata.userId})
+              if(!rewardUser){
+                return res.status(401).json('User not Found!')
+              }
+              rewardUser.rewardPoint += rewardPoints;
+              const updatedUser = await rewardUser.save();
               const savedUser = await newOrder.save();
               console.log('Data:', data)
               console.log('Customer:', customer)
