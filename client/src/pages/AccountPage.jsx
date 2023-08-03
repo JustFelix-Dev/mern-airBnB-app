@@ -44,7 +44,7 @@ const AccountPage = () => {
     }
   return (
          <>
-            <nav className='w-full flex justify-center mt-8 mb-8 gap-2'>
+            <nav className='w-full flex justify-center mt-8 mb-2 gap-2'>
                 <Link className={linkClasses('profile')} to={'/account'}>
                     <FaUserShield/> My Profile</Link>
                 <Link className={linkClasses('bookings')} to={'/account/bookings'}>  <GiNotebook/>My bookings</Link>

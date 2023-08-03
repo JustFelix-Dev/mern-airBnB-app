@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     rewardPoint:{
         type: Number,
         required: true,
+    },
+    badge:{
+        type: String,
+        required: true
     }
 
 })

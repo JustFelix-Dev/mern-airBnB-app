@@ -8,6 +8,8 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
     const [ fetchOrders,setFetchedOrders ]  = useState(null);
     const [ points,setPoints ] = useState('');
     const [ badgeName,setBadgeName] = useState('');
+    const [ maxValue,setMaxValue] = useState('');
+    const [ badgeUrl,setBadgeUrl] = useState('');
     const date = new Date()
     const day = date.getDay()
     const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -21,14 +23,24 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
           console.log(err.message)
          })
 
-         if(user.rewardPoint < 500){
+      if(user.rewardPoint < 500){
           setBadgeName('Bronze')
-      }else if(user.rewardPoint > 500 ){
+          setBadgeUrl('/images/bronze-badge.png')
+          setMaxValue(500);
+      }else if(user.rewardPoint >= 500 ){
         setBadgeName('Silver')
-      }else if(user.rewardPoint > 1000){
+        setBadgeUrl('/images/silver-badge.png')
+        setMaxValue(1000);
+
+      }else if(user.rewardPoint >= 1000){
         setBadgeName('Gold')
-      }else if(user.rewardPoint > 1500){
+        setBadgeUrl('/images/gold-badge.png')
+        setMaxValue(1500);
+
+      }else if(user.rewardPoint >= 1500){
         setBadgeName('Platinum')
+        setBadgeUrl('/images/platinum-badge.png')
+        setMaxValue(2000);
       }
     },[])
     const logout =async()=>{
@@ -89,13 +101,13 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                         <div className='flex flex-col gap-6'>
                            <div>
                           <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>({badgeName}):</span> <Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
-                          <img src={'/images/bronze-badge.png'} alt="badgeIcon" width={50} height={50} />
+                          <img src={badgeUrl} alt="badgeIcon" width={50} height={50} />
                            </div>
                            <div>
                             <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
-                            <span>{user.rewardPoint}/500</span> <span className='text-gray-700'>points</span> 
+                            <span>{user.rewardPoint}/{maxValue}</span> <span className='text-gray-700'>points</span> 
                             <div className='mt-2' >
-                            <progress className='custom-progress' value={user.rewardPoint} max={'500'} ></progress>
+                            <progress className='custom-progress' value={user.rewardPoint} max={maxValue} ></progress>
                             </div>
                            </div>
                           
