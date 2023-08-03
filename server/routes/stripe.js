@@ -202,7 +202,6 @@ console.log('Message Sent:' + info.messageId);
               console.log('Data:', data)
               console.log('Customer:', customer)
               console.log('Processed Order:',savedUser)
-            //   email - nodemailer
         }catch(err){
             console.log(err)
         }

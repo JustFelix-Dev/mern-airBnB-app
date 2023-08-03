@@ -6,6 +6,8 @@ import { format } from 'date-fns';
 const ProfilePage = ({user,setUser,setRedirected}) => {
     const [ isLoading,setIsLoading ] = useState(false);
     const [ fetchOrders,setFetchedOrders ]  = useState(null);
+    const [ points,setPoints ] = useState('');
+    const [ badgeName,setBadgeName] = useState('');
     const date = new Date()
     const day = date.getDay()
     const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -18,6 +20,16 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
          }).catch((err)=>{
           console.log(err.message)
          })
+
+         if(user.rewardPoint < 500){
+          setBadgeName('Bronze')
+      }else if(user.rewardPoint > 500 ){
+        setBadgeName('Silver')
+      }else if(user.rewardPoint > 1000){
+        setBadgeName('Gold')
+      }else if(user.rewardPoint > 1500){
+        setBadgeName('Platinum')
+      }
     },[])
     const logout =async()=>{
         setIsLoading(true)
@@ -26,6 +38,9 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
         setRedirected(true)
         setIsLoading(false)
     }
+     
+
+
 
     return ( 
              <>
@@ -73,14 +88,14 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                      <div className='flex mt-4 items-center justify-between'>
                         <div className='flex flex-col gap-6'>
                            <div>
-                          <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>(Bronze):</span> <Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
+                          <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>({badgeName}):</span> <Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
                           <img src={'/images/bronze-badge.png'} alt="badgeIcon" width={50} height={50} />
                            </div>
                            <div>
                             <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
-                            <span>{"0/600"}</span> <span className='text-gray-700'>points</span> 
+                            <span>{user.rewardPoint}/500</span> <span className='text-gray-700'>points</span> 
                             <div className='mt-2' >
-                            <progress className='custom-progress' value={'20'} max={'100'} ></progress>
+                            <progress className='custom-progress' value={user.rewardPoint} max={'500'} ></progress>
                             </div>
                            </div>
                           
@@ -91,21 +106,21 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                             <h1 className='bg-gray-100 max-w-xs my-2 text-center py-1 px-2 text-primary rounded-md border'>Recent Reservations:</h1>
                             <div className=' h-[110px] overflow-auto'>
                               {
-                                fetchOrders && fetchOrders.length > 0 &&
-                                      fetchOrders.sort((a,b)=>b.createdAt - a.createdAt).map((order,idx)=>(
-                                        <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
-                                              <div className='flex '>
-                                                <img className='object-cover' src={`http://localhost:8000/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
-                                              </div>
-                                              <div className='grow'>
-                                                <p>{order.bookingPlace}</p>
-                                                <div className='flex justify-between'>
-                                                  <span>Status: <span className='bg-green-800 px-4 text-sm text-white rounded-md'>{order.payment_status}</span></span>
-                                                  <span>Date: {format(new Date(order.paymentTime * 1000),"dd MMM. ''yy")}</span>
-                                                </div>
-                                              </div>
-                                        </div>
-                                      ))
+                      fetchOrders && fetchOrders.length > 0 &&
+                        fetchOrders.sort((a,b)=>b.createdAt - a.createdAt).map((order,idx)=>(
+                        <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
+                          <div className='flex '>
+                           <img className='object-cover' src={`http://localhost:8000/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
+                          </div>
+                           <div className='grow'>
+                           <p>{order.bookingPlace}</p>
+                           <div className='flex justify-between'>
+                           <span>Status: <span className='bg-green-800 px-4 text-sm text-white rounded-md'>{order.payment_status}</span></span>
+                          <span>Date: {format(new Date(order.paymentTime * 1000),"dd MMM. ''yy")}</span>
+                           </div>
+                           </div>
+                           </div>
+                            ))
                               }
                             </div>
                            </div>

@@ -46,11 +46,12 @@ passport.use(new GoogleStrategy({
               name: profile.displayName,
               email: profile.emails[0].value,
               photo: profile.photos[0].value,
+              rewardPoint: 0,
               admin: false
           });
           existingUser = await newUser.save();
           // Generate the JWT token with the user data
-        const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo,admin:existingUser.admin}, process.env.SECRET);
+        const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo,admin:existingUser.admin,rewardPoint:user.rewardPoint}, process.env.SECRET);
         // Set the token as a cookie in the response
         req.res.cookie('token', token);
         // Respond with the existing user data as JSON
@@ -85,6 +86,7 @@ passport.use(new GithubStrategy({
                name: profile.displayName,
                email: profile.emails[0].value,
                photo: profile.photos[0].value,
+               rewardPoint: 0,
                admin:false
            });
            existingUser = await newUser.save();
