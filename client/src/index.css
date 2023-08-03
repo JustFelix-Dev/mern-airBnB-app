@@ -12,6 +12,19 @@
 ::-webkit-scrollbar-thumb{
     @apply bg-[#333] rounded-full;
 }
+
+::-webkit-progress-bar{
+    display: flex;
+    overflow: hidden;
+    background-color: whitesmoke;
+    border: 1px solid #f0516e;
+    width: 200%;
+    height: 20px;
+    border-radius: 6px;
+}
+progress::-webkit-progress-value {
+    @apply bg-primary
+  }
 input[type="text"],input[type="password"],
 input[type="email"],input[type="number"],
 input[type="tel"],

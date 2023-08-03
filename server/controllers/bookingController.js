@@ -49,21 +49,6 @@ const deleteBooking = async(req,res)=>{
        }
 }
 
-const deleteOrder = async(req,res)=>{
-    const {id} = req.params;
-    try{
-        const deletedItem = await Order.findOneAndDelete({bookingId: id})
-        const updatedItem = await bookingModel.findOneAndUpdate({_id: id},{$set:{status:'Not Paid'}})
-        if(!deletedItem){
-            return res.status(401).json('Reservation Not Found!')
-           }
-        if(!updatedItem){
-            return res.status(401).json('Booking Not Found!')
-        }
-              res.status(201).json("Booking successfully updated!")
-    }catch(err){
-        return res.status(503).json('Server Error!')
-    }
-}
 
-module.exports = { makeBooking,getBooking,deleteBooking,deleteOrder}
+
+module.exports = { makeBooking,getBooking,deleteBooking}

@@ -8,6 +8,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const authRoutes = require('./routes/auth');
 const stripeRoute = require('./routes/stripe');
+const orderRoutes= require('./routes/orderRoutes');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -62,20 +63,7 @@ app.use(placesRoutes)
 app.use(bookingRoutes)
 app.use('/auth',authRoutes)
 app.use(stripeRoute)
-
-app.get('/getOrder/:id',async(req,res)=>{
-    const {id} = req.params;
-    try{
-        const order = await Order.findOne({bookingId: id })
-        if(!order ||!order._id ){
-         return  res.status(402).json('Order not found.Something went wrong!.')
-        }
-        res.status(200).json(order)
-
-    }catch(err){
-        console.log(err.message)
-    }
-})
+app.use(orderRoutes)
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")

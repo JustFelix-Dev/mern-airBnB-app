@@ -1,9 +1,23 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ProfilePage = ({user,setUser,setRedirected}) => {
     const [ isLoading,setIsLoading ] = useState(false);
+    const [ fetchOrders,setFetchedOrders ]  = useState(null);
+    const date = new Date()
+    const day = date.getDay()
+    const dayList = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const id = user._id;
 
+    useEffect(()=>{
+         axios.get(`/getOrders/${id}`).then(({data})=>{
+            console.log(data)
+            setFetchedOrders(data)
+         }).catch((err)=>{
+          console.log(err.message)
+         })
+    },[])
     const logout =async()=>{
         setIsLoading(true)
         await axios.post('/logout')
@@ -14,9 +28,10 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
 
     return ( 
              <>
-             <div className='text-center max-w-lg  p-4 overflow-hidden
+             <div className=' w-[75%]  p-4 overflow-hidden
                shadow-2xl rounded-lg mx-auto' >
-              <div className=" border border-dashed border-primary overflow-hidden rounded-xl ">
+                <div className=" flex gap-10 p-4 border border-dashed border-primary overflow-hidden rounded-xl ">
+              <div className='border-r border-primary pr-20' >
                   <div className='flex justify-center p-4'>
                   <img 
                         src={
@@ -51,6 +66,30 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                             
                         )
                     }
+                </div>
+                <div className='grow'>
+                     <h1 className='text-2xl font-bold'>Welcome back, <span className='text-primary'>{user.name}!</span></h1>
+                     <div className='flex mt-4 items-center justify-between'>
+                        <div className='flex flex-col gap-6'>
+                           <div>
+                          <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>(Bronze):</span> <Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
+                          <img src={'/images/bronze-badge.png'} alt="badgeIcon" width={50} height={50} />
+                           </div>
+                           <div>
+                            <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
+                            <span>{"0/500"}</span> <span className='text-gray-700'>points</span> 
+                            <div className='mt-2' >
+                            <progress className='custom-progress' value={'20'} max={'100'} ></progress>
+                            </div>
+                           </div>
+                           <div>
+                            <h1 className='bg-gray-100 py-1 px-2 text-primary rounded-md border border-primary'>Recent Reservations:</h1>
+                           </div>
+                        </div>
+                        <div className='bg-primary font-medium self-start text-white py-1 px-4 rounded-md'>{dayList[day]}</div>
+                     </div>
+                </div>
+
                 </div>
              </div>
              </>
