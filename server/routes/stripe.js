@@ -11,10 +11,29 @@ const userModel = require('../models/user');
 router.post('/create-checkout-session', async (req, res) => {
     const {booking} = req.body;
     const {place,...usefulInfo} = booking;
+    const badgeVerify = await userModel.findOne({_id:booking.user})
+    if(!badgeVerify){
+      return res.status(401).json("There seems to be an error verifying user's badge!")
+    }
+    const badgeType = badgeVerify.badge;
+
+    // Calculate the discount percentage based on the user's badge
+    let discountPercentage = 0;
+    if (badgeType === 'Silver') {
+      discountPercentage = 0.02; // 2% discount for Silver badge
+    } else if (badgeType === 'Gold') {
+      discountPercentage = 0.04; // 4% discount for Gold badge
+    } else if (badgeType === 'Platinum') {
+      discountPercentage = 0.06; // 6% discount for Platinum badge
+    }
+
+// Calculate the discounted price based on the discount percentage
+const discountedPrice = booking.price - (booking.price * discountPercentage);
     const customer = await stripe.customers.create({
         metadata: {
             userId: booking.user,
             bookingId: booking._id,
+            badge:badgeType,
             bookingPlace: booking.place.title,
             orderPhoto: booking.place.photos[0],
             bookingAddress: booking.place.address,
@@ -29,12 +48,13 @@ router.post('/create-checkout-session', async (req, res) => {
             product_data: {
               name: booking.place.title,
               images:[`http://localhost:8000/uploads/${booking.place.photos[0]}`],
-              description: booking.place.extraInfo,
+              description:`---------You have a ${discountPercentage *100}% discount on this reservation!.---------${booking.place.extraInfo}`,
               metadata:{
-                id:booking._id
+                id:booking._id,
+                discountedPrice: discountedPrice
               }
             },
-            unit_amount: booking.price * 100,
+            unit_amount: discountedPrice * 100,
           },
           quantity: 1,
         },
@@ -159,6 +179,8 @@ console.log('Message Sent:' + info.messageId);
 
 }
 
+
+
 // Update Payment Status
  const updatePaymentStatus=async(customer)=>{
         try{
@@ -197,11 +219,18 @@ console.log('Message Sent:' + info.messageId);
                 return res.status(401).json('User not Found!')
               }
               rewardUser.rewardPoint += rewardPoints;
-              const updatedUser = await rewardUser.save();
+              const updateUser = await rewardUser.save();
               const savedUser = await newOrder.save();
-              console.log('Data:', data)
-              console.log('Customer:', customer)
-              console.log('Processed Order:',savedUser)
+               const updatedUser = await userModel.findOne({_id: customer.metadata.userId})
+               if(updatedUser.rewardPoint >= 500 && updatedUser.rewardPoint <= 999){
+                updatedUser.badge = 'Silver';
+               }else if(updatedUser.rewardPoint >= 1000 && updatedUser.rewardPoint <= 1499){
+                updatedUser.badge = 'Gold';
+               }else if(updatedUser.rewardPoint >= 1500 && updatedUser.rewardPoint <= 1999){
+                updatedUser.badge = 'Platinum';
+               }
+               const refreshedUser = await updatedUser.save();
+              
         }catch(err){
             console.log(err)
         }
