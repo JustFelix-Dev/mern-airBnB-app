@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { FcCalendar } from 'react-icons/fc';
 import { FaTrash } from 'react-icons/fa';
@@ -7,6 +7,7 @@ import { FcCancel } from 'react-icons/fc';
 import { BsFillPatchCheckFill,BsPeopleFill } from 'react-icons/bs';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { userContext } from '../ContextHook/userContext';
 
 const BookingPayment = ({ booking }) => {
   // Custom format string: 'd EEE,MMMM yyyy'
@@ -14,9 +15,9 @@ const BookingPayment = ({ booking }) => {
   const formattedCheckOutDate = format(new Date(booking.checkOut), 'd EEE,MMMM yyyy');
   const [ isModal,setIsModal ] = useState(false);
   const [ order,setOrder ] = useState(false);
+  const {user} = useContext(userContext);
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState('');
-
 
   const handleSelectChange = (event) => {
     setSelectedOption(event.target.value);
@@ -24,16 +25,24 @@ const BookingPayment = ({ booking }) => {
   };
 
   const handleCheckOut=(option,{booking})=>{
+         if(option == 'point'){
+            const verifyPoints = user.rewardPoint;
+            if(verifyPoints <= 50){
+               return console.log("You have Insufficient Points!")
+            }
+         }
           axios.post('/create-checkout-session',{booking,option})
           .then((res)=>{
             if(res.data.url){
                 window.location.href = res.data.url;
-                console.log(option)
-                console.log(booking)
             }
           })
           .catch((err)=>{
-            console.log(err.message)
+            if(err.response.status == 409){
+              console.log(err.response.data)
+            }else{
+              console.log(err)
+            }
           })
   }
 
@@ -116,7 +125,7 @@ const BookingPayment = ({ booking }) => {
                       :
                        (<div className='flex flex-col gap-2'>
                         <select onChange={handleSelectChange} value={selectedOption} className='bg-primary  px-4 py-1 text-white rounded-xs'>
-                        <option disabled selected className='bg-white text-primary' value={''} >Proceed to Payment</option>
+                        <option disabled className='bg-white text-primary' value={''} >Proceed to Payment</option>
                           <option  className='bg-white text-primary' value="direct">Proceed Directly</option>
                           <option  className='bg-white text-primary'  value="point">Proceed With Points</option>
                           </select>

@@ -7,28 +7,46 @@ const nodemailer = require('nodemailer');
 const {format} = require('date-fns');
 const bookingModel = require('../models/Booking');
 const userModel = require('../models/user');
+const {differenceInDays} = require('date-fns');
 
+let pointOption;
 router.post('/create-checkout-session', async (req, res) => {
     const {booking,option} = req.body;
-    console.log('MyBooking:',booking)
-    console.log('MyOption:',option)
     const {place,...usefulInfo} = booking;
-    const badgeVerify = await userModel.findOne({_id:booking.user})
-    if(!badgeVerify){
-      return res.status(401).json("There seems to be an error verifying user's badge!")
-    }
-    const badgeType = badgeVerify.badge;
-
-    // Calculate the discount percentage based on the user's badge.
     let discountPercentage = 0;
-    if (badgeType === 'Silver') {
-      discountPercentage = 0.02; // 2% discount for Silver badge.
-    } else if (badgeType === 'Gold') {
-      discountPercentage = 0.04; // 4% discount for Gold badge.
-    } else if (badgeType === 'Platinum') {
-      discountPercentage = 0.06; // 6% discount for Platinum badge.
+    let badgeType = '';
+
+    if(option == 'direct'){
+      const badgeVerify = await userModel.findOne({_id:booking.user})
+      if(!badgeVerify){
+        return res.status(401).json("There seems to be an error verifying user's badge!")
+      }
+        badgeType = badgeVerify.badge;
+  
+      // Calculate the discount percentage based on the user's badge.
+      if (badgeType === 'Silver') {
+        discountPercentage = 0.02; // 2% discount for Silver badge.
+      } else if (badgeType === 'Gold') {
+        discountPercentage = 0.04; // 4% discount for Gold badge.
+      } else if (badgeType === 'Platinum') {
+        discountPercentage = 0.06; // 6% discount for Platinum badge.
+      }
+    }
+    if(option == 'point'){
+      pointOption = 'point';
+      const checkInDate = new Date(booking.checkIn);
+      const checkOutDate = new Date(booking.checkOut);
+      // Calculate the difference in days
+      const differenceDays = differenceInDays(checkOutDate, checkInDate);
+      if( differenceDays == 1){
+            discountPercentage = 0.1;
+           
+        }else{
+          return res.status(409).json("Booking doesn't meet point requirements!")
+        }
     }
 
+   
 // Calculate the discounted price based on the discount percentage
 const discountedPrice = booking.price - (booking.price * discountPercentage);
     const customer = await stripe.customers.create({
@@ -56,7 +74,7 @@ const discountedPrice = booking.price - (booking.price * discountPercentage);
                 discountedPrice: discountedPrice
               }
             },
-            unit_amount: discountedPrice * 100,
+            unit_amount: parseInt(discountedPrice) * 100,
           },
           quantity: 1,
         },
@@ -181,7 +199,16 @@ console.log('Message Sent:' + info.messageId);
 
 }
 
-
+const updatePoint=async(customer)=>{
+  if(pointOption == 'point'){
+    const deductedPoint = 50;
+    const user = await userModel.findOne({_id:customer.metadata.userId})
+    user.rewardPoint -= deductedPoint;
+    const updatedUser = await user.save();
+  }else{
+    return;
+  }
+}
 
 // Update Payment Status
  const updatePaymentStatus=async(customer)=>{
@@ -273,6 +300,7 @@ router.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
         createOrder(customer,data)
         OrderEmail(customer,data)
         updatePaymentStatus(customer)
+        updatePoint(customer)
        }).catch((err)=>{
           console.log(err.message)
        })
