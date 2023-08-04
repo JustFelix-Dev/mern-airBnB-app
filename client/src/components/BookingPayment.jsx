@@ -15,12 +15,21 @@ const BookingPayment = ({ booking }) => {
   const [ isModal,setIsModal ] = useState(false);
   const [ order,setOrder ] = useState(false);
   const navigate = useNavigate();
+  const [selectedOption, setSelectedOption] = useState('');
 
-  const handleCheckOut=({booking})=>{
-          axios.post('/create-checkout-session',{booking})
+
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+    handleCheckOut(event.target.value,{booking});
+  };
+
+  const handleCheckOut=(option,{booking})=>{
+          axios.post('/create-checkout-session',{booking,option})
           .then((res)=>{
             if(res.data.url){
                 window.location.href = res.data.url;
+                console.log(option)
+                console.log(booking)
             }
           })
           .catch((err)=>{
@@ -106,8 +115,11 @@ const BookingPayment = ({ booking }) => {
                       View Reservation<BsFillPatchCheckFill/></Link><button onClick={()=>{openModal();setOrder(true)}} className='flex items-center gap-1 bg-gray-100 text-primary py-1 px-4 border border-primary rounded-lg justify-center items-center'>Cancel Reservation<FcCancel/></button></div>) 
                       :
                        (<div className='flex flex-col gap-2'>
-                        <button onClick={()=>handleCheckOut({booking})} className='bg-primary px-4 py-1 text-white rounded-xs'>
-                          Proceed to Payment</button>
+                        <select onChange={handleSelectChange} value={selectedOption} className='bg-primary  px-4 py-1 text-white rounded-xs'>
+                        <option disabled selected className='bg-white text-primary' value={''} >Proceed to Payment</option>
+                          <option  className='bg-white text-primary' value="direct">Proceed Directly</option>
+                          <option  className='bg-white text-primary'  value="point">Proceed With Points</option>
+                          </select>
                           <button onClick={openModal} className='flex bg-white  items-center gap-2 justify-center p-2'>Delete Booking <FaTrash/></button></div>)
                   }
                 </div>

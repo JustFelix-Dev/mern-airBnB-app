@@ -9,7 +9,9 @@ const bookingModel = require('../models/Booking');
 const userModel = require('../models/user');
 
 router.post('/create-checkout-session', async (req, res) => {
-    const {booking} = req.body;
+    const {booking,option} = req.body;
+    console.log('MyBooking:',booking)
+    console.log('MyOption:',option)
     const {place,...usefulInfo} = booking;
     const badgeVerify = await userModel.findOne({_id:booking.user})
     if(!badgeVerify){
@@ -17,14 +19,14 @@ router.post('/create-checkout-session', async (req, res) => {
     }
     const badgeType = badgeVerify.badge;
 
-    // Calculate the discount percentage based on the user's badge
+    // Calculate the discount percentage based on the user's badge.
     let discountPercentage = 0;
     if (badgeType === 'Silver') {
-      discountPercentage = 0.02; // 2% discount for Silver badge
+      discountPercentage = 0.02; // 2% discount for Silver badge.
     } else if (badgeType === 'Gold') {
-      discountPercentage = 0.04; // 4% discount for Gold badge
+      discountPercentage = 0.04; // 4% discount for Gold badge.
     } else if (badgeType === 'Platinum') {
-      discountPercentage = 0.06; // 6% discount for Platinum badge
+      discountPercentage = 0.06; // 6% discount for Platinum badge.
     }
 
 // Calculate the discounted price based on the discount percentage
