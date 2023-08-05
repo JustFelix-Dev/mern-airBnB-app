@@ -104,7 +104,7 @@ const LocationPages = () => {
              )
              }
              { id == 'new' && (
-                     <div className='border-t-2 border-primary shadow-2xl py-6 px-10 mx-auto '>
+                     <div className='border-t-2 border-primary mt-4 shadow-2xl py-6 px-10 mx-auto '>
                     <form onSubmit={handleFormPlaces}>
                         <label htmlFor="title">Title:</label>
                         <input type="text" value={title}

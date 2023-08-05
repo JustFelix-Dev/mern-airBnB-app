@@ -22,7 +22,7 @@ useEffect(()=>{
   return (
          <>
          {place && 
-            (<div className='mt-4 max-w-6xl shadow-lg  mx-auto px-8 pt-8'>
+            (<div className='mt-4 max-w-5xl shadow-lg  mx-auto px-8 pt-8'>
                 <h1 className='text-3xl'>{place.title}</h1>
                    <AddressLink>{place.address}</AddressLink>
                    <Gallery place={place}/>

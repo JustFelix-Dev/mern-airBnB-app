@@ -244,7 +244,14 @@ const updatePoint=async(customer)=>{
         // Reward/Point Logic
         try{
           if(pointOption == 'direct'){
-            const rewardPoints = 10;
+            let rewardPoints;
+            if(details.price >=20 && details.price <=200){
+                 rewardPoints = 5;
+            }else if(details.price >=201 && details.price <=500){
+                  rewardPoints = 10;
+            }else if(details.price >=501 && details.price <=1000){
+                  rewardPoints = 15;
+            }
                const rewardUser = await userModel.findOne({_id: customer.metadata.userId})
                 if(!rewardUser){
                   return res.status(401).json('User not Found!')

@@ -1,8 +1,8 @@
 const PoliciesPage = () => {
     return ( 
            <>
-              <div className=" flex justify-center mt-4 border border-primary rounded-xl p-8 w-[80%]  mx-auto shadow-2xl">
-                  <div className="flex-[40%] ">
+              <div className=" flex justify-center gap-4 mt-4 border border-primary rounded-xl p-8 w-[80%]  mx-auto shadow-2xl">
+                  <div className="flex-[40%] max-w-[60ch]">
                      <div>
                         <h1 className="text-2xl font-bold">Badges:</h1>
                         <div>
@@ -48,13 +48,22 @@ const PoliciesPage = () => {
                         <h1 className="text-2xl font-bold">Points:</h1>
                         <ul className="list-disc list-inside">
                             <li>Points can be redeemed and used to make reservations for a duration of only one night per time.</li>
-                            <li>For every successful reservation made with direct payment,<span className="text-gray-900 font-bold">10 points </span> is awarded to the user.</li>
+                            <li>For every successful reservation made with direct payment, points are awarded to the user.
+                                <ul className="list-decimal pl-4 py-1 list-inside ">
+                                    <li><span className="text-gray-900 font-bold">5 points</span> is awarded for reservations between <span className="text-gray-900 font-bold">$20 - $200.</span></li>
+                                    <li><span className="text-gray-900 font-bold">10 points</span> is awarded for reservations between <span className="text-gray-900 font-bold">$201 - $500.</span></li>
+                                    <li><span className="text-gray-900 font-bold">15 points</span> is awarded for reservations between <span className="text-gray-900 font-bold">$501 - $1000.</span></li>
+                                </ul>
+                            </li>
+
                             <li>A total of <span className="text-gray-900 font-bold">50 points </span>would be deducted for every reservation made using point for a <span className="text-gray-900 font-bold">10% discount</span>.</li>
-                            <li>Users with all badge type can use points if sufficient to make their reservations. </li>
+                            <li>Users with all badge type can use points if sufficient to make their reservations.</li>
+                            <li>Cancellation of reservations made with points are not refundable i.e points would not be returned.</li>
                         </ul>
                      </div>
                     <div className="flex items-center  justify-center">
-                    <img src="/images/airbnb.png" alt="airbnbLogo" height={200} width={200} />
+                    <img src="/images/airbnb.png" alt="airbnbLogo" height={50} width={50} />
+                      <h1 className="font-thin">Airbnb.Copyright&copy;2023</h1>
                     </div>
                   </div>
               </div>
