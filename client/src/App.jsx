@@ -17,6 +17,7 @@ import ResetPassword from './pages/ResetPassword'
 import CheckOutSuccess from './pages/CheckOutSuccess'
 import OrderStatus from './components/OrderStatus'
 import EditPlace from './pages/EditPlace'
+import PoliciesPage from './pages/PoliciesPage'
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
@@ -38,6 +39,7 @@ function App() {
           <Route path='checkout-success/:id' element={<CheckOutSuccess/>}/>
           <Route path='order-status/:id' element={<OrderStatus/>}/>
           <Route path='/forgotPassword' element={<ResetPassword/>}/>
+          <Route path='/airbnbPolicies' element={<PoliciesPage/>}/>
           </Route>
         </Routes>
         </UserContextProvider>

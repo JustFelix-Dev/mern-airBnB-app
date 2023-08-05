@@ -100,11 +100,11 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                      <div className='flex mt-4 items-center justify-between'>
                         <div className='flex flex-col gap-6'>
                            <div>
-                          <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>({badgeName}):</span> <Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
+                          <h1 className='flex gap-1 items-center font-medium text-lg'>Badge<span className='text-gray-500'>({badgeName}):</span> <Link to={'/airbnbPolicies'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link> </h1>
                           <img src={badgeUrl} alt="badgeIcon" width={50} height={50} />
                            </div>
                            <div>
-                            <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
+                            <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/airbnbPolicies'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
                             <span>{user.rewardPoint}/{maxValue}</span> <span className='text-gray-700'>points</span> 
                             <div className='mt-2' >
                             <progress className='custom-progress' value={user.rewardPoint} max={maxValue} ></progress>

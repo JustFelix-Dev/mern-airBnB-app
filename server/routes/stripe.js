@@ -17,6 +17,7 @@ router.post('/create-checkout-session', async (req, res) => {
     let badgeType = '';
 
     if(option == 'direct'){
+      pointOption = 'direct';
       const badgeVerify = await userModel.findOne({_id:booking.user})
       if(!badgeVerify){
         return res.status(401).json("There seems to be an error verifying user's badge!")
@@ -242,23 +243,25 @@ const updatePoint=async(customer)=>{
 
         // Reward/Point Logic
         try{
-          const rewardPoints = 10;
-             const rewardUser = await userModel.findOne({_id: customer.metadata.userId})
-              if(!rewardUser){
-                return res.status(401).json('User not Found!')
+          if(pointOption == 'direct'){
+            const rewardPoints = 10;
+               const rewardUser = await userModel.findOne({_id: customer.metadata.userId})
+                if(!rewardUser){
+                  return res.status(401).json('User not Found!')
+                }
+                rewardUser.rewardPoint += rewardPoints;
+                const updateUser = await rewardUser.save();
+                const updatedUser = await userModel.findOne({_id: customer.metadata.userId})
+                if(updatedUser.rewardPoint >= 500 && updatedUser.rewardPoint <= 999){
+                  updatedUser.badge = 'Silver';
+                }else if(updatedUser.rewardPoint >= 1000 && updatedUser.rewardPoint <= 1499){
+                  updatedUser.badge = 'Gold';
+                }else if(updatedUser.rewardPoint >= 1500 && updatedUser.rewardPoint <= 1999){
+                  updatedUser.badge = 'Platinum';
+                }
+                const refreshedUser = await updatedUser.save();
               }
-              rewardUser.rewardPoint += rewardPoints;
-              const updateUser = await rewardUser.save();
               const savedUser = await newOrder.save();
-               const updatedUser = await userModel.findOne({_id: customer.metadata.userId})
-               if(updatedUser.rewardPoint >= 500 && updatedUser.rewardPoint <= 999){
-                updatedUser.badge = 'Silver';
-               }else if(updatedUser.rewardPoint >= 1000 && updatedUser.rewardPoint <= 1499){
-                updatedUser.badge = 'Gold';
-               }else if(updatedUser.rewardPoint >= 1500 && updatedUser.rewardPoint <= 1999){
-                updatedUser.badge = 'Platinum';
-               }
-               const refreshedUser = await updatedUser.save();
               
         }catch(err){
             console.log(err)
