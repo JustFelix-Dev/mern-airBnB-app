@@ -1,9 +1,9 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { baseUrl, baseUrlIndex, getRequest, postRequest } from "../utils/services";
 import { toast } from "react-toastify";
+import {io} from 'socket.io-client';
 
 export const ChatContext = createContext();
-
 
 export const ChatContextProvider=({children,user})=>{
     const [ userChats,setUserChats ] = useState(null);
@@ -16,8 +16,51 @@ export const ChatContextProvider=({children,user})=>{
     const [ messagesError,setMessagesError] = useState(null);
     const [ sendTextMessageError,setSendTextMessageError] = useState(null);
     const [ newMessage, setNewMessage] = useState(null);
+    const [ socket,setSocket ] = useState(null);
+    const [ onlineUsers,setOnlineUsers] = useState([]);
 
-    console.log("Message:",messages);
+console.log("OnlineUsers", onlineUsers)
+    // Initial Socket
+    useEffect(()=>{
+        const newSocket = io("http://localhost:3000");
+        setSocket(newSocket);
+
+        return()=>{
+            newSocket.disconnect()
+        }
+    },[user]) 
+
+    // Adding Online Users
+    useEffect(()=>{
+        if(socket === null) return;
+        socket.emit("addNewUser",user?._id);
+        socket.on("getOnlineUsers", (res)=>{ setOnlineUsers(res)})
+
+        return () =>{
+            socket.off("getOnlineUsers");
+        };
+    },[socket])
+
+    // Sending Real-time Messages
+    useEffect(()=>{
+       if(socket === null) return;
+    const recipientId = currentChat?.members?.find((id)=> id !== user?._id)
+       socket.emit("sendMessage",{...newMessage, recipientId})
+    },[newMessage])
+
+    // Receive Message
+    useEffect(()=>{
+        if(socket === null) return;
+          socket.on("getMessage",(res)=>{
+                 if(currentChat?._id !== res.chatId) return;
+
+                 setMessages((prev)=> [...prev,res])
+          })
+          return ()=>{
+            socket.off("getMessage")
+          }
+     },[socket,currentChat])
+
 
     useEffect(()=>{
         const getUsers = async()=>{
@@ -91,7 +134,7 @@ export const ChatContextProvider=({children,user})=>{
             chatId: currentChatId,
             senderId: sender._id,
             text: textMessage
-        }))
+        }));
 
         if(response.error){
            return  setSendTextMessageError(response)
@@ -109,9 +152,9 @@ export const ChatContextProvider=({children,user})=>{
           <ChatContext.Provider value={{ 
             userChats,isUserChatsLoading,
             potentialChats,createChat,
-            userChatsError,updateCurrentChat,
+            userChatsError,updateCurrentChat,onlineUsers,
             currentChat,messages,sendTextMessage,
-           isMessagesLoading,messagesError}}>
+            isMessagesLoading,messagesError}}>
             {children}
           </ChatContext.Provider>
     )

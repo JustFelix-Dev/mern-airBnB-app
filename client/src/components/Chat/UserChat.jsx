@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useFetchRecipient } from '../../hooks/useFetchRecipient';
+import { ChatContext } from '../../ContextHook/chatContext';
 
 const UserChat = ({chat,user}) => {
     const { recipientUser } = useFetchRecipient(chat,user);
+    const { onlineUsers } = useContext(ChatContext);
+    const isOnline = onlineUsers?.some((user)=> user?.userId === recipientUser?._id)
 
   return (
         <>
@@ -22,7 +25,7 @@ const UserChat = ({chat,user}) => {
                         12/2/2022
         </div>
         <div className="this-user-notifications flex bg-primary h-[20px] w-[20px] text-xs text-white font-medium rounded-full items-center justify-center">7</div>
-         <span className="inline-block h-[9px] w-[9px] rounded-full bg-green-400 absolute -top-[3px] -right-[3px] z-2"></span>
+         <span className={ isOnline ? "inline-block h-[9px] w-[9px] rounded-full bg-green-400 absolute -top-[3px] -right-[3px] z-2" : ""}></span>
         </div>
       </div>
         </>
