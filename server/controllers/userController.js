@@ -109,9 +109,20 @@ const userProfile =(req,res)=>{
       }
 }
 
+const findUser=async(req,res)=>{
+  const {userId} = req.params;
+  try{
+     const user = await userModel.findById(userId)
+     res.status(200).json(user)
+  }catch(err){
+    console.log(err)
+    res.status(501).json(err.message) 
+  }
+}
+
  const logoutUser = (req,res)=>{
       res.cookie('token','').json(true)
  }
 
 
-module.exports={registerUser,loginUser,userProfile,logoutUser,};
+module.exports={registerUser,loginUser,userProfile,logoutUser,findUser};

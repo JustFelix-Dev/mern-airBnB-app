@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
+import { userContext } from '../ContextHook/userContext';
 
 const ProfilePage = ({user,setUser,setRedirected}) => {
     const [ isLoading,setIsLoading ] = useState(false);

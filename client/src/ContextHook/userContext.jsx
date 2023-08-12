@@ -21,7 +21,7 @@ export function UserContextProvider({children}){
             }
         }
         fetchProfile()
-      },[])
+      },[user])
       console.log(user);
    return (
           <userContext.Provider value={{user,setUser,ready}}>

@@ -1,33 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useContext, useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'
 import IndexPage from './pages/IndexPage'
 import LayoutPage from './pages/Layout/LayoutPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import axios from 'axios'
-import { UserContextProvider } from './ContextHook/userContext'
 import AccountPage from './pages/AccountPage'
 import PlacesDetail from './pages/PlacesDetail'
 import BookingPlace from './pages/BookingPlace'
-import {ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import ResetPassword from './pages/ResetPassword'
 import CheckOutSuccess from './pages/CheckOutSuccess'
 import OrderStatus from './components/OrderStatus'
 import EditPlace from './pages/EditPlace'
 import PoliciesPage from './pages/PoliciesPage'
 import Chat from './components/Chat/Chat'
+import { UserContextProvider, userContext } from './ContextHook/userContext';
+import { ChatContextProvider } from './ContextHook/chatContext'
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
 function App() {
+  const [ user,setUser ] = useState(null)
 
+  useEffect(()=>{
+    async function fetchProfile(){
+        try{
+            if(!user){
+           const res = await axios.get('/profile')
+                setUser(res.data)
+        }
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+    fetchProfile()
+  },[user])
+  
   return (
         <>
         <UserContextProvider>
+          <ChatContextProvider user={user}>
           <Chat/>
         <Routes>
           <Route path='/' element={<LayoutPage/>}>
@@ -45,6 +61,7 @@ function App() {
           <Route path='/airbnbPolicies' element={<PoliciesPage/>}/>
           </Route>
         </Routes>
+        </ChatContextProvider>
         </UserContextProvider>
         <ToastContainer/>
         </>
