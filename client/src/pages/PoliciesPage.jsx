@@ -34,7 +34,7 @@ const PoliciesPage = () => {
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                            <h1 className="underline text-lg">Platinum Badge:</h1> <span><img src="/images/platinum-badge.png" alt="" height={30} width={30} /></span>
+                            <h1 className="underline text-lg">Platinum Badge:</h1> <span><img src="/images/platinum-badge.png" alt="" height={30} width={30}/></span>
                             </div>
                              <ul className="list-disc list-inside">
                                  <li>User must have between 1500 - 2000 points.</li>

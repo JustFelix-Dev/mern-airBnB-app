@@ -26,7 +26,7 @@ const deleteOrder = async(req,res)=>{
         if(!updatedItem){
             return res.status(401).json('Booking Not Found!')
         }
-              res.status(201).json("Booking successfully updated!")
+              res.status(201).json("Reservation successfully cancelled!")
     }catch(err){
         return res.status(503).json('Server Error!')
     }

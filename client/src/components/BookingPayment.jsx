@@ -8,6 +8,7 @@ import { BsFillPatchCheckFill,BsPeopleFill } from 'react-icons/bs';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { userContext } from '../ContextHook/userContext';
+import { toast } from 'react-toastify';
 
 const BookingPayment = ({ booking }) => {
   // Custom format string: 'd EEE,MMMM yyyy'
@@ -28,7 +29,7 @@ const BookingPayment = ({ booking }) => {
          if(option == 'point'){
             const verifyPoints = user.rewardPoint;
             if(verifyPoints <= 50){
-               return console.log("You have Insufficient Points!")
+               return toast.error('You have Insufficient points!')
             }
          }
           axios.post('/create-checkout-session',{booking,option})
@@ -39,7 +40,7 @@ const BookingPayment = ({ booking }) => {
           })
           .catch((err)=>{
             if(err.response.status == 409){
-              console.log(err.response.data)
+              toast.error(err.response.data)
             }else{
               console.log(err)
             }
@@ -48,7 +49,7 @@ const BookingPayment = ({ booking }) => {
 
     const handleDelete=(id)=>{
           axios.delete(`/deleteBooking/${id}`).then((res)=>{
-            console.log("Successfully deleted the reservation");
+            toast.success(res.data)
             navigate('/account/bookings')
           }).catch((err)=>{
             console.log('Something went wrong!')
@@ -56,7 +57,7 @@ const BookingPayment = ({ booking }) => {
     }
     const handleOrder=(id)=>{
         axios.delete(`/deleteOrder/${id}`).then((res)=>{
-          console.log('Reservation Cancelled Successfully!')
+          toast.success(res.data)
           navigate('/account/bookings')
         }).catch((err)=>{
           console.log('Something went wrong!')

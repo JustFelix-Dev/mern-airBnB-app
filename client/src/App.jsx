@@ -18,6 +18,8 @@ import CheckOutSuccess from './pages/CheckOutSuccess'
 import OrderStatus from './components/OrderStatus'
 import EditPlace from './pages/EditPlace'
 import PoliciesPage from './pages/PoliciesPage'
+import Chat from './components/Chat/Chat'
+
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 
@@ -26,6 +28,7 @@ function App() {
   return (
         <>
         <UserContextProvider>
+          <Chat/>
         <Routes>
           <Route path='/' element={<LayoutPage/>}>
           <Route index element={<IndexPage/>}/>

@@ -25,7 +25,7 @@ const BookingList = () => {
          <>
          <h1 className="bg-gray-200 text-primary font-medium py-1 px-4 text-xl my-3 text-center rounded-lg max-w-xs mx-auto">Booking List:</h1>
            <div className='h-[350px] overflow-auto px-12'>
-            { bookings && bookings.length > 0 && (
+            { bookings && bookings.length > 0 ?
                <div>
                  {
                     bookings.map(booking=>(
@@ -41,8 +41,9 @@ const BookingList = () => {
                         </Link>
                     ))
                  }
-               </div>
-            )
+               </div> : (<div className='bg-primary shadow-xl text-center mt-2 py-4 px-6 mx-auto max-w-xs rounded-lg font-semibold text-xl text-white'>
+                        No Bookings yet!.<br/><Link className='underline' to={'/'}>Make a booking here</Link></div>
+                        )
             }
             </div>
          </>

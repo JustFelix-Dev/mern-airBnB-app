@@ -23,21 +23,21 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
           console.log(err.message)
          })
 
-      if(user.rewardPoint < 500){
+      if(user.rewardPoint <= 499){
           setBadgeName('Bronze')
           setBadgeUrl('/images/bronze-badge.png')
           setMaxValue(500);
-      }else if(user.rewardPoint >= 500 ){
+      }else if(user.rewardPoint >= 499 && user.rewardPoint <=999 ){
         setBadgeName('Silver')
         setBadgeUrl('/images/silver-badge.png')
         setMaxValue(1000);
 
-      }else if(user.rewardPoint >= 1000){
+      }else if(user.rewardPoint >= 1000 && user.rewardPoint <=1499){
         setBadgeName('Gold')
         setBadgeUrl('/images/gold-badge.png')
         setMaxValue(1500);
 
-      }else if(user.rewardPoint >= 1500){
+      }else if(user.rewardPoint >= 1500 && user.rewardPoint <=2000){
         setBadgeName('Platinum')
         setBadgeUrl('/images/platinum-badge.png')
         setMaxValue(2000);
@@ -50,9 +50,6 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
         setRedirected(true)
         setIsLoading(false)
     }
-     
-
-
 
     return ( 
              <>
@@ -118,8 +115,8 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                             <h1 className='bg-gray-100 max-w-xs my-2 text-center py-1 px-2 text-primary rounded-md border'>Recent Reservations:</h1>
                             <div className=' h-[110px] overflow-auto'>
                               {
-                      fetchOrders && fetchOrders.length > 0 &&
-                        fetchOrders.sort((a,b)=>b.createdAt - a.createdAt).map((order,idx)=>(
+                      fetchOrders && fetchOrders.length > 0 ?
+                        fetchOrders.sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((order,idx)=>(
                         <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
                           <div className='flex '>
                            <img className='object-cover' src={`http://localhost:8000/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
@@ -132,7 +129,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                            </div>
                            </div>
                            </div>
-                            ))
+                            )) : (<div className='pt-4 text-primary font-bold w-[80%] mx-auto'>No reservations have been made yet!</div>)
                               }
                             </div>
                            </div>

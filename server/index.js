@@ -5,6 +5,8 @@ const { configDotenv } = require('dotenv');
 configDotenv();
 const userRoutes = require('./routes/userRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+const messageRoutes = require('./routes/messageRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const authRoutes = require('./routes/auth');
 const stripeRoute = require('./routes/stripe');
@@ -64,6 +66,8 @@ app.use(bookingRoutes)
 app.use('/auth',authRoutes)
 app.use(stripeRoute)
 app.use(orderRoutes)
+app.use('/api/chats',chatRoutes)
+app.use('/api/messages',messageRoutes)
 
 // app.get('/test',(req,res)=>{
 //     res.json("Hello World!")
