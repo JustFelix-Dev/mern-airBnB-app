@@ -6,6 +6,7 @@ import ChatBox from "./ChatBox";
 import UserChat from "./UserChat";
 import PotentialChats from "./PotentialChats";
 
+
 const Chat = () => {
     const {user} = useContext(userContext);
     const { userChats,isUserChatsLoading,updateCurrentChat,userChatsError } = useContext(ChatContext);
@@ -47,12 +48,14 @@ const Chat = () => {
                         </div>
                         <div className="grow pr-4">
                             <ChatBox/>
+                            
                         </div>
                     </div>
+                   
                  
              </motion.div>
              }</AnimatePresence>
-            <img onClick={handleChatClick} className="rounded-2xl fixed z-10 shadow-2xl bottom-6 right-6 cursor-pointer transition-all hover:scale-90" src="/images/chatIcon.jpg" alt="chatIcon" width={70} height={70} />
+            <img onClick={handleChatClick} className="rounded-2xl fixed z-10 shadow-2xl bottom-3 right-6 cursor-pointer transition-all hover:scale-90" src="/images/chatIcon.jpg" alt="chatIcon" width={70} height={70} />
           </>
      );
 }

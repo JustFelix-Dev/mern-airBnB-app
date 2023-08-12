@@ -1,5 +1,6 @@
 import { createContext, useCallback, useEffect, useState } from "react";
 import { baseUrl, baseUrlIndex, getRequest, postRequest } from "../utils/services";
+import { toast } from "react-toastify";
 
 export const ChatContext = createContext();
 
@@ -13,6 +14,8 @@ export const ChatContextProvider=({children,user})=>{
     const [ messages,setMessages ] = useState(null);
     const [ isMessagesLoading,setIsMessagesLoading] = useState(false);
     const [ messagesError,setMessagesError] = useState(null);
+    const [ sendTextMessageError,setSendTextMessageError] = useState(null);
+    const [ newMessage, setNewMessage] = useState(null);
 
     console.log("Message:",messages);
 
@@ -81,6 +84,23 @@ export const ChatContextProvider=({children,user})=>{
         getMessages()
     },[currentChat])
 
+    const sendTextMessage = useCallback(async(textMessage,sender,currentChatId,setTextMessage)=>{
+        if(!textMessage) return toast.error('Input is empty!')
+
+        const response = await postRequest(`${baseUrl}/messages`, JSON.stringify({
+            chatId: currentChatId,
+            senderId: sender._id,
+            text: textMessage
+        }))
+
+        if(response.error){
+           return  setSendTextMessageError(response)
+        }
+        setNewMessage(response)
+        setMessages((prev)=>[...prev,response])
+        setTextMessage('')
+    },[])
+
     const updateCurrentChat = useCallback((chat)=>{
          setCurrentChat(chat)
     },[])
@@ -90,7 +110,7 @@ export const ChatContextProvider=({children,user})=>{
             userChats,isUserChatsLoading,
             potentialChats,createChat,
             userChatsError,updateCurrentChat,
-            currentChat,messages,
+            currentChat,messages,sendTextMessage,
            isMessagesLoading,messagesError}}>
             {children}
           </ChatContext.Provider>
