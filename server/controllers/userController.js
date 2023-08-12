@@ -120,9 +120,19 @@ const findUser=async(req,res)=>{
   }
 }
 
+const getUsers=async(req,res)=>{
+  try{
+     const users = await userModel.find()
+     res.status(200).json(users)
+  }catch(err){
+    console.log(err)
+    res.status(501).json(err.message) 
+  }
+}
+
  const logoutUser = (req,res)=>{
       res.cookie('token','').json(true)
  }
 
 
-module.exports={registerUser,loginUser,userProfile,logoutUser,findUser};
+module.exports={registerUser,loginUser,userProfile,logoutUser,findUser,getUsers};
