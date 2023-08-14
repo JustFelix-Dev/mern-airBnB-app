@@ -14,7 +14,6 @@ const ChatBox = () => {
     const isOnline = onlineUsers?.some((user)=> user?.userId === recipientUser?._id)
     const scroll = useRef();
 
-    console.log("Text:", textMessage);
 
     useEffect(()=>{
         scroll.current?.scrollIntoView({behavior:"smooth"})

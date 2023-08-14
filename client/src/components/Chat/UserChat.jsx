@@ -12,7 +12,6 @@ const UserChat = ({chat,user}) => {
     const unreadNotifications = unreadNotificationsFunc(notifications);
     const thisUserNotifications = unreadNotifications?.filter(n => n.senderId == recipientUser?._id );
     const { latestMessage } = useFetchLatestMessage(chat);
-    console.log("RecipientUser:", recipientUser);
 
   return (
         <>

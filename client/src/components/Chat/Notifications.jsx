@@ -22,10 +22,6 @@ const Notifications = () => {
         return { ...n,senderName: sender?.name}
      })
 
-     console.log("un:", unreadNotifications)
-     console.log("mn:", modifiedNotifications)
-
-
     return ( 
           <>
             <div className="relative ">
