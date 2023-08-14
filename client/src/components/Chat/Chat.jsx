@@ -5,6 +5,7 @@ import { ChatContext } from "../../ContextHook/chatContext";
 import ChatBox from "./ChatBox";
 import UserChat from "./UserChat";
 import PotentialChats from "./PotentialChats";
+import Notifications from "./Notifications";
 
 
 const Chat = () => {
@@ -26,9 +27,13 @@ const Chat = () => {
               <motion.div exit={{y:50,opacity:0,scale:0}} initial={{y:50}} 
               animate={{y:0}} transition={{type:'spring',stiffness:170}} 
               className=" fixed z-10 shadow-2xl bottom-16 rounded-t-2xl overflow-hidden right-6 w-[90%] h-[33rem] bg-white">
-                <div className="flex gap-2 items-center justify-center bg-primary text-white py-2">
-                    <motion.div className="overflow-hidden" initial={{scale:0.9}} animate={{scale:1}} transition={{type:'spring',stiffness:130}}><img className="rounded-full bg-white p-1" src="/images/agentIcon.png" alt="agentIcon" width={35} height={35} /></motion.div>
+                <div className="flex gap-2 items-center justify-between px-6 bg-primary text-white py-2">
+                    <motion.div className="overflow-hidden" initial={{scale:0.9}} animate={{scale:1}} transition={{type:'spring',stiffness:130}}></motion.div>
+                    <div className="flex items-center gap-3">
+                    <img className="rounded-full bg-white p-1" src="/images/agentIcon.png" alt="agentIcon" width={35} height={35} />
                     <span className="text-lg font-bold">AirBnb Chat</span>
+                    </div>
+                         <div className=""><Notifications/></div>
                 </div>
                     <div className="flex pt-4 gap-4 ">
                         <div>

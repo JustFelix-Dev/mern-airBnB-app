@@ -19,6 +19,7 @@ export const ChatContextProvider=({children,user})=>{
     const [ socket,setSocket ] = useState(null);
     const [ notifications,setNotifications] = useState([]);
     const [ onlineUsers,setOnlineUsers] = useState([]);
+    const [ allUsers,setAllUsers ] = useState([]);
 
 console.log("Notifications", notifications);
     // Initial Socket
@@ -91,6 +92,7 @@ console.log("Notifications", notifications);
                  return !isChatCreated 
             });
             setPotentialChats(supportChat)
+            setAllUsers(response)
         }
 
         getUsers();
@@ -163,8 +165,10 @@ console.log("Notifications", notifications);
           <ChatContext.Provider value={{ 
             userChats,isUserChatsLoading,
             potentialChats,createChat,
-            userChatsError,updateCurrentChat,onlineUsers,
-            currentChat,messages,sendTextMessage,notifications,
+            userChatsError,updateCurrentChat,
+            onlineUsers,currentChat,
+            messages,sendTextMessage,
+            notifications,allUsers,
             isMessagesLoading,messagesError}}>
             {children}
           </ChatContext.Provider>
