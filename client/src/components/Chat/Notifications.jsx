@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 const Notifications = () => {
      const [ isOpen,setIsOpen] = useState(false);
      const { user } = useContext(userContext);
-     const { notifications,userChats,allUsers } = useContext(ChatContext);
+     const { notifications,userChats,allUsers,markAllNotification,markNotificationAsRead } = useContext(ChatContext);
 
      const handleClick=()=>{
         setIsOpen(!isOpen)
@@ -41,12 +41,12 @@ const Notifications = () => {
                 isOpen &&  <motion.div initial={{opacity:0,scale:0.7}} animate={{opacity:1,scale:1}} transition={{type:'spring',stiffness:120,delay:0.2,duration:0.1}} className="absolute max-h-[50vh] w-[250px] top-12 right-0 shadow-lg border-t border-primary p-1 bg-white z-10 text-black">
                     <div className="p-2 pb-0 flex items-center justify-between">
                         <h3 className='font-semibold text-lg'>Notifications</h3>
-                        <div className="cursor-pointer font-semibold opacity-80">Mark All as Read</div>
+                        <div onClick={()=> markAllNotification(notifications)} className="cursor-pointer font-semibold opacity-80">Mark All as Read</div>
                     </div>
                     { modifiedNotifications?.length === 0 ? (<span className='text-sm text-center my-4 p-1 pb-1 border-b border-gray-200 flex flex-col cursor-pointer'>No notification Yet..</span>) : null}
                     { modifiedNotifications && modifiedNotifications.map((n,index)=>{
                         return (
-                            <div key={index} className={n.isRead ? `text-sm my-4 p-1 pb-1 border-b border-gray-200 flex flex-col cursor-pointer` : `my-4 p-2 text-sm pb-1 text-white border-b border-gray-200 flex flex-col cursor-pointer bg-primary`}>
+                            <div  onClick={()=>{ markNotificationAsRead(n,userChats,user,notifications); setIsOpen(false)}}  key={index} className={n.isRead ? `text-sm my-4 p-1 pb-1 border-b border-gray-200 flex flex-col cursor-pointer` : `my-4 p-2 text-sm pb-1 text-white border-b border-gray-200 flex flex-col cursor-pointer bg-primary`}>
                                 <span>{`${n.senderName} sent you a new message`}</span>
                                 <span className='mt-1 text-xs text-gray-200'>{formatDistanceToNow(new Date(n.date),{addSuffix: true})}</span>
                             </div>

@@ -113,7 +113,7 @@ console.log("Notifications", notifications);
         }
 
         getUserChats()
-    },[user])
+    },[user,notifications])
 
     const createChat = useCallback(async( firstId,secondId )=>{
           const response = await postRequest(`${baseUrl}/chats`,JSON.stringify({firstId,secondId}))
@@ -155,10 +155,52 @@ console.log("Notifications", notifications);
         setNewMessage(response)
         setMessages((prev)=>[...prev,response])
         setTextMessage('')
-    },[])
+    },[]);
 
     const updateCurrentChat = useCallback((chat)=>{
          setCurrentChat(chat)
+    },[]);
+
+    const markAllNotification = useCallback((notifications)=>{
+        const MdNotifications = notifications.map(n => { return {...n,isRead:true}})
+        setNotifications(MdNotifications)
+    },[]);
+
+    const markNotificationAsRead = useCallback((n,userChats,user,notifications)=>{
+        // Find Chat to Open
+        const desiredChat = userChats.find((chat)=>{
+            const chatMembers = [ user?._id,n.senderId];
+            const isDesiredChat = chat?.members.every((member)=>{
+                return chatMembers.includes(member);
+            });
+            return isDesiredChat
+        });
+        //   Mark Notification as read
+        const mNotifications = notifications.map((notf=>{
+            if(n.senderId === notf.senderId){
+                return { ...n, isRead: true}
+            }else{
+                return notf
+            }
+        }))
+             updateCurrentChat(desiredChat);
+             setNotifications(mNotifications);
+    },[])
+
+    const markThisUserNotification = useCallback((thisUserNotifications, notifications)=>{
+        // Mark Notifications as read
+        const mNotifications = notifications.map((nots)=>{
+            let notification;
+            thisUserNotifications.forEach(n=>{
+                if(n.senderId === nots.senderId) {
+                    notification = { ...n, isRead:true};
+                }else{
+                    notification = nots;
+                }
+            });
+            return notification;
+        });
+         setNotifications(mNotifications)
     },[])
 
     return(
@@ -168,7 +210,8 @@ console.log("Notifications", notifications);
             userChatsError,updateCurrentChat,
             onlineUsers,currentChat,
             messages,sendTextMessage,
-            notifications,allUsers,
+            notifications,allUsers,markAllNotification,
+            markNotificationAsRead, markThisUserNotification,
             isMessagesLoading,messagesError}}>
             {children}
           </ChatContext.Provider>
