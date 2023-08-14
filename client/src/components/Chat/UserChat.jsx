@@ -12,7 +12,7 @@ const UserChat = ({chat,user}) => {
     const unreadNotifications = unreadNotificationsFunc(notifications);
     const thisUserNotifications = unreadNotifications?.filter(n => n.senderId == recipientUser?._id );
     const { latestMessage } = useFetchLatestMessage(chat);
-    console.log("LatestMessage:",latestMessage);
+    console.log("RecipientUser:", recipientUser);
 
   return (
         <>
@@ -22,7 +22,15 @@ const UserChat = ({chat,user}) => {
         }}}>
         <div className='flex gap-2'>
                  <div >
-             <img src="/images/airbnb.png" alt="" height={20} width={20} />
+             <img 
+              src={
+                recipientUser && recipientUser?.photo
+                  ? recipientUser?.photo.startsWith('https://')
+                    ? recipientUser?.photo
+                    : `http://localhost:8000/userPhoto/${recipientUser?.photo}` 
+                     : '/images/svgexport-7.svg'
+             } 
+             alt="" height={20} width={20} style={{borderRadius: "50px"}} />
                 </div>
             <div className="text-content">
                 <div className="name font-medium">{recipientUser?.name}</div>
@@ -44,4 +52,4 @@ const UserChat = ({chat,user}) => {
   )
 }
 
-export default UserChat
+export default UserChat;
