@@ -18,6 +18,7 @@ import PoliciesPage from './pages/PoliciesPage'
 import Chat from './components/Chat/Chat'
 import { UserContextProvider, userContext } from './ContextHook/userContext';
 import { ChatContextProvider } from './ContextHook/chatContext'
+import FAQAccordion from './pages/FAQAccordion';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -59,6 +60,8 @@ function App() {
           <Route path='order-status/:id' element={<OrderStatus/>}/>
           <Route path='/forgotPassword' element={<ResetPassword/>}/>
           <Route path='/airbnbPolicies' element={<PoliciesPage/>}/>
+          <Route path='/airbnb-faq' element={<FAQAccordion/>}/>
+
           </Route>
         </Routes>
         </ChatContextProvider>
