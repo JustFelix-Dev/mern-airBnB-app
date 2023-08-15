@@ -20,7 +20,7 @@ const ChatBox = () => {
     },[messages])
 
     if(!recipientUser) return(
-        <p className='flex items-center justify-center pt-[20%]' style={{textAlign:"center",width:"100%"}}>No Conversation Selected Yet...</p>
+        <p className='flex h-[400px] items-center justify-center' style={{textAlign:"center",width:"100%"}}>No Conversation Selected Yet...</p>
         )
         
         if(isMessagesLoading) return(

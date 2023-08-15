@@ -60,4 +60,17 @@ const editPlace = async(req,res)=>{
        }
 }
 
-module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces,editPlace};
+const deletePlace = async(req,res)=>{
+  const {id} = req.params;
+  try{
+    const deletedItem =  await Location.findOneAndDelete({_id: id})
+    if(!deletedItem){
+     return res.status(401).json('Location Not Found!')
+    }
+       res.status(201).json("Location successfully deleted!")
+  }catch(err){
+    return  res.status(503).json('Server Error!')
+  }
+}
+
+module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces,editPlace,deletePlace};

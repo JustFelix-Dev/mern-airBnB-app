@@ -3,7 +3,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { ImEyePlus } from 'react-icons/im';
 import { SlCloudUpload } from 'react-icons/sl';
 import { HiOutlineTrash } from 'react-icons/hi';
-import { AiOutlineStar,AiFillStar } from 'react-icons/ai';
+import { FaTrash } from 'react-icons/fa';
+import { AiOutlineStar,AiFillStar,AiFillEdit } from 'react-icons/ai';
 import axios from 'axios';
 import Perks from '../components/Perks';
 import PlacesImage from '../components/PlacesImage';
@@ -82,6 +83,16 @@ const LocationPages = () => {
                  navigate('/account/places')
     }
 
+    const handleDelete=(id)=>{
+      alert(id);
+      axios.delete(`/deletePlace/${id}`).then((res)=>{
+        toast.success(res.data)
+        navigate('/')
+      }).catch((err)=>{
+        console.log('Something went wrong!')
+      })
+}
+
   return (
            <>
              { id !== 'new' && (
@@ -89,7 +100,7 @@ const LocationPages = () => {
                 <Link to={`/account/places/new`} className='inline-flex items-center gap-1 bg-primary mb-4 text-white py-2 px-4 rounded-lg'><ImEyePlus/>Add a New Place</Link>
                  <div className='max-w-7xl mx-auto'>
                     {fetchedPlaces.length > 0 &&  fetchedPlaces.map(place=>(
-                        <Link to={`/account/places/edit/${place._id}`} className="flex gap-3 bg-gray-100 p-3">
+                        <div  className="flex relative gap-3 mb-4 transition-all transition- hover:border border-gray-300 rounded-lg bg-gray-100 p-3">
                             <div className='flex w-32 bg-gray-300 grow shrink-0'>
                                <PlacesImage place={place}/>
                             </div>
@@ -97,7 +108,15 @@ const LocationPages = () => {
                                 <h2 className='text-xl'>{place.title}</h2>
                                 <p className='text-sm mt-2'>{place.description}</p>
                             </div>
-                        </Link>
+                            <div className='flex gap-2 relative cursor-pointer' >
+                              <div className='absolute right-2' onClick={(e)=>{ if(!confirm("Are you sure you want to delete this location ?")){e.preventDefault()}else{handleDelete(place?._id)}}}>
+                            <FaTrash/>
+                              </div>
+                              <div className='absolute right-8'>
+                                <Link to={`/account/places/edit/${place?._id}`} ><AiFillEdit size={18}/></Link>
+                              </div>
+                            </div>
+                        </div>
                     ))}
                  </div>
              </div>

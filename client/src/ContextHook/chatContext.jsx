@@ -21,7 +21,6 @@ export const ChatContextProvider=({children,user})=>{
     const [ onlineUsers,setOnlineUsers] = useState([]);
     const [ allUsers,setAllUsers ] = useState([]);
 
-console.log("Notifications", notifications);
     // Initial Socket
     useEffect(()=>{
         const newSocket = io("http://localhost:3000");
@@ -129,7 +128,6 @@ console.log("Notifications", notifications);
                 setIsMessagesLoading(true)
                 setMessagesError(null)
                 const response = await getRequest(`${baseUrl}/messages/${currentChat?._id}`);
-                console.log("ChatMessage:", response)
                 setIsMessagesLoading(false)
                 if(response.error){
                     return setMessagesError(response)

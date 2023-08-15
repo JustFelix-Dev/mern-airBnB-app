@@ -45,16 +45,18 @@ useEffect(()=>{
                   <div className="bg-white -mx-8 px-8 py-8 border-t">
                     <div>
                       <h2 className='text-xl font-bold'>What this Place has to Offer You:</h2>
+                      <div className='flex  items-center justify-center p-4 flex-wrap gap-4 max-w-sm'>
                         {
                           place.perks && (
                                 place.perks.map((perk,idx)=>(
-                                  <div className='flex gap-1 items-center'>
+                                  <div key={idx} className=' flex-[40%] flex gap-2 items-center'>
                                     <img src={`/images/${perk}.png`} alt="wifiIcon"height={20} width={20} />
-                                    <span className='text-lg'>{perk}</span>
+                                    <span className='text-xl capitalize'>{perk}</span>
                                   </div>
                                 ))
                           )
                         }
+                      </div>
                     </div>
                   <div className='mt-4  py-4 border-t'>
                   <h2 className="text-xl font-bold"> Extra info:</h2>

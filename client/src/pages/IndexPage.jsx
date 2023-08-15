@@ -12,12 +12,12 @@ const IndexPage = () => {
   },[])
   return (
          <>
-           <div className="mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+           <div className="mt-8 grid max-w-8xl pt-4 px-12 gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {allPlaces.length > 0 && allPlaces.map((place,idx) => (
          <Link key={idx} to={'/place/'+place._id}>
           <div className="bg-gray-500 mb-2 rounded-2xl flex">
             {place.photos?.[0] && (
-              <img className="rounded-2xl object-cover aspect-square" src={'http://localhost:8000/uploads/'+place.photos?.[0]} alt=""/>
+              <img className="rounded-xl object-cover aspect-square " src={'http://localhost:8000/uploads/'+place.photos?.[0]} alt=""/>
             )}
           </div>
           <h2 className="font-bold truncate">{place.address}</h2>
