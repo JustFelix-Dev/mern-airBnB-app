@@ -50,7 +50,6 @@ const FAQAccordion = () => {
     </div>
       </div>
     </div>
- 
   );
 };
 

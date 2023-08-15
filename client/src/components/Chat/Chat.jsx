@@ -6,18 +6,24 @@ import ChatBox from "./ChatBox";
 import UserChat from "./UserChat";
 import PotentialChats from "./PotentialChats";
 import Notifications from "./Notifications";
-
+import { useNavigate } from "react-router-dom";
 
 const Chat = () => {
     const {user} = useContext(userContext);
     const { userChats,isUserChatsLoading,updateCurrentChat,userChatsError } = useContext(ChatContext);
     const [ showChat,setShowChat] = useState(false);
+    const navigate = useNavigate();
+
     const handleChatClick=()=>{
         if(!showChat){
             setShowChat(true)
         }else{
             setShowChat(false)
         }
+    }
+
+    const handleRoute =()=>{
+            navigate('/airbnb-faq');
     }
 
     return ( 
@@ -60,7 +66,7 @@ const Chat = () => {
                  
              </motion.div>
              }</AnimatePresence>
-            <img onClick={handleChatClick} className="rounded-2xl fixed z-10 shadow-2xl bottom-3 right-6 cursor-pointer transition-all hover:scale-90" src="/images/chatIcon.jpg" alt="chatIcon" width={70} height={70} />
+            <img onClick={ user ? handleChatClick : handleRoute} className="rounded-2xl fixed z-10 shadow-2xl bottom-3 right-6 cursor-pointer transition-all hover:scale-90" src="/images/chatIcon.jpg" alt="chatIcon" width={70} height={70} />
           </>
      );
 }
