@@ -28,13 +28,13 @@ const BookingList = () => {
             { bookings && bookings.length > 0 ?
                <div>
                  {
-                    bookings.map(booking=>(
+                    bookings?.map(booking=>(
                         <Link to={`/account/bookings/${booking._id}`} className='flex relative  m-4 gap-4 bg-gray-200 rounded-lg overflow-hidden'>
                             <div className='w-48 p-4'>
                                 <PlacesImage place={booking.place}/>
                             </div>
                             <div className='py-3 pr-3 grow'>
-                                <h2 className='text-xl'>{booking.place.title}</h2>
+                                <h2 className='text-xl'>{booking?.place?.title}</h2>
                                  <BookingDate booking={booking}/>
                                 </div>
                             

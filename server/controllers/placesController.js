@@ -46,6 +46,40 @@ const getEachPlace = async(req,res)=>{
       res.json(doc)
 }
 
+    const filteredPlace = async (req, res) => {
+      try {
+        const location = req.query?.place;
+        const leastPrice = req.query?.leastPrice;
+        const highPrice = req.query?.highPrice;
+
+        if (!location && !leastPrice && !highPrice) {
+          return res.status(400).json('Please provide valid filter parameters.');
+        }
+
+        let query = {};
+
+        if (location) {
+          query.address = { $regex: location, $options: 'i' };
+        }
+
+        if (leastPrice && highPrice) {
+          query.price = { $gte: leastPrice, $lte: highPrice };
+        }
+
+        const filteredLocations = await Location.find(query);
+
+        if (filteredLocations.length === 0) {
+          return res.status(401).json('Sorry, no locations match your criteria.');
+        }
+
+        res.status(200).json(filteredLocations);
+      } catch (err) {
+        console.error('Error:', err);
+        return res.status(500).json('Something went wrong!');
+      }
+    };
+
+
 const editPlace = async(req,res)=>{
       const {id} = req.params;
        const {formBody}  = req.body;
@@ -73,4 +107,4 @@ const deletePlace = async(req,res)=>{
   }
 }
 
-module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces,editPlace,deletePlace};
+module.exports = { postPlaces, getPlaces, getEachPlace,getAllPlaces,editPlace,deletePlace,filteredPlace};

@@ -7,6 +7,7 @@ const { configDotenv } = require('dotenv');
 configDotenv();
 const app = express();
 const nodemailer = require('nodemailer');
+const validator = require('validator');
 
 // Middleware
 app.use(cookieParser())
@@ -58,12 +59,27 @@ const registrationEmail=async(name,email,password)=>{
 }
 
  const registerUser = async(req,res)=>{
+   const { name,email,password,photo } = req.body;
     try{
-        const { name,email,password,photo } = req.body;
+         let user = await userModel.findOne({email});
+         if(user){
+            return res.status(400).json('Email already exists!');
+         }
+         
+         if(!name || !email || !password || !photo){
+            return res.status(400).json("All fields are required!");
+         }
+
+         if(!validator.isEmail(email)){
+          return res.status(400).json("Invalid Email Address!");
+         }
+         if(!validator.isStrongPassword(password)){
+          return res.status(400).json("Please Choose a Strong Password!");
+         }
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
 
-        const user = await userModel.create({name,email,admin:isAdmin,photo,rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
+       user = await userModel.create({name,email,admin:isAdmin,photo,rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
         res.json({user,message:'Registration Successful!'})
         registrationEmail(name,email,password)
     }

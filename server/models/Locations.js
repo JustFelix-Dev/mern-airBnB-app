@@ -19,10 +19,10 @@ const locationSchema = new mongoose.Schema({
         type:[String],
     },
     checkIn:{
-        type:Number,
+        type:String,
     },
     checkOut:{
-        type:Number,
+        type:String,
     },
     guests:{
         type:Number,

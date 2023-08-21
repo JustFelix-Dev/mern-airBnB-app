@@ -68,7 +68,9 @@ const uploadPhoto = (e) => {
        }
        catch(err){
         console.log(err)
+        toast.error(err.response.data)
        }
+       setIsLoading(false)
   }
 
   useEffect(()=>{
@@ -115,7 +117,7 @@ const uploadPhoto = (e) => {
                       </div>
                  </div>
                  <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
-                      <input type="file" className='hidden' onChange={uploadPhoto} required/>
+                      <input type="file" accept='.jpg , .png' className='hidden' onChange={uploadPhoto} required/>
                       {
                       photo && photo.length > 0 ? 
                           <img src={"http://localhost:8000/userPhoto/" + photo} alt="userPhoto" width={30} height={30} style={{borderRadius:'10px'}} />

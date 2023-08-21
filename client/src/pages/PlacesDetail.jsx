@@ -4,10 +4,14 @@ import { useParams } from 'react-router-dom';
 import BookingWidget from '../components/BookingWidget';
 import Gallery from '../components/Gallery';
 import AddressLink from '../components/AddressLink';
+import { TbClockBolt,TbWorldLongitude,TbWorldLatitude } from 'react-icons/tb';
+import { WiHumidity } from 'react-icons/wi';
 
 const PlacesDetail = () => {
     const {id} = useParams()
-    const [ place,setPlace ] = useState(null)
+    const [ place,setPlace ] = useState(null);
+    const [ weather,setWeather] = useState(null);
+    const myApi = "f5fb28c0d0dd7eefc82f52937d88b038";
 
 useEffect(()=>{
     if(!id)  return
@@ -15,9 +19,28 @@ useEffect(()=>{
            const {data} = response;
            console.log(data)
            setPlace(data)
-
       }) 
 },[id])
+
+
+const getWeather=(cityName)=>{
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${myApi}&units=metric`)
+  .then(response =>response.json())
+  .then((data)=>{
+     setWeather(data);
+   }).catch((err)=>{
+    console.log(err)
+   })
+}
+
+useEffect(()=>{
+  getWeather(place?.address);
+},[place])
+
+console.log(weather)
+
+
+
 
   return (
          <>
@@ -43,13 +66,38 @@ useEffect(()=>{
                       </div>
                   </div>
                   <div className="bg-white -mx-8 px-8 py-8 border-t">
+                    <div className='flex justify-between gap-4'>
+                     <div>
+                      {
+                        weather && weather.weather &&(
+                          <>
+                        <div className='flex gap-6 border-b pb-4'>
+                          <div>
+                            <img src={`/images/${weather?.weather?.[0].main}.png`} alt="weatherIcon" height={150} width={150} />
+                          </div>
+                            <div className='self-center'>
+                              <h1 className='text-3xl font-semibold mb-8'>{`${weather?.main?.temp}`} &deg;C</h1>
+                              <span className='text-lg font-medium'>{weather?.weather?.[0].main} | {weather?.weather?.[0].description}</span>
+                              <h1 className='text-md'>{weather?.name} , {weather?.sys?.country}</h1>
+                            </div>
+                        </div>
+                        <div className='flex flex-wrap pt-2 font-medium'>
+                          <span className='flex-[40%]'><span className='flex items-center gap-1'>Pressure<TbClockBolt/>: {weather?.main?.pressure}Pa</span></span>
+                          <span className='flex-[40%]'><span className='flex items-center gap-1'>Humidity<WiHumidity/> : {weather?.main?.humidity} g.m-3</span></span>
+                          <span className='flex-[40%]'><span className='flex items-center gap-1'>Longitude<TbWorldLongitude/> : {weather?.coord?.lon}&deg;</span></span>
+                          <span className='flex-[40%]'><span className='flex items-center gap-1'>Latitude<TbWorldLatitude/> : {weather?.coord?.lat}&deg;</span></span>
+                        </div>
+                        </>
+                        )
+                      }
+                     </div>
                     <div>
-                      <h2 className='text-xl font-bold'>What this Place has to Offer You:</h2>
+                      <h2 className='text-2xl font-bold'>What this Place has to Offer You:</h2>
                       <div className='flex  items-center justify-center p-4 flex-wrap gap-4 max-w-sm'>
                         {
                           place.perks && (
                                 place.perks.map((perk,idx)=>(
-                                  <div key={idx} className=' flex-[40%] flex gap-2 items-center'>
+                                  <div key={idx} className=' flex-[40%] flex gap-2  items-center'>
                                     <img src={`/images/${perk}.png`} alt="wifiIcon"height={20} width={20} />
                                     <span className='text-xl capitalize'>{perk}</span>
                                   </div>
@@ -57,6 +105,7 @@ useEffect(()=>{
                           )
                         }
                       </div>
+                    </div>
                     </div>
                   <div className='mt-4  py-4 border-t'>
                   <h2 className="text-xl font-bold"> Extra info:</h2>

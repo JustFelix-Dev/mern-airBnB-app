@@ -19,6 +19,7 @@ import Chat from './components/Chat/Chat'
 import { UserContextProvider, userContext } from './ContextHook/userContext';
 import { ChatContextProvider } from './ContextHook/chatContext'
 import FAQAccordion from './pages/FAQAccordion';
+import { PlaceContextProvider } from './ContextHook/placeContext';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -45,6 +46,7 @@ function App() {
         <>
         <UserContextProvider>
           <ChatContextProvider user={user}>
+            <PlaceContextProvider>
           <Chat/>
         <Routes>
           <Route path='/' element={<LayoutPage/>}>
@@ -61,9 +63,9 @@ function App() {
           <Route path='/forgotPassword' element={<ResetPassword/>}/>
           <Route path='/airbnbPolicies' element={<PoliciesPage/>}/>
           <Route path='/airbnb-faq' element={<FAQAccordion/>}/>
-
           </Route>
         </Routes>
+        </PlaceContextProvider>
         </ChatContextProvider>
         </UserContextProvider>
         <ToastContainer/>

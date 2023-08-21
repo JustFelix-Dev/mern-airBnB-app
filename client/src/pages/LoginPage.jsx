@@ -35,7 +35,7 @@ const LoginPage = () => {
         const body = { email,password }
         try{
           const response = await axios.post('login',body)
-          console.log(response)
+          console.log("MyResponse:",response)
             setUser(response.data)
             navigate('/')
             setIsLoading(false)

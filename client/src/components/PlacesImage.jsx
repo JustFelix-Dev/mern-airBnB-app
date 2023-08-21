@@ -2,7 +2,7 @@ import React from 'react'
 
 const PlacesImage = ({place,index=0,className=null}) => {
 
-    if(!place.photos.length){
+    if(!place?.photos?.length){
         return '';
     }
     if(!className){
@@ -10,7 +10,7 @@ const PlacesImage = ({place,index=0,className=null}) => {
     }
   return (
        <>
-            <img className={className} src={'http://localhost:8000/uploads/'+place.photos[index]} alt='displayIcon'/>
+            <img className={className} src={'http://localhost:8000/uploads/'+place?.photos[index]} alt='displayIcon'/>
        </>
   )
 }
