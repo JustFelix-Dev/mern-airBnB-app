@@ -33,14 +33,20 @@ const LocationPages = () => {
     },[])
 
 
-  const addPhotoByLink=async(e)=>{
-           e.preventDefault()
-        const {data:filename} = await axios.post('/uploadByLink',{link : photoLink})
-         setPhotos(prev=>{
-            return [...prev,filename]
-         })
-           setPhotoLink('')
-    }
+    const addPhotoByLink = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post('/uploadByLink', { link: photoLink });
+        const imageUrl = response.data;
+        setPhotos((prev) => [...prev, imageUrl]);
+        console.log(photos)
+        console.log(response,imageUrl)
+        setPhotoLink('');
+      } catch (error) {
+        console.error('Error adding photo:', error);
+      }
+    };
+    
 
  const removePhoto=(e,file)=>{
     e.preventDefault()
@@ -58,16 +64,19 @@ const LocationPages = () => {
         e.preventDefault()
         const files = e.target.files;
         const data = new FormData();
-        for(let i=0;i < files.length; i++){
+        for(let i=0; i <files.length; i++){
              data.append('photos',files[i])
         }
         axios.post('/upload',data,{
             headers: {'Content-Type':'multipart/form-data'}
         }).then(response=>{
+                console.log("Presponse:",response)
                const {data:filename} = response;
                setPhotos(prev=>{
                 return [...prev,...filename]
              })
+        }).catch(err=>{
+          console.log("Err:",err)
         })
     }
 
@@ -147,7 +156,7 @@ const LocationPages = () => {
                             {
                               photos.length > 0 && photos.map(link=>(
                                 <div className='h-32  relative flex' key={link}>
-                                    <img className=' w-full object-center rounded-2xl' src={'http://localhost:8000/uploads/'+ link} alt="icon" />
+                                    <img className=' w-full object-center rounded-2xl' src={link} alt="icon" />
                                     <button onClick={(e)=>removePhoto(e,link)} className='absolute text-red-500 bg-white p-1 rounded-lg cursor-pointer right-1 top-2'>
                                         <HiOutlineTrash/>
                                     </button>

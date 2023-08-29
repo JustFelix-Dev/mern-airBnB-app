@@ -8,6 +8,7 @@ configDotenv();
 const app = express();
 const nodemailer = require('nodemailer');
 const validator = require('validator');
+const cloudinary = require('../uploadImages');
 
 // Middleware
 app.use(cookieParser())
@@ -78,8 +79,13 @@ const registrationEmail=async(name,email,password)=>{
          }
          const bcryptSalt  = bcrypt.genSaltSync();
          const isAdmin = password.includes(process.env.KEY);
-
-       user = await userModel.create({name,email,admin:isAdmin,photo,rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
+         const result = await cloudinary.uploader.upload( photo,{
+           public_id: "profile/" + Date.now(),
+           folder: "userImages"
+         })
+         const resultUrl = result.secure_url;
+       user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
+        rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
         res.json({user,message:'Registration Successful!'})
         registrationEmail(name,email,password)
     }
@@ -97,14 +103,13 @@ const loginUser = async(req,res)=>{
             if(isMatched){
                   jwt.sign({email:user.email,id:user._id,photo:user.photo,admin:user.admin,badge:user.badge,rewardPoint:user.rewardPoint},process.env.SECRET,(err,token)=>{
                     if(err) throw err;
-                    res.cookie('token',token).json(user)
-                    console.log(user)
+                    res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'}).json(user)
                   }) 
             }else{
                 res.status(402).json('Wrong credentials!')
             }
          }else{
-            res.status(401).json('User not found')
+            res.status(401).json('Wrong credentials!')
          }
     }
     catch(err){
@@ -146,8 +151,9 @@ const getUsers=async(req,res)=>{
   }
 }
 
+
  const logoutUser = (req,res)=>{
-      res.cookie('token','').json(true)
+      res.cookie('token','',{secure:true,sameSite:'none',domain:'.felixdev.com.ng'}).json(true)
  }
 
 

@@ -9,7 +9,7 @@ const RegisterPage = () => {
   const [ name,setName ] = useState('');
   const [ email,setEmail ] = useState('');
   const [ password,setPassword ] = useState('');
-  const [ photo,setPhoto] = useState('');
+  const [ photo,setPhoto] = useState("");
   const [ isLoading,setIsLoading ] = useState(false);
   const [ splashScreen,setSplashScreen] = useState(true);
   const navigate = useNavigate();
@@ -28,31 +28,26 @@ const RegisterPage = () => {
 
   const handleGoogle = ()=>{
     setIsLoading(true)
-    window.open('http://localhost:8000/auth/google','_self')
+    window.open('https://www.airbnb-server.felixdev.com.ng/auth/google','_self')
 }
 const handleGithub = ()=>{
-    window.open('http://localhost:8000/auth/github','_self')
+    window.open('https://www.airbnb-server.felixdev.com.ng/auth/github','_self')
 }
-const uploadPhoto = (e) => {
-  e.preventDefault();
-  const file = e.target.files[0];
-  const data = new FormData();
-  data.append('photo', file);
 
-  axios
-    .post('/userPhoto', data, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((response) => {
-      const { data: { photo } } = response;
-      // Update the state with the photo path
-      setPhoto(photo);
-      console.log(photo);
-    })
-    .catch((error) => {
-      console.error('Error uploading photo:', error);
-    });
-};
+const uploadPhoto=(e)=>{
+  e.preventDefault()
+  let selectedImage = e.target.files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(selectedImage);
+  reader.onload=()=>{
+   setPhoto(reader.result);
+  }
+}
+
+useEffect(()=>{
+  console.log("EffectPhoto:",photo)
+},[photo])
+
 
   const handleForm=async(e)=>{
          setIsLoading(true)
@@ -117,10 +112,10 @@ const uploadPhoto = (e) => {
                       </div>
                  </div>
                  <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
-                      <input type="file" accept='.jpg , .png' className='hidden' onChange={uploadPhoto} required/>
+                      <input type="file" className='hidden' accept='.jpg,.png' onChange={uploadPhoto} required/>
                       {
                       photo && photo.length > 0 ? 
-                          <img src={"http://localhost:8000/userPhoto/" + photo} alt="userPhoto" width={30} height={30} style={{borderRadius:'10px'}} />
+                          <img src={photo} alt="userPhoto" width={20} height={20} style={{borderRadius:'10px'}} />
                          : <><SlCloudUpload/>Upload</>
                       }
                         </label>
@@ -158,4 +153,4 @@ const uploadPhoto = (e) => {
   )
 }
 
-export default RegisterPage
+export default RegisterPage;

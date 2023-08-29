@@ -26,7 +26,7 @@ const UserChat = ({chat,user}) => {
                 recipientUser && recipientUser?.photo
                   ? recipientUser?.photo.startsWith('https://')
                     ? recipientUser?.photo
-                    : `http://localhost:8000/userPhoto/${recipientUser?.photo}` 
+                    : `https://www.airbnb-server.felixdev.com.ng/userPhoto/${recipientUser?.photo}` 
                      : '/images/svgexport-7.svg'
              } 
              alt="" height={20} width={20} style={{borderRadius: "50px"}} />

@@ -62,9 +62,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                   <img 
                         src={
                           user && user.photo
-                            ? user.photo.startsWith('https://')
                               ? user.photo
-                              : `http://localhost:8000/userPhoto/${user.photo}` 
                                : 'images/svgexport-7.svg'
                         }
                         alt="userIcon"
@@ -105,7 +103,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                             <h1 className='flex items-center gap-1 text-lg font-medium'>My Points:<Link to={'/airbnbPolicies'}><img src="/images/information-button.png" alt="infoButton" height={12} width={12}/></Link></h1>
                             <span>{user.rewardPoint}/{maxValue}</span> <span className='text-gray-700'>points</span> 
                             <div className='mt-2' >
-                            <progress className='custom-progress' value={user.rewardPoint} max={maxValue} ></progress>
+                            <progress className='custom-progress' value={user.rewardPoint} max={maxValue}></progress>
                             </div>
                            </div>
                           
@@ -116,12 +114,12 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                             <h1 className='bg-gray-100 max-w-xs my-2 text-center py-1 px-2 text-primary rounded-md border'>Recent Reservations:</h1>
                             <div className=' h-[110px] overflow-auto'>
                               {
-                      fetchOrders && fetchOrders.length > 0 ?
-                        fetchOrders.sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((order,idx)=>(
-                        <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
-                          <div className='flex '>
-                           <img className='object-cover' src={`http://localhost:8000/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
-                          </div>
+                            fetchOrders && fetchOrders.length > 0 ?
+                              fetchOrders.sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((order,idx)=>(
+                              <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
+                                <div className='flex '>
+                                <img className='object-cover' src={`https://www.airbnb-server.felixdev.com.ng/uploads/`+order.orderPhoto} alt="orderImage" width={70} height={30} />
+                                </div>
                            <div className='grow'>
                            <p>{order.bookingPlace}</p>
                            <div className='flex justify-between'>

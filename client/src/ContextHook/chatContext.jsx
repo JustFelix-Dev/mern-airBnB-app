@@ -23,7 +23,7 @@ export const ChatContextProvider=({children,user})=>{
 
     // Initial Socket
     useEffect(()=>{
-        const newSocket = io("http://localhost:3000");
+        const newSocket = io('https://hill-complex-xenon.glitch.me/');
         setSocket(newSocket);
 
         return()=>{

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { userContext } from '../ContextHook/userContext';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { MdCalendarMonth,MdPlace } from 'react-icons/md';
 import { DateRange } from 'react-date-range';
 import { format } from 'date-fns';
@@ -36,40 +36,40 @@ const Header = () => {
 
     const handleDate = () =>{
       setOpenDate(!openDate)
-    }
+    };
+
    const handleSearch = ()=>{
       setShowSearch(!showSearch)
-   }
+   };
+
    const handleShow =()=>{
     setShowSearch(true)
    }
  
   return (
     <>
-          <header className='px-10 py-3 flex border shadow-sm justify-between'>
+          <header className=' px-4 md:px-10 py-3 flex border shadow-sm justify-between '>
              <Link to='/' className='flex items-center gap-1'>
                 <img src="/images/svgexport-2.svg" alt="airbnb_logo" />
-                 <span className='font-extrabold text-2xl text-primary'>airbnb</span>
+                 <span className='font-extrabold text-2xl text-primary hidden lg:block'>airbnb</span>
              </Link>
-            { path?.pathname === "/" ? <div className='flex gap-2 items-center border border-gray-300 rounded-full pl-6 pr-2 py-3 shadow-md shadow-gray-200'>
-               <div className=" border-r border-gray-300 pr-2">Anywhere</div>
-               <div className=" border-r border-gray-300 pr-2">Any week</div>
-               <div>Add guests</div>
+            { path?.pathname === "/" ? <div className='flex gap-2 items-center md:border border-gray-300 rounded-full pl-6 pr-2 py-3 sm:shadow-md shadow-gray-200 text-sm'>
+               <div className=" border-r border-gray-300 pr-2 hidden sm:block">Anywhere</div>
+               <div className=" border-r border-gray-300 pr-2 hidden sm:block">Any week</div>
+               <div className='hidden sm:block'>Add guests</div>
                <button onClick={handleSearch} className=' bg-primary p-2 rounded-full'><img src="/images/svgexport-4.svg" alt="airbnb_search" height={15} width={15} /></button>
              </div> : (<div>
                    <Link to={'/'} onClick={handleShow}><div className=' cursor-pointer flex gap-3 items-center border border-gray-400 shadow-lg py-3 px-12 rounded-full'><h1>Search</h1> <button className='bg-primary p-2 rounded-full'><img src="/images/svgexport-4.svg" alt="airbnb_search" height={15} width={15} /></button></div></Link>
              </div>) }
              <div className='flex items-center gap-5 '>
-              <div><h1>Airbnb your home</h1></div>
-              <div><img src="/images/svgexport-5.svg" alt="" /></div>
+              <div className='hidden md:block'><h1>Airbnb your home</h1></div>
+              <div className='hidden sm:block'><img src="/images/svgexport-5.svg" alt="" /></div>
               <Link to={ user ? '/account' : '/login'} className='flex items-center gap-2 border border-gray-300 rounded-full px-2 py-1'>
                 <img src="/images/svgexport-6.svg" alt="menu" height={20} width={17} />
                 <img
                         src={
                           user && user.photo
-                            ? user.photo.startsWith('https://')
                               ? user.photo
-                              : `http://localhost:8000/userPhoto/${user.photo}` 
                                : '/images/svgexport-7.svg'
                         }
                         alt="userIcon"
@@ -78,16 +78,19 @@ const Header = () => {
                         style={{ borderRadius: '20px' }}
                       />
                 <div className='flex items-center gap-1 justify-center'>
-                    <div className='pt-1'>{ user && <div>{user.name.split(' ')[0]}</div>}</div>
-                 <div >{ user && user.admin && <div><svg width={25} height={25} fill="#FF385C" stroke="white" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  </svg></div>}</div>   
+                    <div className='pt-1 hidden md:block'>{ user && <div>{user.name.split(' ')[0]}</div>}</div>
+                 <div className='hidden md:block pt-0.5 self-center'>{ user && user.admin && <div><svg width={13} height={13} fill="#FF385C" stroke="" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"></path>
+                </svg></div>}</div>   
                 </div>
               </Link>
              </div>
          </header>
+              <AnimatePresence mode='popLayout'> 
                 { path?.pathname === '/' && showSearch && (
-          <div className='flex flex-col justify-center items-center  border-b border-gray-300 py-2'><div className='headerSearch h-[60px] relative bg-white flex gap-4 items-center justify-center'>
+                  <motion.div exit={{translateY:-10,opacity:0}} className='absolute top-[79px] w-full border-t px-2 bg-white z-2 md:static'>
+              <motion.div exit={{translateY:-10,opacity:0}} initial={{translateY:-100,opacity:0}} animate={{translateY:0,opacity:1}} transition={{type:'spring',stiffness:120,duration:0}} className='flex flex-col justify-center items-center  border-b border-gray-300 py-2'>
+                <div className='relative bg-white flex flex-col gap-4 items-center justify-center sm:flex-col md:flex-row'>
                        <div className="flex items-center gap-2">
                           <MdPlace/>
                           <input type="text" value={location} onChange={(e)=>setLocation(e.target.value)} placeholder='Search a Location' />
@@ -97,7 +100,7 @@ const Header = () => {
                           <span onClick={handleDate} className= ' cursor-pointer text-gray-400 border py-2 px-4 rounded-lg hover:border-primary'>{`${format(date[0].startDate,'MM/dd/yyyy')} to ${format(date[0].endDate,'MM/dd/yyyy')}`}</span>
                           { openDate && <DateRange rangeColors={['#FF385C']}
                           editableDateInputs={true} onChange={item => setDate([item.selection])}
-                           moveRangeOnFirstSelection={false} ranges={date} className='transition absolute top-[60px]' />}
+                           moveRangeOnFirstSelection={false} ranges={date} className='transition absolute -left-6 top-[315px]  md:top-[110px] md:left-64'/>}
                        </div>
                        <div>
                        <div className>
@@ -118,15 +121,17 @@ const Header = () => {
                        </div>
                       
                        <div className="flex items-center gap-2">
-                          <button onClick={()=> handleFilter(location,minValue,maxValue)} className='bg-primary text-white py-2 px-6 rounded-lg'>Search</button>
+                          <button onClick={()=>{ handleFilter(location,minValue,maxValue);setShowSearch(false)}} className='bg-primary text-white py-2 px-6 rounded-lg'>Search</button>
                        </div> <br />
                   </div>
                    <div className=" flex items-center gap-2 max-w-md">
                     <input type="text" inputMode="numeric" value={"$"+ " "+ minValue} />
                     <input type="text" inputMode="numeric" value={"$"+ " " + maxValue} />
                 </div>
-                </div>)
+                </motion.div>
+                </motion.div>)
                   }
+              </AnimatePresence>
 
           </>
   )

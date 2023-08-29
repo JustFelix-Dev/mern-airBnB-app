@@ -1,5 +1,39 @@
+const { createServer } = require('http');
 const { Server } = require("socket.io");
-const io = new Server({cors:"http://localhost:5173"});
+const httpServer = createServer();
+
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', ' * '); // Replace with your client's domain
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+//   });
+  
+// const allowedOrigins = [
+//     "https://www.airbnb.felixdev.com.ng", // Add your client's domain here
+//   ];
+  
+//   app.use(cors({
+//     origin: (origin, callback) => {
+//       if (allowedOrigins.includes(origin) || !origin) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//   }));
+
+//   app.get('/testing', (req, res) => {
+//     res.send('Hello CORS');
+//   });
+  
+
+const io = new Server(httpServer,{
+                        cors: {
+                            origin: "https://www.airbnb.felixdev.com.ng",
+                            methods: ["GET","POST"]
+                        }, 
+                    });
 
 let onlineUsers = [];
 
@@ -38,4 +72,4 @@ io.on("connection", (socket) => {
     })
 });
 
-io.listen(3000);
+httpServer.listen(3000);

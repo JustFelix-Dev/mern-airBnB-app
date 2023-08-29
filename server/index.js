@@ -25,19 +25,18 @@ const passport = require('passport');
 const userModel = require('./models/user');
 const nodemailer = require('nodemailer');
 const Order = require('./models/order');
+const cloudinary = require('./uploadImages');
 
 
 // Middleware
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('public'));
-app.use('/uploads',express.static(__dirname+'/uploads'))
-app.use('/userPhoto',express.static(__dirname+'/userPhoto'))
 app.set('view engine','ejs')
 app.use(express.urlencoded({extended: false}))
 app.use(cors({
     credentials: true,
-       origin:'http://localhost:5173'
+       origin:'https://www.airbnb.felixdev.com.ng',
     }))
 
 // Social Auth
@@ -46,6 +45,15 @@ app.use(cors({
         resave: false,
         saveUninitialized: false,
    }))
+
+   // Middleware to handle CORS
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'https://www.airbnb.felixdev.com.ng');
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.header('Access-Control-Allow-Credentials', 'true');
+        next();
+    });
    
    app.use(passport.initialize());
    app.use(passport.session());
@@ -92,70 +100,90 @@ const resetPasswordEmail=async(name,email,link)=>{
                    </div>`;
    const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
-          port: 465,
-          secure: true,
+          port: 587,
+          secure: false,
           auth:{
               user: 'owolabifelix78@gmail.com',
               pass: process.env.GOOGLE_PASS
-          }
+          },
       })
-   const info = await transporter.sendMail({
-          from: 'AirBnb <owolabifelix78@gmail.com>',
-          to: email,
-          subject:'AirBnb - Password Reset!',
-          html: html,
-          attachments:[{
-                filename: 'emailHeader.jpg',
-                path: './emailImages/emailHeader.jpg',
-                cid: 'airbnbHeader'
-          }]
-   })
-   console.log('Message Sent:' + info.messageId);
+      try{
+        const info = await transporter.sendMail({
+            from: 'AirBnb <owolabifelix78@gmail.com>',
+            to: email,
+            subject:'AirBnb - Password Reset!',
+            html: html,
+            attachments:[{
+                  filename: 'emailHeader.jpg',
+                  path: './emailImages/emailHeader.jpg',
+                  cid: 'airbnbHeader'
+            }]
+     })
+     console.log('Message Sent:' + info.messageId);
+      }catch(err){
+           console.log("Message Error:", err)
+      }
+  
    
 }
+
 //download image from link and save it to uploads folder using npm package "image-downloader';
- app.post('/uploadByLink',async( req,res )=>{
-    const {link} = req.body;
-    const newName = 'photo'+ Date.now() + '.jpg';
-   await download.image({
-        url:link,
-        dest: __dirname + '/uploads/' +newName,
-    })
-    res.json(newName)
-    }) 
-
-    const photosMiddleware = multer({dest:'uploads/'});
-    const photoMiddleware = multer({dest:'userPhoto/'});
-
-    app.post('/userPhoto',photoMiddleware.single('photo'),(req,res)=>{
-        const { path, originalname } = req.file;
-        console.log(req.file);
+app.post('/uploadByLink', async(req, res) => {
+    try {
+      const { link } = req.body;
+      // Upload image to Cloudinary
+      const uploadedImage = await cloudinary.uploader.upload(link, {
+        // resource_type: 'image', // Upload as an image
+        folder: 'airbnbLocations', // Specify the folder name here
+      });
+  
+      res.json(uploadedImage.secure_url);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      res.status(500).json({ error: 'Error uploading image' });
+    }
+  });
+  
+    const photosMiddleware = multer();
+    app.post('/upload', photosMiddleware.array('photos', 100), async (req, res) => {
+        try {
+          const uploadedFiles = [];
       
-        const parts = originalname.split('.');
-        const format = parts[parts.length - 1];
-        const newPath = path + '.' + format;
-        fs.renameSync(path, newPath);
-        const uploadedFile = newPath.replace('userPhoto', '');
-        console.log(uploadedFile);
-        res.json({ photo: uploadedFile });
-        })
-
-app.post('/upload',photosMiddleware.array('photos',100),(req,res)=>{
-        const uploadedFiles = [];
-
-      for(let i = 0; i < req.files.length; i++){
-          const {path,originalname} = req.files[i];
-          console.log(req.files)
-          const parts = originalname.split('.');
-          const format = parts[parts.length - 1];
-          const newPath = path + '.' + format;
-          fs.renameSync(path, newPath);
-          console.log(newPath)
-          uploadedFiles.push(newPath.replace("uploads",''))
-          console.log(uploadedFiles)
-      }
-        res.json(uploadedFiles)
-})
+          // Define a function to upload to Cloudinary
+          const uploadToCloudinary = async (buffer) => {
+            return new Promise((resolve, reject) => {
+              cloudinary.uploader.upload_stream({
+                resource_type: 'image',
+                folder: "airbnbLocations"
+              }, (error, result) => {
+                if (error) {
+                  reject(error); // Reject the promise on error
+                } else {
+                  resolve(result); // Resolve the promise with the result on success
+                }
+              }).end(buffer);
+            });
+          };
+      
+          for (let i = 0; i < req.files.length; i++) {
+            const { buffer, originalname } = req.files[i];
+      
+            try {
+              // Upload to Cloudinary using the custom promise function
+              const uploadedImage = await uploadToCloudinary(buffer);
+              uploadedFiles.push(uploadedImage.secure_url);
+            } catch (error) {
+              console.error('Error uploading to Cloudinary:', error);
+            }
+          }
+      
+          res.json(uploadedFiles);
+        } catch (error) {
+          console.error('Error processing files:', error);
+          res.status(500).json({ error: 'Error processing files' });
+        }
+      });
+      
 
 // Resetting Password Routes
 
@@ -174,12 +202,12 @@ app.post('/forgotPassword',async(req,res)=>{
         const SECRET = process.env.SECRET;
         const secret = SECRET + existingUser?.password;
         const token = jwt.sign({email: existingUser.email,id:existingUser._id},secret,{expiresIn:300});
-        const link = `http://localhost:8000/reset-password/${existingUser._id}/${token}`;
+        const link = `https://www.airbnb-server.felixdev.com.ng/reset-password/${existingUser._id}/${token}`;
         //send email with the reset password url to the registered mail id
-        resetPasswordEmail(existingUser.name,existingUser.email,link)
+        resetPasswordEmail(existingUser?.name,existingUser?.email,link)
         res.status(200).json('Reset Link sent successfully!')
       }catch(err){
-
+        res.status(401).json('Something went wrong!')
       }
 })
 

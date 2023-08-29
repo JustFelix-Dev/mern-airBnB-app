@@ -1,5 +1,5 @@
-export const baseUrl = "http://localhost:8000/api";
-export const baseUrlIndex = "http://localhost:8000";
+export const baseUrl = "https://www.airbnb-server.felixdev.com.ng/api";
+export const baseUrlIndex = "https://www.airbnb-server.felixdev.com.ng";
 
 
 export const postRequest = async (url,body) =>{

@@ -8,22 +8,16 @@ const userModel = require('./models/user');
 const  jwt  = require('jsonwebtoken');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const GithubStrategy = require('passport-github2').Strategy;
-app.use(cookieParser())
+app.use(cookieParser());
 
-// const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Google
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID ;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_SECRET;
 
 // GitHub 
 const GITHUB_CLIENT_ID = process.env.GITHUB_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_SECRET;
-
-// Facebook
-// const FACEBOOK_APP_ID='';
-// const FACEBOOK_APP_SECRET ='';
-
 
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
@@ -34,10 +28,10 @@ passport.use(new GoogleStrategy({
   async function(req,accessToken, refreshToken, profile, done){
     //   Check If user exists
     try{
-       let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+       let existingUser =  await userModel.findOne({email:profile.emails[0].value})
        if(existingUser){
         const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
-        req.res.cookie('token',token);
+        req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
         console.log(existingUser)
           return done(null,existingUser)
        }
@@ -54,7 +48,7 @@ passport.use(new GoogleStrategy({
           // Generate the JWT token with the user data
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id,photo: existingUser.photo,admin:existingUser.admin,rewardPoint:existingUser.rewardPoint,badge:existingUser.badge}, process.env.SECRET);
         // Set the token as a cookie in the response
-        req.res.cookie('token', token);
+        req.res.cookie('token', token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
         // Respond with the existing user data as JSON
         return done(null, existingUser);
        }
@@ -75,10 +69,10 @@ passport.use(new GithubStrategy({
   async function(req,accessToken, refreshToken, profile, done){
     //   Check If user exists
     try{
-        let existingUser =  await userModel.findOne({email:profile.emails[0].value},)
+        let existingUser =  await userModel.findOne({email:profile?.emails[0].value})
         if(existingUser){
          const token = jwt.sign({email:existingUser.email,id:existingUser._id,admin:existingUser.admin},process.env.SECRET);
-         req.res.cookie('token',token);
+         req.res.cookie('token',token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
          console.log(existingUser)
            return done(null,existingUser)
         }
@@ -93,7 +87,7 @@ passport.use(new GithubStrategy({
            });
            existingUser = await newUser.save();
          const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET);
-         req.res.cookie('token', token);
+         req.res.cookie('token', token,{secure:true,sameSite:'none',domain:'.felixdev.com.ng'});
          return done(null, existingUser);
         }
      }catch(err){

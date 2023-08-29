@@ -53,7 +53,7 @@ export const PlaceContextProvider =({children})=>{
 
 
     return (
-        <PlaceContext.Provider value={{ allPlaces,handleFilter ,error}}>
+        <PlaceContext.Provider value={{ allPlaces,handleFilter ,error,loading }}>
             {children}
         </PlaceContext.Provider>
     )
