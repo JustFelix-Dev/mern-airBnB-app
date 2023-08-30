@@ -10,7 +10,7 @@ const PlacesImage = ({place,index=0,className=null}) => {
     }
   return (
        <>
-            <img className={className} src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place?.photos[index]} alt='displayIcon'/>
+            <img className={className} src={place.photos[index]} alt='displayIcon'/>
        </>
   )
 }

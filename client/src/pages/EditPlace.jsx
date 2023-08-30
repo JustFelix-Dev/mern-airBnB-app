@@ -121,9 +121,9 @@ const EditPlace = () => {
 
                         <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
                             {
-                              photos.length > 0 && photos.map(link=>(
-                                <div className='h-32  relative flex' key={link}>
-                                    <img className=' w-full object-center rounded-2xl' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+ link} alt="icon" />
+                              photos.length > 0 && photos.map((link,idx)=>(
+                                <div className='h-32  relative flex' key={idx}>
+                                    <img className=' w-full object-center rounded-2xl' src={link} alt="icon" />
                                     <button onClick={(e)=>removePhoto(e,link)} className='absolute text-red-500 bg-white p-1 rounded-lg cursor-pointer right-1 top-2'>
                                         <HiOutlineTrash/>
                                     </button>

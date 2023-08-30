@@ -10,6 +10,7 @@ const RegisterPage = () => {
   const [ email,setEmail ] = useState('');
   const [ password,setPassword ] = useState('');
   const [ photo,setPhoto] = useState("");
+  const [ image,setImage] = useState("");
   const [ isLoading,setIsLoading ] = useState(false);
   const [ splashScreen,setSplashScreen] = useState(true);
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const handleGithub = ()=>{
 const uploadPhoto=(e)=>{
   e.preventDefault()
   let selectedImage = e.target.files[0];
+  setImage(selectedImage)
   let reader = new FileReader();
   reader.readAsDataURL(selectedImage);
   reader.onload=()=>{
@@ -45,33 +47,48 @@ const uploadPhoto=(e)=>{
 }
 
 useEffect(()=>{
-  console.log("EffectPhoto:",photo)
-},[photo])
+  console.log("")
+},[photo,image])
 
 
   const handleForm=async(e)=>{
          setIsLoading(true)
        e.preventDefault()
-       try{
-         await axios.post('/register',{
-              name,email,password,photo
-          }).then((res)=>{
-           toast.success('Check your e-mail for login details!')
-            navigate('/login')
-            setIsLoading(false)
-          })
+
+       if(!image){
+        setIsLoading(false)
+          return toast.error('Photo is required!')
        }
-       catch(err){
+       const formData = new FormData();
+       formData.append('name', name);
+       formData.append('email', email);
+       formData.append('password', password);
+       formData.append('photo', image);
+       try{
+         await axios.post('/register', formData,{
+          headers: {'Content-Type':'multipart/form-data'}
+      }).then((res)=>{
+           toast.success('Check your e-mail for login details!')
+           navigate('/login')
+           setIsLoading(false)
+          })
+        }
+        catch(err){
         console.log(err)
         toast.error(err.response.data)
-       }
-       setIsLoading(false)
+      }
+      setIsLoading(false)
   }
 
   useEffect(()=>{
     setTimeout(()=>{
-        setSplashScreen(false)
-    },5000)
+        if(setSplashScreen){
+          setSplashScreen(false)
+        }else{
+          return;
+        }
+
+    },2500)
   },[])
 
 
@@ -112,7 +129,7 @@ useEffect(()=>{
                       </div>
                  </div>
                  <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
-                      <input type="file" className='hidden' accept='.jpg,.png' onChange={uploadPhoto} required/>
+                      <input type="file" className='hidden' accept='.jpeg,.jpg,.webP,.png' onChange={uploadPhoto} />
                       {
                       photo && photo.length > 0 ? 
                           <img src={photo} alt="userPhoto" width={20} height={20} style={{borderRadius:'10px'}} />

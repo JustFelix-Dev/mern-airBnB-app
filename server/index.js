@@ -32,8 +32,11 @@ const cloudinary = require('./uploadImages');
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static('public'));
-app.set('view engine','ejs')
+app.set('view engine','ejs');
 app.use(express.urlencoded({extended: false}))
+app.use(express.json({
+    limit: '50mb'
+}));
 app.use(cors({
     credentials: true,
        origin:'https://www.airbnb.felixdev.com.ng',
@@ -127,14 +130,12 @@ const resetPasswordEmail=async(name,email,link)=>{
    
 }
 
-//download image from link and save it to uploads folder using npm package "image-downloader';
 app.post('/uploadByLink', async(req, res) => {
     try {
       const { link } = req.body;
       // Upload image to Cloudinary
       const uploadedImage = await cloudinary.uploader.upload(link, {
-        // resource_type: 'image', // Upload as an image
-        folder: 'airbnbLocations', // Specify the folder name here
+        folder: 'airbnbLocations', 
       });
   
       res.json(uploadedImage.secure_url);

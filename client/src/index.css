@@ -87,7 +87,19 @@ button.primary{
   .newtons-cradle {
     --uib-size: 25px;
     --uib-speed: 1.2s;
-    --uib-color: #fff;
+    --uib-color: black;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: var(--uib-size);
+    height: var(--uib-size);
+   }
+   .newtons-cradle.index {
+    --uib-size: 40px;
+    --uib-speed: 1.2s;
+    --uib-color: @apply bg-primary;
     position: relative;
     display: flex;
     align-items: center;

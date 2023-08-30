@@ -15,7 +15,7 @@ const Gallery = ({place}) => {
                     </div>
                      {place?.photos?.length > 0 && place.photos.map(photo=>(
                          <div>
-                            <img src={'https://www.airbnb-server.felixdev.com.ng/uploads/' + photo} alt="locationImage" />
+                            <img src={photo} alt="locationImage" />
                         </div>
                      ))}
                      </div>
@@ -30,27 +30,27 @@ const Gallery = ({place}) => {
                     <div>
                         {place.photos?.[0] && (
                             <div>
-                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos[0]} />
+                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={place.photos[0]} />
                             </div>
                         )}
                     </div>
                     <div className='grid '>
                        {place.photos?.[1] && (
-                            <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos[1]}/>
+                            <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={place.photos[1]}/>
                         )}
                             <div className='overflow-hidden'>
                          {place.photos?.[2] && (
-                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos[2]}/>
+                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={place.photos[2]}/>
                                 )}
                             </div>
                     </div>
                     <div className='grid '>
                        {place.photos?.[3] && (
-                            <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos[3]}/>
+                            <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover' src={place.photos[3]}/>
                         )}
                             <div className='overflow-hidden'>
                          {place.photos?.[4] && (
-                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos[4]}/>
+                                <img onClick={()=> setShowAllPhotos(true)} className='cursor-pointer aspect-square object-cover relative top-2' src={place.photos[4]}/>
                                 )}
                             </div>
                     </div>

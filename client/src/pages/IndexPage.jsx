@@ -34,9 +34,12 @@ const IndexPage = () => {
          <AnimatePresence>
           { loading && (
            <motion.div exit={{opacity:0}} transition={{duration:3}} className='h-[80vh] w-full flex items-center justify-center bg-white'>
-           <motion.div initial={{rotate:0,scale:0.3}} animate={{rotate:'360deg',scale:1}} transition={{duration:2, repeat:'infinity',repeatType:'reverse'}}>
-            <img src="/images/airbnb.png" alt="loader" height={100} width={100} />
-           </motion.div>
+                   <div className="newtons-cradle index">
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  </div>
        </motion.div>
          ) }
          </AnimatePresence>  
@@ -49,7 +52,7 @@ const IndexPage = () => {
             <Link key={idx} to={'/place/'+place._id}>
           <div className="bg-gray-500 mb-2 rounded-2xl flex">
             {place.photos?.[0] && (
-              <img className="rounded-xl object-cover aspect-square " src={'https://www.airbnb-server.felixdev.com.ng/uploads/'+place.photos?.[0]} alt=""/> 
+              <img className="rounded-xl object-cover aspect-square " src={place.photos[0]} alt=""/> 
             )}
           </div>
           <h2 className="font-bold truncate">{place.address}</h2>
