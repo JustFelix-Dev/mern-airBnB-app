@@ -3,9 +3,11 @@ import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { userContext } from '../ContextHook/userContext';
+import { AnimatePresence, motion } from 'framer-motion';
+
 
 const ProfilePage = ({user,setUser,setRedirected}) => {
-    const [ isLoading,setIsLoading ] = useState(false);
+    const [ isLoading,setIsLoading ] = useState(true);
     const [ fetchOrders,setFetchedOrders ]  = useState(null);
     const [ points,setPoints ] = useState('');
     const [ badgeName,setBadgeName] = useState('');
@@ -23,6 +25,7 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
          }).catch((err)=>{
           console.log(err.message)
          })
+
 
       if(user.rewardPoint <= 499){
           setBadgeName('Bronze')
@@ -43,10 +46,16 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
         setBadgeUrl('/images/platinum-badge.png')
         setMaxValue(2000);
       }
+      setIsLoading(false)
     },[])
+
     const logout =async()=>{
         setIsLoading(true)
-        await axios.post('/logout')
+        try{
+          await axios.post('/logout')
+        }catch(err){
+          console.log(err)
+        }
         setUser(null)
         setRedirected(true)
         setIsLoading(false)
@@ -54,7 +63,8 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
 
     return ( 
              <>
-             <div className=' w-[75%]  p-4 overflow-hidden
+
+            {  user &&  <div className=' w-[75%]  p-4 overflow-hidden
                shadow-2xl rounded-lg mx-auto' >
                 <div className=" flex gap-10 p-4 border border-dashed border-primary overflow-hidden rounded-xl ">
               <div className='border-r border-primary pr-20' >
@@ -113,8 +123,20 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                      <div className='mt-2 grow'>
                             <h1 className='bg-gray-100 max-w-xs my-2 text-center py-1 px-2 text-primary rounded-md border'>Recent Reservations:</h1>
                             <div className=' h-[110px] overflow-auto'>
-                              {
-                            fetchOrders && fetchOrders.length > 0 ?
+                                    { isLoading && (
+                                      <AnimatePresence>
+                                    <motion.div exit={{opacity:0}} transition={{duration:3}} className='flex justify-start text-start'>
+                                            <div className="newtons-cradle small">
+                                            <div className="newtons-cradle__dot"></div>
+                                            <div className="newtons-cradle__dot"></div>
+                                            <div className="newtons-cradle__dot"></div>
+                                            <div className="newtons-cradle__dot"></div>
+                                            </div>
+                                </motion.div>
+                                </AnimatePresence>
+                                    )
+                                    }
+                            { !isLoading && fetchOrders && fetchOrders.length > 0 &&
                               fetchOrders.sort((a,b)=>new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((order,idx)=>(
                               <div key={idx} className='flex my-2  gap-2 p-2 border border-primary rounded-lg'>
                                 <div className='flex '>
@@ -128,14 +150,18 @@ const ProfilePage = ({user,setUser,setRedirected}) => {
                            </div>
                            </div>
                            </div>
-                            )) : (<div className='pt-4 text-primary font-bold w-[80%] mx-auto'>No reservations have been made yet!</div>)
-                              }
+                            )) }
+                            {
+                              !isLoading && fetchOrders && fetchOrders.length < 1 &&(
+                               (<div className='pt-4 text-primary font-bold w-[80%] mx-auto'>No reservations have been made yet!</div>)
+                              )
+                            }
                             </div>
                            </div>
                 </div>
 
                 </div>
-             </div>
+             </div>}
              </>
      );
 }

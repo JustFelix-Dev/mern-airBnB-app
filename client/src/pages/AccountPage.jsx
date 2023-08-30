@@ -8,6 +8,7 @@ import { BiLocationPlus } from 'react-icons/bi';
 import PlacesDetail from './PlacesDetail';
 import BookingList from '../components/BookingList';
 import ProfilePage from './ProfilePage';
+import { AnimatePresence, motion } from 'framer-motion';
 
 
 const AccountPage = () => {
@@ -23,7 +24,18 @@ const AccountPage = () => {
     }
 
     if(!ready){
-        return 'Loading...';
+        return (
+            <AnimatePresence>
+             <motion.div exit={{opacity:0}} transition={{duration:3}} className='h-[80vh] w-full flex items-center justify-center bg-white'>
+                     <div className="newtons-cradle index">
+                    <div className="newtons-cradle__dot"></div>
+                    <div className="newtons-cradle__dot"></div>
+                    <div className="newtons-cradle__dot"></div>
+                    <div className="newtons-cradle__dot"></div>
+                    </div>
+         </motion.div>
+           </AnimatePresence>
+        );
     }
 
     if(ready && !user){

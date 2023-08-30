@@ -10,11 +10,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { userContext } from '../ContextHook/userContext';
 import { toast } from 'react-toastify';
 
+
 const BookingPayment = ({ booking }) => {
   // Custom format string: 'd EEE,MMMM yyyy'
   const formattedCheckInDate = format(new Date(booking.checkIn), 'd EEE,MMMM yyyy');
   const formattedCheckOutDate = format(new Date(booking.checkOut), 'd EEE,MMMM yyyy');
   const [ isModal,setIsModal ] = useState(false);
+  const [ isLoading,setIsLoading] = useState(false);
   const [ order,setOrder ] = useState(false);
   const {user} = useContext(userContext);
   const navigate = useNavigate();
@@ -26,6 +28,7 @@ const BookingPayment = ({ booking }) => {
   };
 
   const handleCheckOut=(option,{booking})=>{
+           setIsLoading(true)
          if(option == 'point'){
             const verifyPoints = user.rewardPoint;
             if(verifyPoints <= 50){
@@ -45,6 +48,8 @@ const BookingPayment = ({ booking }) => {
               console.log(err)
             }
           })
+          setIsLoading(false)
+
   }
 
     const handleDelete=(id)=>{
@@ -76,7 +81,7 @@ const BookingPayment = ({ booking }) => {
 
     }
   return (
-    <>
+    <>   
          { booking && isModal && <div id='myModal'  className='modal-confirm w-[31%] bg-white text-black fixed flex items-center py-8 px-4 rounded-2xl text-center z-10 top-[15%] left-[35%] right-[35%] border border-primary'>
             <div  >
             <p className='text-xl'> {order ?'Are you sure you want to cancel this reservation ?':'Are you sure you want to delete this booking ?'}</p>
@@ -125,13 +130,15 @@ const BookingPayment = ({ booking }) => {
                       View Reservation<BsFillPatchCheckFill/></Link><button onClick={()=>{openModal();setOrder(true)}} className='flex items-center gap-1 bg-gray-100 text-primary py-1 px-4 border border-primary rounded-lg justify-center items-center'>Cancel Reservation<FcCancel/></button></div>) 
                       :
                        (<div className='flex flex-col gap-2'>
-                        <select onChange={handleSelectChange} value={selectedOption} className='bg-primary  px-4 py-1 text-white rounded-xs'>
+                        <select onChange={handleSelectChange}
+                         value={selectedOption}
+                        className='bg-primary  px-4 py-1 text-white rounded-xs'>
                         <option disabled className='bg-white text-primary' value={''} >Proceed to Payment</option>
                           <option  className='bg-white text-primary' value="direct">Proceed Directly</option>
                           <option  className='bg-white text-primary'  value="point">Proceed With Points</option>
                           </select>
                           <button onClick={openModal} className='flex bg-white  items-center gap-2 justify-center p-2'>Delete Booking <FaTrash/></button></div>)
-                  }
+                      }
                 </div>
                 
             </div>

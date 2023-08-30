@@ -24,7 +24,14 @@ const ChatBox = () => {
         )
         
         if(isMessagesLoading) return(
-            <p style={{textAlign:"center",width:"100%"}}>Loading Chats...</p>
+            <p style={{textAlign:"center",width:"100%"}}> 
+            <div className="newtons-cradle small">
+            <div className="newtons-cradle__dot"></div>
+            <div className="newtons-cradle__dot"></div>
+            <div className="newtons-cradle__dot"></div>
+            <div className="newtons-cradle__dot"></div>
+            </div>
+            </p>
             )
 
   return (

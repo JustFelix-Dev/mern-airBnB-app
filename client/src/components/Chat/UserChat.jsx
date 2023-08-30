@@ -24,9 +24,7 @@ const UserChat = ({chat,user}) => {
              <img 
               src={
                 recipientUser && recipientUser?.photo
-                  ? recipientUser?.photo.startsWith('https://')
                     ? recipientUser?.photo
-                    : `https://www.airbnb-server.felixdev.com.ng/userPhoto/${recipientUser?.photo}` 
                      : '/images/svgexport-7.svg'
              } 
              alt="" height={20} width={20} style={{borderRadius: "50px"}} />
@@ -38,7 +36,6 @@ const UserChat = ({chat,user}) => {
                 </div>
             </div>
         </div>
-
         <div className='flex flex-col items-end'>
         <div className="date text-sm text-gray-600 truncate">
           { latestMessage && formatDistanceToNow(new Date(latestMessage?.createdAt),{addSuffix:true})}

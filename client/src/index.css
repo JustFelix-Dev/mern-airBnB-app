@@ -14,12 +14,10 @@
 }
 
 /* custom */
-@media screen and (max-width:460px){
-  .indexLocations{
-    grid-template-columns: 1fr;
-  }
-
+.booking{
+  box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
 }
+
 ::-webkit-progress-bar{
     display: flex;
     overflow: hidden;
@@ -87,7 +85,7 @@ button.primary{
   .newtons-cradle {
     --uib-size: 25px;
     --uib-speed: 1.2s;
-    --uib-color: black;
+    --uib-color: #fff;
     position: relative;
     display: flex;
     align-items: center;
@@ -97,9 +95,22 @@ button.primary{
     height: var(--uib-size);
    }
    .newtons-cradle.index {
-    --uib-size: 40px;
+    --uib-size: 60px;
     --uib-speed: 1.2s;
-    --uib-color: @apply bg-primary;
+    --uib-color: #FF385C;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: var(--uib-size);
+    height: var(--uib-size);
+   }
+
+   .newtons-cradle.small {
+    --uib-size: 25px;
+    --uib-speed: 1.2s;
+    --uib-color: #FF385C;
     position: relative;
     display: flex;
     align-items: center;
@@ -212,3 +223,16 @@ button.primary{
     padding: 0px 5px;
     white-space: nowrap;
   }
+
+  @media screen and (max-width:510px){
+    .newtons-cradle.index{
+      --uib-size: 30px;
+    
+    }
+    }
+    @media screen and (max-width:460px){
+      .indexLocations{
+        grid-template-columns: 1fr;
+      }
+    
+    }

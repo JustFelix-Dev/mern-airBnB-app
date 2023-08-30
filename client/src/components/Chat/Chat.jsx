@@ -50,7 +50,14 @@ const Chat = () => {
                             <PotentialChats/>
                             {userChats?.length < 1 ? null : (
                                 <div className="flex flex-col">
-                                    {isUserChatsLoading && <p>Loading Chats...</p>}
+                                    {isUserChatsLoading && <p className="text-center"> 
+                                    <div className="newtons-cradle small">
+                                    <div className="newtons-cradle__dot"></div>
+                                    <div className="newtons-cradle__dot"></div>
+                                    <div className="newtons-cradle__dot"></div>
+                                    <div className="newtons-cradle__dot"></div>
+                                    </div></p>
+                                }
                                     {userChats?.map((chat,index)=>{
                                         return(
                                             <div key={index} onClick={()=> updateCurrentChat(chat)}>
