@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { userContext } from '../ContextHook/userContext';
 import { toast } from 'react-toastify';
+import { AnimatePresence, motion } from 'framer-motion';
 
 
 const BookingPayment = ({ booking }) => {
@@ -81,18 +82,20 @@ const BookingPayment = ({ booking }) => {
 
     }
   return (
-    <>   
-         { booking && isModal && <div id='myModal'  className='modal-confirm w-[31%] bg-white text-black fixed flex items-center py-8 px-4 rounded-2xl text-center z-10 top-[15%] left-[35%] right-[35%] border border-primary'>
+    <>     <AnimatePresence>
+         { booking && isModal &&
+          <motion.div exit={{y:50,opacity:0}} initial={{y:50,opacity:0}} animate={{y:0,opacity:1}} transition={{duration:1,type:'spring',stiffness:100}}  id='myModal'  className='modal-confirm w-[340px] bg-white text-black fixed flex items-center py-8 px-4 rounded-2xl text-center z-10 top-[15%] left-[5%] sm:left-[25%] md:left-[35%] right-[35%] border border-primary'>
             <div  >
             <p className='text-xl'> {order ?'Are you sure you want to cancel this reservation ?':'Are you sure you want to delete this booking ?'}</p>
-               <div className='flex justify-between mt-4'>
+               <div className='flex modalbutton justify-between mt-4'>
                 <button onClick={closeModal} className='bg-white flex items-center gap-1 text-primary border border-primary py-1 px-4'> <span>Cancel</span></button>
                 <button onClick={ order ? ()=>handleOrder(booking._id) : ()=>handleDelete(booking._id)} className='bg-green-800 text-white border border-white py-1 px-4'>Proceed</button>
                </div>
             </div>
-          </div>}
+          </motion.div>}
+          </AnimatePresence>
       <div id='bodyPage' className='bg-gray-200 text-black p-3 rounded-xl'>
-        <div className=' flex justify-between gap-2 border-t border-white-300 mt-2 py-2'>
+        <div className=' flex  flex-row bookingpayment justify-between gap-2 border-t border-white-300 mt-2 py-2'>
             <div className='flex flex-col gap-1'>
           <div >
             <h1 className='underline  px-2 rounded-sm text-black my-1'>Check-In Date:</h1>
@@ -118,11 +121,10 @@ const BookingPayment = ({ booking }) => {
             <MdModeNight/>
           <p>{differenceInCalendarDays(new Date(booking.checkOut), new Date(booking.checkIn))} night(s)</p> 
             </div>
-          {/* Price: ${booking.price} */}
         </div>
             </div>
-            <div className='flex flex-col items-center justify-between'>
-                <h1>Total Price: <span className='text-2xl font-medium'>${booking.price}</span></h1>
+            <div className='flex flex-col payment items-center justify-between'>
+                <h1 className='price'>Total Price: <span className='text-2xl font-medium'>${booking.price}</span></h1>
                 <div>
                   {
                     booking.status && booking.status == "Paid" ?

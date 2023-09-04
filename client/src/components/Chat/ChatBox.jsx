@@ -40,7 +40,7 @@ const ChatBox = () => {
               <div className={ isOnline ? `flex items-center justify-center p-0.5 text-white bg-green-500` : `flex items-center justify-center p-0.5 text-white bg-gray-500`}>
                 <p className='text-sm'>Chatting With {recipientUser?.admin ? "Admin" : "User"} - <strong>{recipientUser?.name.split(' ')[0]}</strong></p> 
                 </div>
-                <div className=" flex flex-col  p-3 " >
+                <div className=" flex flex-col  p-3 chatmessage text-sm" >
                     {messages && messages.map((message,index)=>(
                         <div key={index} className={`${message?.senderId === user?._id ? " flex flex-col text-white bg-gray-600 p-2 rounded-lg max-w-[50%] mb-1 self-end grow-0" : "flex flex-col bg-primary text-white max-w-[50%] mb-1 rounded-lg p-2 self-start grow-0"}`} ref={scroll}>
                             <span>{message.text}</span>
@@ -49,7 +49,7 @@ const ChatBox = () => {
                     ))}
                 </div>
          </div>
-                <div className=' flex bg-slate-50 w-[100%]' >
+                <div className=' flex items-center bg-slate-50 w-[100%]' >
                 <InputEmoji value={textMessage} onChange={setTextMessage} fontFamily="Mukta" borderColor="#FF5A5F" />
                  <button onClick={()=>sendTextMessage(textMessage,user,currentChat._id,setTextMessage)} className='bg-primary border-0 outline-0 p-4 rounded-full'><BsSend size={20} color='white' /></button>
                 </div>

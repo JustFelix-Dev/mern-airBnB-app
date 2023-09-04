@@ -42,9 +42,6 @@ const Header = () => {
       setShowSearch(!showSearch)
    };
 
-   const handleShow =()=>{
-    setShowSearch(true)
-   }
  
   return (
     <>
@@ -59,7 +56,7 @@ const Header = () => {
                <div className='hidden sm:block'>Add guests</div>
                <button onClick={handleSearch} className=' bg-primary p-2 rounded-full'><img src="/images/svgexport-4.svg" alt="airbnb_search" height={15} width={15} /></button>
              </div> : (<div>
-                   <Link to={'/'} onClick={handleShow}><div className=' cursor-pointer flex gap-3 items-center border border-gray-400 shadow-lg py-3 px-12 rounded-full'><h1>Search</h1> <button className='bg-primary p-2 rounded-full'><img src="/images/svgexport-4.svg" alt="airbnb_search" height={15} width={15} /></button></div></Link>
+                   <Link to={'/'}><div className=' cursor-pointer flex gap-3 items-center md:border border-gray-400 md:shadow-lg py-3 px-12 rounded-full'><h1 className='hidden md:block'>Search</h1> <button className='bg-primary p-2 rounded-full'><img src="/images/svgexport-4.svg" alt="airbnb_search" height={15} width={15} /></button></div></Link>
              </div>) }
              <div className='flex items-center gap-5 '>
               <div className='hidden md:block'><h1>Airbnb your home</h1></div>

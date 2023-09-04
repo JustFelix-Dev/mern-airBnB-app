@@ -34,12 +34,12 @@ const FAQAccordion = () => {
           <div className="mt-2">{faq.answer}</div>
         </div>
       ))}
-      <div className="flex justify-center mt-4">
+      <div className="flex flex-wrap gap-2 justify-center mt-4">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
             onClick={() => handlePageChange(index + 1)}
-            className={`mx-1 px-3 py-1 rounded ${
+            className={`block mx-1 mb-2 px-3 py-1 rounded ${
               currentPage === index + 1 ? 'bg-primary text-white' : 'bg-gray-300'
             }`}
           >

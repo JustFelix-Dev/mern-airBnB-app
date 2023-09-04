@@ -11,7 +11,7 @@ const validator = require('validator');
 const cloudinary = require('../uploadImages');
 const fs = require('fs');
 const multer = require('multer');
-
+const postmark = require('postmark');
 
 // Middleware
 app.use(cookieParser())
@@ -62,78 +62,122 @@ app.use(cookieParser())
     
 // }
 
-const registrationEmail = async (name, email, password) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
+// const registrationEmail = async (name, email, password) => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const html = `Hello, Welcome to AirBnb!.Your Name is ${name}, and your password ${password}`
 
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
-        auth: {
-          user: 'owolabifelix78@gmail.com',
-          pass: process.env.GOOGLE_PASS
-        }
-      });
+//       const transporter = nodemailer.createTransport({
+//         host: "smtp.gmail.com",
+//         port: 465,
+//         secure: true,
+//         auth: {
+//           user: 'owolabifelix78@gmail.com',
+//           pass: process.env.GOOGLE_PASS
+//         }
+//       });
 
-      const info = await transporter.sendMail({
-        from: 'AirBnb <owolabifelix78@gmail.com>',
-        to: email,
-        subject: 'Welcome to AirBnb!',
-        html: html,
-        attachments: [{
-          filename: 'emailHeader.jpg',
-          path: './emailImages/emailHeader.jpg',
-          cid: 'airbnbHeader'
-        }]
-      });
-
-      console.log('Message Sent:' + info.messageId);
-      resolve(info.messageId);
-    } catch (error) {
-      console.error('Error sending registration email:', error);
-      reject(error);
-    }
-  });
-};
-
-
-//  const registerUser = async(req,res)=>{
-//    const { name,email,password} = req.body;
-//    const  photo  = req.file;
-//     try{
-//          let user = await userModel.findOne({email});
-//          if(user){
-//             return res.status(400).json('Email already exists!');
-//          }
-         
-//          if(!name || !email || !password || !photo){
-//             return res.status(400).json("All fields are required!");
-//          }
-
-//          if(!validator.isEmail(email)){
-//           return res.status(400).json("Invalid Email Address!");
-//          }
-//          if(!validator.isStrongPassword(password)){
-//           return res.status(400).json("Please Choose a Strong Password!");
-//          }
-//          const bcryptSalt  = bcrypt.genSaltSync();
-//          const isAdmin = password.includes(process.env.KEY);
-//          const result = await cloudinary.uploader.upload( photo.path,{
-//            public_id: "profile/" + Date.now(),
-//            folder: "userImages"
-//          })
-//          const resultUrl = result.secure_url;
-//        user = await userModel.create({name,email,admin:isAdmin,photo:resultUrl,
-//         rewardPoint:0,badge:'Bronze',password:bcrypt.hashSync(password,bcryptSalt)})
-//         res.json({user,message:'Registration Successful!'})
-//         registrationEmail(name,email,password)
+//       const info = await transporter.sendMail({
+//         from: 'AirBnb <owolabifelix78@gmail.com>',
+//         to: email,
+//         subject: 'Welcome to AirBnb!',
+//         html: html,
+//         attachments: [{
+//           filename: 'emailHeader.jpg',
+//           path: './emailImages/emailHeader.jpg',
+//           cid: 'airbnbHeader'
+//         }]
+//       });
+    
+//       console.log('Message Sent:' + info.messageId);
+//       res.status(200).json("Message sent!" + info.messageId)
+//       resolve(info.messageId);
+//     } catch (error) {
+//       console.error('Error sending registration email:', error);
+//       res.status(500).json('Error sending registration email:', error)
+//       reject(error);
 //     }
-//     catch(err){
-//         res.status(422).json(err)
-//     }
+//   });
+// };
+
+// const registrationEmail=async(name,email,password)=>{
+
+// // Create a Nodemailer transporter using the settings
+// const transporter = nodemailer.createTransport({
+//   host: 'mail.felixdev.com.ng', // Outgoing server (SMTP) hostname
+//   port: 26, // SMTP port
+//   secure: false, // Use SSL/TLS
+//   auth: {
+//     user: 'justfelix@felixdev.com.ng', // Your email address
+//     pass: process.env.MAILPASS // Your email password
+//   }
+// });
+
+// // Email options
+// const mailOptions = {
+//   from: 'justfelix@felixdev.com.ng', // Your email address
+//   to: 'owolabifelix78@gmail.com', // Recipient's email address
+//   subject: 'Subject of the Email',
+//   text: 'This is the text content of the email.Yes!'
+// };
+
+// // Send the email
+// transporter.sendMail(mailOptions, (error, info) => {
+//   if (error) {
+//     console.error('Error sending email:', error);
+//   } else {
+//     console.log('Email sent:', info.response);
+//   }
+// });
+
 // }
+
+// const registrationEmail=(name,email,password)=>{
+//      let transporter = nodemailer.createTransport({
+//       service:"gmail",
+//       auth:{
+//         user: 'owolabifelix78@gmail.com',
+//         pass: process.env.GOOGLE_PASS,
+//       },
+//       tls:{
+//           rejectUnauthorized: true,
+        
+//       },
+//      })
+
+//      let mailOption = {
+//       from : 'Airbnb <owolabifelix78@gmail.com>',
+//       to : email,
+//       subject: "Welcome to AirBnb!",
+//       text: `Welcome ${name}-Password-${password}`
+//      }
+
+//      transporter.sendMail(mailOption).then((response)=>{
+//       res.json({message:"Sent",response: response.envelope.to})
+//      }).catch((err)=>{
+//       console.log(`Error Occured:${err}`)
+//      })
+// }
+
+const registrationEmail=async (name,email,password)=>{
+  return new Promise(async (resolve,reject)=>{
+    try{
+      const serverToken = process.env.POSTMARK;
+      const client = new postmark.ServerClient(serverToken);
+      
+   const result = client.sendEmail({
+        "From": "justfelix@felixdev.com.ng",
+        "To": "owolabifelix78@gmail.com",
+        "Subject": "Test",
+        "TextBody": `Hello From AirBnb,${name},${email},${password}`
+      })
+      resolve('Email sent successfully',result);
+    }catch(error){
+      console.error('Error sending email:', error);
+      reject('Email sending failed');
+    }
+  })
+}
 
 
 const registerUser = async (req, res) => {
@@ -191,12 +235,13 @@ const registerUser = async (req, res) => {
         badge: 'Bronze',
         password: bcrypt.hashSync(password, bcryptSalt)
       });
-  
-      res.json({ user, message: 'Registration Successful!' });
-      registrationEmail(name, email, password);
+          // Send Registration Email
+     const emailResult =  await registrationEmail(name, email, password);
+     console.log("Email Result:", emailResult);
+      res.json({ user, message: 'Registration Successful!',emailResult});
     } catch (error) {
       console.error('Error uploading to Cloudinary:', error);
-      res.status(500).json({ error: 'Error uploading to Cloudinary' });
+      res.status(500).json({ error: 'Error uploading to Cloudinary',emailResult: err });
     }
     }catch(error){
       console.error('Error processing file:', error);
@@ -236,7 +281,7 @@ const userProfile =(req,res)=>{
       if(token){
           jwt.verify(token,process.env.SECRET,{},async(err,user)=>{
             if(err) throw err;
-            const {name,email,_id,photo,admin,rewardPoint,badge} = await userModel.findById(user.id)
+            const {name,email,_id,photo,admin,rewardPoint,badge} = await userModel.findById(user?.id)
             res.json({name,email,_id,photo,admin,rewardPoint,badge})
           })
       }else{

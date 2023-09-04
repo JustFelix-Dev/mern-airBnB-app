@@ -6,6 +6,7 @@
     user-select: none;
 }
 
+
 ::-webkit-scrollbar{
     width:.4rem;
 }
@@ -23,7 +24,7 @@
     overflow: hidden;
     background-color: whitesmoke;
     border: 1px solid #f0516e;
-    width: 200%;
+    width: 190%;
     height: 20px;
     border-radius: 6px;
 }
@@ -224,15 +225,69 @@ button.primary{
     white-space: nowrap;
   }
 
+  @media screen and (min-width:901px){
+      .basicInfo{
+      border-right: 1px solid #FF385C;
+      }
+  }
+ 
+  @media screen and (max-width:900px){
+    .leftChat{
+      position: fixed;
+      z-index: 7;
+      height:470px;
+      background-color: white;
+    }
+    .closeIcon{
+      display: block;
+    } 
+    .profilepage{
+      flex-direction: column;
+    }
+    .basicinfo{
+      border-right: none;
+    }
+    .displayInfo{
+      order: -1 ;
+      border-bottom: 1px solid rgb(255, 56, 92,0.5);
+      padding-bottom: 2.5rem;
+    }
+  }
+  @media screen and (max-width:850px){
+    .policies{
+      flex-direction: column;
+    }
+  }
+  @media screen and (max-width:520px){
+    .bookingpayment{
+      flex-direction: column;
+      /* align-items: center; */
+      gap: 2rem;
+    }
+    .modalbutton{
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+    }
+  }
   @media screen and (max-width:510px){
     .newtons-cradle.index{
       --uib-size: 30px;
     
     }
     }
+
+    @media screen and (max-width:480px){
+       .chatmessage{
+        font-size: 0.85rem;
+       }
+    }
     @media screen and (max-width:460px){
       .indexLocations{
         grid-template-columns: 1fr;
+      }
+      .fetchedorders{
+        font-size: 0.8rem;
       }
     
     }

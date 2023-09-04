@@ -7,6 +7,7 @@ const PotentialChats = () => {
     const {potentialChats,createChat,onlineUsers} = useContext(ChatContext);
   return (
        <>
+           
          <div className="flex gap-1 mb-2 ml-2">
             {potentialChats.map((support,index)=>{
                 return (

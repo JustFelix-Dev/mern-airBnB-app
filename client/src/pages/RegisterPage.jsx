@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SlCloudUpload } from 'react-icons/sl';
 import {toast} from 'react-toastify';
 import Splash from '../components/Splash';
+import { motion } from 'framer-motion';
 
 const RegisterPage = () => {
   const [ name,setName ] = useState('');
@@ -100,10 +101,10 @@ useEffect(()=>{
 
   return (
           <>
-          <div className="grow flex mt-8  items-center justify-around">
-            <div className="shadow-2xl border-t-2 border-primary  py-1 px-6 rounded-2xl">
-             <h1 className='text-4xl text-center mb-4'>Register</h1>
-             <form className='max-w-md mx-auto'onSubmit={handleForm} >
+          <div className="px-6 text-md md:text-md md:px-0 grow flex mt-8 items-center justify-around">
+            <motion.div initial={{y:10,scale:0.8,opacity:0}} animate={{y:0,scale:1,opacity:1}} transition={{type:'spring',stiffness:110,duration:0.7}} className="shadow-2xl max-w-md border-t-2 border-primary w-[100%] py-1 px-6 rounded-2xl">
+             <h1 className=' text-2xl md:text-4xl text-center mb-4'>Register</h1>
+             <form className=''onSubmit={handleForm} >
                  <input type="text" placeholder='John Doe'
                         name='name'
                         value={name}
@@ -128,7 +129,7 @@ useEffect(()=>{
                 <img ref={imageRef} onClick={changeInputType} src="images/eye-close.png" alt="passwordIcon" height={25} width={25}/>
                       </div>
                  </div>
-                 <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-xl p-2'>
+                 <label className='my-2 bg-transparent cursor-pointer flex justify-center items-center gap-2 border border-gray-200 rounded-lg text-md md:text-xl p-2'>
                       <input type="file" className='hidden' accept='.jpeg,.jpg,.webP,.png' onChange={uploadPhoto} />
                       {
                       photo && photo.length > 0 ? 
@@ -154,17 +155,17 @@ useEffect(()=>{
                 <hr className='w-40' /> <span>OR </span> <hr className='w-40' />
                 </div>
                 <div>
-                <div onClick={handleGoogle} className="google my-4 border border-primary rounded-xl text-lg cursor-pointer p-2 flex justify-center items-center gap-2">
+                <div onClick={handleGoogle} className="google my-4 border border-primary rounded-xl text-md md:text-lg cursor-pointer p-2 flex justify-center items-center gap-2">
                       <img src="/images/google.png" alt="googleIcon" width={30} height={30} />
                   <span>Continue With Google</span>
                 </div>
-                <div onClick={handleGithub} className="github my-4 border border-primary rounded-xl text-lg cursor-pointer p-2 flex justify-center items-center gap-2 ">
+                <div onClick={handleGithub} className="github my-4 border border-primary rounded-xl text-md  md:text-lg cursor-pointer p-2 flex justify-center items-center gap-2 ">
                      <img src="/images/github.png" alt="githubIcon" width={30} height={30} />
                      <span>Continue With GitHub</span>
                 </div>
                 </div>
               </div>
-           </div>
+           </motion.div>
             </div>
           </>
   )

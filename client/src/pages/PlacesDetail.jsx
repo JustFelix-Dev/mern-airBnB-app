@@ -6,12 +6,15 @@ import Gallery from '../components/Gallery';
 import AddressLink from '../components/AddressLink';
 import { TbClockBolt,TbWorldLongitude,TbWorldLatitude } from 'react-icons/tb';
 import { WiHumidity } from 'react-icons/wi';
+import { motion,AnimatePresence } from 'framer-motion';
+
 
 const PlacesDetail = () => {
     const {id} = useParams()
     const [ place,setPlace ] = useState(null);
     const [ weather,setWeather] = useState(null);
     const myApi = "f5fb28c0d0dd7eefc82f52937d88b038";
+    const [ isLoading,setIsLoading ] = useState(true);
 
 useEffect(()=>{
     if(!id)  return
@@ -19,6 +22,7 @@ useEffect(()=>{
            const {data} = response;
            console.log(data)
            setPlace(data)
+           setIsLoading(false)
       }) 
 },[id])
 
@@ -37,22 +41,31 @@ useEffect(()=>{
   getWeather(place?.address);
 },[place])
 
-console.log(weather)
-
-
-
+console.log("Weather:",weather)
 
   return (
          <>
-         {place && 
-            (<div className='mt-4 max-w-5xl shadow-lg  mx-auto px-8 pt-8'>
-                <h1 className='text-3xl'>{place.title}</h1>
+          <AnimatePresence>
+          { isLoading &&  (
+           <motion.div exit={{opacity:0}}  className='h-[80vh] w-full flex items-center justify-center bg-white'>
+                   <div className="newtons-cradle index">
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  <div className="newtons-cradle__dot"></div>
+                  </div>
+       </motion.div>
+         ) }
+         </AnimatePresence> 
+         { !isLoading && place && 
+            (<div className='mt-4 max-w-5xl shadow-lg  mx-auto px-2 sm:px-8 pt-8'>
+                <h1 className=' mb-4 text-lg sm:text-xl md:text-3xl md:mb-0'>{place.title}</h1>
                    <AddressLink>{place.address}</AddressLink>
                    <Gallery place={place}/>
                   <div className='mt-8 mb-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]'>
-                    <div>
+                    <div className=''>
                     <div className="my-4">
-                    <h2 className="font-semibold text-2xl"> Description </h2>
+                    <h2 className="font-semibold text-2xl"> Description :</h2>
                     <p>{place.description || 'No description available' }</p>
                      </div>
                         <div className='bg-primary rounded-xl flex flex-col gap-2 max-w-xs  py-4 px-4 text-white font-medium'>
@@ -61,15 +74,15 @@ console.log(weather)
                         <p className='bg-white text-black w-auto px-2 py-1 rounded-md'>Max No. of Guests: {place.guests}</p>
                         </div>
                     </div>
-                      <div className='flex items-center'>
+                      <div className='flex  items-center'>
                         <BookingWidget place={place}/>
                       </div>
                   </div>
-                  <div className="bg-white -mx-8 px-8 py-8 border-t">
-                    <div className='flex justify-between gap-4'>
-                     <div>
+                  <div className="bg-white  mx-0 sm:-mx-8 px-1 sm:px-8 py-8 border-t">
+                    <div className='flex flex-col sm:flex-row  items-center sm:justify-between gap-4'>
+                     <div className='border-b'>
                       {
-                        weather && weather.weather &&(
+                        weather && weather.weather ? (
                           <>
                         <div className='flex gap-6 border-b pb-4'>
                           <div>
@@ -88,18 +101,24 @@ console.log(weather)
                           <span className='flex-[40%]'><span className='flex items-center gap-1'>Latitude<TbWorldLatitude/> : {weather?.coord?.lat}&deg;</span></span>
                         </div>
                         </>
-                        )
+                        ):<div className='flex items-center gap-3'>
+                              <motion.div initial={{opacity:0.2,scale:0.9}} animate={{opacity:0.9,scale:1}}
+                              transition={{duration:4,repeat: Infinity,repeatType:'reverse'}}>
+                              <img src="/images/unknown.png" alt="icon" height={45} width={45} />
+                              </motion.div>
+                             <span className='font-semibold text-lg md:text-xl max-w-[20ch]'>Oops! Weather Forecast not available at the moment!.</span>
+                           </div>
                       }
                      </div>
-                    <div>
-                      <h2 className='text-2xl font-bold'>What this Place has to Offer You:</h2>
+                    <div className=''>
+                      <h2 className='text-lg sm:text-2xl font-bold'>What this Place has to Offer You:</h2>
                       <div className='flex  items-center justify-center p-4 flex-wrap gap-4 max-w-sm'>
                         {
                           place.perks && (
                                 place.perks.map((perk,idx)=>(
                                   <div key={idx} className=' flex-[40%] flex gap-2  items-center'>
                                     <img src={`/images/${perk}.png`} alt="wifiIcon"height={20} width={20} />
-                                    <span className='text-xl capitalize'>{perk}</span>
+                                    <span className='text-lg sm:text-xl capitalize'>{perk}</span>
                                   </div>
                                 ))
                           )
@@ -107,10 +126,10 @@ console.log(weather)
                       </div>
                     </div>
                     </div>
-                  <div className='mt-4  py-4 border-t'>
+                  <div className='mt-4 py-4 border-t'>
                   <h2 className="text-xl font-bold"> Extra info:</h2>
                   </div>
-                  <div className='mb-4 mt-2 text-sm text-gray-900 leading-5'>
+                  <div className=' mb-3 md:mt-2 text-sm text-gray-900 leading-5'>
                     <p className='text-lg'>{place.extraInfo}</p>
                   </div>
                   </div>

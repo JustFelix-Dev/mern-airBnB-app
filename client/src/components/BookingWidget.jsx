@@ -11,6 +11,7 @@ const BookingWidget = ({place}) => {
     const [ fullName,setFullName] = useState('');
     const [ mobile,setMobile ] = useState('');
     const {user} = useContext(userContext);
+    const [ isLoading,setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -25,18 +26,24 @@ const BookingWidget = ({place}) => {
     }
 
     const handleBooking=async()=>{
-        const formBody = { place:place._id,checkIn,checkOut,numOfGuests:guestNum,fullName,mobile,price:numOfNight * place.price}
+             setIsLoading(true)
+        const formBody = {
+              place:place._id,checkIn,checkOut,
+              numOfGuests:guestNum,fullName,mobile,
+              price:numOfNight * place.price
+        }
         const response = await axios.post('/bookings',formBody)
         const bookingId = response.data._id;
+        setIsLoading(false)
         navigate(`/account/bookings/${bookingId}`)
     }
 
   return (
           <>
-           <div className="bg-white shadow-2xl border-t-2 border-primary p-4 rounded-2xl">
+           <div className="bg-white shadow-2xl border-t-2 border-primary p-4 rounded-2xl w-full">
             <p className='text-2xl text-center'>${place.price}/<span className='text-gray-500'>night</span></p>
             <div className="border rounded-2xl mt-4">
-            <div className="flex">
+            <div className="flex flex-col gap-2 sm:flex-row">
             <div className=' py-3 px-4'>
                 <label htmlFor="checkIn">Check-In:</label>
                 <input type="date"
@@ -75,11 +82,21 @@ const BookingWidget = ({place}) => {
            </div>
             )}
             </div>
-            <button onClick={handleBooking} className="primary">
-                Reserve
+            <button onClick={handleBooking} className="primary"> 
+            { !isLoading ?
+               <div>
+               Reserve
                 {numOfNight > 0 &&  (
                     <span> :${numOfNight * place.price }</span>
                 )}
+                </div> 
+                : (<div className="newtons-cradle">
+                <div className="newtons-cradle__dot"></div>
+                <div className="newtons-cradle__dot"></div>
+                <div className="newtons-cradle__dot"></div>
+                <div className="newtons-cradle__dot"></div>
+                </div>)
+            }
             </button>
         </div>
           </>
