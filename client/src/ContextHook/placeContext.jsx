@@ -13,13 +13,7 @@ export const PlaceContextProvider =({children})=>{
           setLoading(true);
           try {
             const res = await axios.get('/allPlaces');
-            setAllPlaces([...res.data,...res.data,...res.data,
-                ...res.data,...res.data,...res.data,
-                ...res.data,...res.data,...res.data,
-                ...res.data,...res.data,...res.data,
-                ...res.data,...res.data,...res.data,
-                ...res.data,...res.data,...res.data,
-                ...res.data,]);
+            setAllPlaces(res.data);
           } catch (err) {
             setError(err);
           }
@@ -32,18 +26,7 @@ export const PlaceContextProvider =({children})=>{
               setLoading(true);
               try{
                 const res = await axios.get(`/placesfiltered?place=${location}&leastPrice=${minValue}&highPrice=${maxValue}`)
-                console.log(res)
-                setAllPlaces([...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,...res.data,
-                    ...res.data,...res.data,...res.data,])
+                setAllPlaces(res.data)
               }catch(err){
                 console.log(err)
                 setError(err.response.data)

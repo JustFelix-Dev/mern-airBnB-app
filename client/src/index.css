@@ -1,293 +1,374 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-*{
-    font-family: 'Mukta', sans-serif;
-    user-select: none;
+* {
+  font-family: "Mukta", sans-serif;
+  user-select: none;
 }
 
-
-::-webkit-scrollbar{
-    width:.4rem;
+::-webkit-scrollbar {
+  width: 0.4rem;
 }
-::-webkit-scrollbar-thumb{
-    @apply bg-black;
+::-webkit-scrollbar-thumb {
+  @apply bg-black;
 }
 
 /* custom */
-.booking{
+.booking {
   box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
 }
+.support-services {
+  display: none;
+}
 
-::-webkit-progress-bar{
-    display: flex;
-    overflow: hidden;
-    background-color: whitesmoke;
-    border: 1px solid #f0516e;
-    width: 190%;
-    height: 20px;
-    border-radius: 6px;
+::-webkit-progress-bar {
+  display: flex;
+  overflow: hidden;
+  background-color: whitesmoke;
+  border: 1px solid #f0516e;
+  width: 190%;
+  height: 20px;
+  border-radius: 6px;
 }
 progress::-webkit-progress-value {
-    @apply bg-primary
-  }
-input[type="text"],input[type="password"],
-input[type="email"],input[type="number"],
+  @apply bg-primary;
+}
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
 input[type="tel"],
-textarea{
-    @apply w-full border  my-1 py-2 px-3 rounded-lg focus:outline-0 hover:border-primary;
+textarea {
+  @apply w-full border  my-1 py-2 px-3 rounded-lg focus:outline-0 hover:border-primary;
 }
-textarea{
-    height: 100px;
+textarea {
+  height: 100px;
 }
-button{
-    @apply bg-gray-300 hover:opacity-80 hover:scale-95 transition-all;
+button {
+  @apply bg-gray-300 hover:opacity-80 hover:scale-95 transition-all;
 }
-button.primary{
-    background-color: #FF385C;
-    @apply bg-primary p-2 w-full text-white rounded-2xl;
+button.primary {
+  background-color: #ff385c;
+  @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
 
 /* .Toastify__toast-body {
     font-family: 
   } */
-  .Toastify__toast-body svg {
-    fill: #FF385C;
-  } 
-.Toastify__toast--success{
-    @apply text-black;
+.Toastify__toast-body svg {
+  fill: #ff385c;
+}
+.Toastify__toast--success {
+  @apply text-black;
 }
 .Toastify__progress-bar {
-    background: linear-gradient(to right, #FF385C,#f0516e);
+  background: linear-gradient(to right, #ff385c, #f0516e);
+}
+.activeIcon {
+  height: 2px;
+  width: 2px;
+  background-color: #ff385c;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px #ff385c;
+  animation: active 700ms infinite;
+}
+
+@keyframes active {
+  0% {
+    box-shadow: 0 0 0;
+    opacity: 1;
   }
-  .activeIcon{
-    height: 2px;
-    width: 2px;
-    background-color: #FF385C;
-    border-radius: 50%;
-    box-shadow: 0 0 0 5px #FF385C;
-    animation: active 700ms infinite;
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+/* Loader */
+.newtons-cradle {
+  --uib-size: 25px;
+  --uib-speed: 1.2s;
+  --uib-color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: var(--uib-size);
+  height: var(--uib-size);
+}
+.newtons-cradle.index {
+  --uib-size: 60px;
+  --uib-speed: 1.2s;
+  --uib-color: #ff385c;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: var(--uib-size);
+  height: var(--uib-size);
+}
+
+.newtons-cradle.small {
+  --uib-size: 25px;
+  --uib-speed: 1.2s;
+  --uib-color: #ff385c;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  width: var(--uib-size);
+  height: var(--uib-size);
+}
+
+.newtons-cradle__dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 25%;
+  transform-origin: center top;
+}
+
+.newtons-cradle__dot::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 25%;
+  border-radius: 50%;
+  background-color: var(--uib-color);
+}
+
+.newtons-cradle__dot:first-child {
+  animation: swing var(--uib-speed) linear infinite;
+}
+
+.newtons-cradle__dot:last-child {
+  animation: swing2 var(--uib-speed) linear infinite;
+}
+
+@keyframes swing {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out;
   }
 
-  @keyframes active {
-    0%{
-        box-shadow: 0 0 0 ;
-        opacity: 1;
-    }
-    50%{
-        opacity: 0.5;
-    }
-    100%{
-        opacity:0.2;
-    }
+  25% {
+    transform: rotate(70deg);
+    animation-timing-function: ease-in;
   }
-  
-  /* Loader */
-  .newtons-cradle {
-    --uib-size: 25px;
-    --uib-speed: 1.2s;
-    --uib-color: #fff;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    width: var(--uib-size);
-    height: var(--uib-size);
-   }
-   .newtons-cradle.index {
-    --uib-size: 60px;
-    --uib-speed: 1.2s;
-    --uib-color: #FF385C;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    width: var(--uib-size);
-    height: var(--uib-size);
-   }
 
-   .newtons-cradle.small {
-    --uib-size: 25px;
-    --uib-speed: 1.2s;
-    --uib-color: #FF385C;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    width: var(--uib-size);
-    height: var(--uib-size);
-   }
-   
-   .newtons-cradle__dot {
-    position: relative;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    width: 25%;
-    transform-origin: center top;
-   }
-   
-   .newtons-cradle__dot::after {
-    content: '';
+  50% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+}
+
+@keyframes swing2 {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+
+  50% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out;
+  }
+
+  75% {
+    transform: rotate(-70deg);
+    animation-timing-function: ease-in;
+  }
+}
+
+/* Modal-Confirm */
+.modal-confirm {
+  box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
+}
+
+.shareBox {
+  box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
+}
+
+/* multi-range slider */
+
+.multi-range-slider {
+  display: flex;
+  width: 15rem;
+  height: 2rem;
+  position: relative;
+  border: none;
+  padding: 20px 10px;
+  box-shadow: none;
+  flex-direction: column;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.multi-range-slider .thumb {
+  background-color: gray;
+}
+.multi-range-slider .thumb .caption * {
+  position: absolute;
+  min-width: 30px;
+  height: 30px;
+  font-size: 75%;
+  text-align: center;
+  line-height: 30px;
+  background-color: #ff385c;
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0px 0px 5px black;
+  padding: 0px 5px;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 901px) {
+  .basicInfo {
+    border-right: 1px solid #ff385c;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .leftChat {
+    position: fixed;
+    z-index: 7;
+    height: 470px;
+    background-color: white;
+  }
+  .closeIcon {
     display: block;
-    width: 100%;
-    height: 25%;
-    border-radius: 50%;
-    background-color: var(--uib-color);
-   }
-   
-   .newtons-cradle__dot:first-child {
-    animation: swing var(--uib-speed) linear infinite;
-   }
-   
-   .newtons-cradle__dot:last-child {
-    animation: swing2 var(--uib-speed) linear infinite;
-   }
-   
-   @keyframes swing {
-    0% {
-     transform: rotate(0deg);
-     animation-timing-function: ease-out;
-    }
-   
-    25% {
-     transform: rotate(70deg);
-     animation-timing-function: ease-in;
-    }
-   
-    50% {
-     transform: rotate(0deg);
-     animation-timing-function: linear;
-    }
-   }
-   
-   @keyframes swing2 {
-    0% {
-     transform: rotate(0deg);
-     animation-timing-function: linear;
-    }
-   
-    50% {
-     transform: rotate(0deg);
-     animation-timing-function: ease-out;
-    }
-   
-    75% {
-     transform: rotate(-70deg);
-     animation-timing-function: ease-in;
-    }
-   }
-
-   /* Modal-Confirm */
-   .modal-confirm{
-    box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
-   }
-
-   .shareBox{
-    box-shadow: 0 0 0 1000px rgba(0 0 0 /0.1);
-   }
-
-   /* multi-range slider */
-   
-   .multi-range-slider {
-    display: flex;
-    width: 15rem;
-    height: 2rem;
-    position: relative;
-    border: none;
-    padding: 20px 10px;
-    box-shadow: none;
+  }
+  .profilepage {
     flex-direction: column;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
   }
-  
-  .multi-range-slider .thumb{
-    background-color: gray;
+  .basicinfo {
+    border-right: none;
   }
-  .multi-range-slider .thumb .caption * {
-    position: absolute;
-    min-width: 30px;
-    height: 30px;
-    font-size: 75%;
-    text-align: center;
-    line-height: 30px;
-    background-color: #FF385C;
-    border-radius: 15px;
-    color: white;
-    box-shadow: 0px 0px 5px black;
-    padding: 0px 5px;
+  .displayInfo {
+    order: -1;
+    border-bottom: 1px solid rgb(255, 56, 92, 0.5);
+    padding-bottom: 2.5rem;
+  }
+  .locationTitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .support-services {
+    display: block;
+    position: absolute;
+    top: -11px;
+    left: 5px;
+    margin-bottom: 6px;
+  }
+  .potential-support {
+    flex-direction: column;
+    position: fixed;
+    z-index: 9;
+    top: 150px;
+    /* left: 50px !important; */
+    height: 350px;
+    width: 200px;
+    padding: 0.8rem 0.4rem;
+    background-color: white;
+    box-shadow: 0 0 3px 0 #333;
+  }
+}
 
-  @media screen and (min-width:901px){
-      .basicInfo{
-      border-right: 1px solid #FF385C;
-      }
+@media screen and (max-width: 882px) {
+  .placetitle {
+    font-size: 1rem;
   }
- 
-  @media screen and (max-width:900px){
-    .leftChat{
-      position: fixed;
-      z-index: 7;
-      height:470px;
-      background-color: white;
-    }
-    .closeIcon{
-      display: block;
-    } 
-    .profilepage{
-      flex-direction: column;
-    }
-    .basicinfo{
-      border-right: none;
-    }
-    .displayInfo{
-      order: -1 ;
-      border-bottom: 1px solid rgb(255, 56, 92,0.5);
-      padding-bottom: 2.5rem;
-    }
+  .formatCheckIn,
+  .formatCheckOut,
+  .days,
+  .price,
+  .paid,
+  .notPaid {
+    font-size: 0.85rem;
   }
-  @media screen and (max-width:850px){
-    .policies{
-      flex-direction: column;
-    }
+}
+@media screen and (max-width: 778px) {
+  .bookingList {
+    flex-direction: column;
+    gap: 0;
   }
-  @media screen and (max-width:520px){
-    .bookingpayment{
-      flex-direction: column;
-      /* align-items: center; */
-      gap: 2rem;
-    }
-    .modalbutton{
-      flex-direction: column;
-      text-align: center;
-      gap: 1rem;
-    }
+  .placeImage {
+    align-self: center;
+    padding-bottom: 0;
   }
-  @media screen and (max-width:510px){
-    .newtons-cradle.index{
-      --uib-size: 30px;
-    
-    }
-    }
+  .placeDetails {
+    padding-left: 1rem;
+  }
+}
+@media screen and (max-width: 850px) {
+  .policies {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 602px) {
+  .placetitle {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dateParent {
+    flex-direction: column;
+  }
+  .diatrics {
+    display: none;
+  }
+  .bookingPayment {
+    position: static;
+  }
+  .paidStatus {
+    top: 5px;
+    left: 5px;
+    width: 6.2rem;
+  }
+}
 
-    @media screen and (max-width:480px){
-       .chatmessage{
-        font-size: 0.85rem;
-       }
-    }
-    @media screen and (max-width:460px){
-      .indexLocations{
-        grid-template-columns: 1fr;
-      }
-      .fetchedorders{
-        font-size: 0.8rem;
-      }
-    
-    }
+@media screen and (max-width: 600px) {
+  .profilenav {
+    flex-direction: column;
+    padding-inline: 10%;
+  }
+}
+@media screen and (max-width: 520px) {
+  .bookingpayment {
+    flex-direction: column;
+    /* align-items: center; */
+    gap: 2rem;
+  }
+  .modalbutton {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}
+@media screen and (max-width: 510px) {
+  .newtons-cradle.index {
+    --uib-size: 30px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .chatmessage {
+    font-size: 0.85rem;
+  }
+}
+@media screen and (max-width: 460px) {
+  .indexLocations {
+    grid-template-columns: 1fr;
+  }
+  .fetchedorders {
+    font-size: 0.8rem;
+  }
+}
