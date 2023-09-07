@@ -299,7 +299,7 @@ const LocationPages = () => {
                 <label htmlFor="price">Price[$]:</label>
                 <input
                   type="number"
-                  min="100"
+                  min="20"
                   inputMode="decimal"
                   step="0.01"
                   name="price"
