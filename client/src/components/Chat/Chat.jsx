@@ -48,6 +48,7 @@ const Chat = () => {
     <>
       <AnimatePresence>
         {showChat && (
+            <div className="relative">
           <motion.div
             exit={{ y: 50, opacity: 0, scale: 0 }}
             initial={{ y: 50 }}
@@ -104,7 +105,9 @@ const Chat = () => {
                         width={17}
                       />
                     </div>
+                    <div className="relative">
                     <PotentialChats />
+                    </div>
                     {userChats?.length < 1 ? null : (
                       <div className="flex flex-col">
                         {isUserChatsLoading && (
@@ -147,6 +150,7 @@ const Chat = () => {
               </Link>
             </div>
           </motion.div>
+          </div>
         )}
       </AnimatePresence>
       <img

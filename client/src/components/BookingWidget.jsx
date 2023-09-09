@@ -31,6 +31,11 @@ const BookingWidget = ({ place }) => {
 
   const handleBooking = async () => {
     setIsLoading(true);
+    if (!checkIn || !checkOut || !fullName || !mobile) {
+      toast.error("All Fields required!");
+      setIsLoading(false);
+      return;
+    }
     if (checkIn == checkOut) {
       toast.error("Dates are invalid!");
       setIsLoading(false);

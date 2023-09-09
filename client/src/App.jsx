@@ -70,13 +70,13 @@ function App() {
           <Route index element={<IndexPage/>}/>
           <Route path='login' element={ !user ? <LoginPage/> : <Navigate to={'/'}/>}/>
           <Route path='register' element={!user ?  <RegisterPage/> :<Navigate to={'/'}/>}/>
-          <Route path='account/bookings/:id' element={user ? <BookingPlace/> :<Navigate to={'/login'}/> }/>
-          <Route path='account/:subPage?' element={ user ? <AccountPage/> : <Navigate to={'/login'}/>}/> 
+          <Route path='account/bookings/:id' element={<BookingPlace/>}/>
+          <Route path='account/:subPage?' element={<AccountPage/>}/> 
           <Route path='account/places/edit/:id' element={ user ? <EditPlace/> : <Navigate to={'/login'}/>}/> 
-          <Route path='account/:subPage/:id' element={user ? <AccountPage/> : <Navigate to={'/login'}/>}/>
+          <Route path='account/:subPage/:id' element={<AccountPage/>}/>
           <Route path='place/:id' element={<PlacesDetail/>}/>
-          <Route path='checkout-success/:id' element={ user ? <CheckOutSuccess/> : <Navigate to={'/login'}/>}/>
-          <Route path='order-status/:id' element={ user ? <OrderStatus/> : <Navigate to={'/login'}/>}/>
+          <Route path='checkout-success/:id' element={<CheckOutSuccess/>}/>
+          <Route path='order-status/:id' element={<OrderStatus/>}/>
           <Route path='/forgotPassword' element={<ResetPassword/>}/>
           <Route path='/airbnbPolicies' element={<PoliciesPage/>}/>
           <Route path='/airbnb-faq' element={<FAQAccordion/>}/>

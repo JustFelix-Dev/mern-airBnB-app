@@ -146,7 +146,7 @@ const Header = () => {
         {path?.pathname === "/" && showSearch && (
           <motion.div
             exit={{ translateY: -10, opacity: 0 }}
-            className="absolute top-[79px] w-full border-t px-2 bg-white z-2 md:static"
+            className="absolute top-[79px] w-full border-t px-2 bg-white z-50 md:static"
           >
             <motion.div
               exit={{ translateY: -10, opacity: 0 }}

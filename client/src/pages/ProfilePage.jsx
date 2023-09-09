@@ -167,7 +167,7 @@ const ProfilePage = ({ user, setUser, setRedirected }) => {
                   <div>
                     <h1 className="flex gap-1 items-center font-medium text-lg">
                       Badge<span className="text-gray-500">({badgeName}):</span>{" "}
-                      <Link to={"/airbnbPolicies"}>
+                      <Link to={"/airbnbPolicies"} className="rounded-full hover:bg-gray-300 p-2  transition-all duration-300">
                         <img
                           src="/images/information-button.png"
                           alt="infoButton"
@@ -186,7 +186,7 @@ const ProfilePage = ({ user, setUser, setRedirected }) => {
                   <div>
                     <h1 className="flex items-center gap-1 text-lg font-medium">
                       My Points:
-                      <Link to={"/airbnbPolicies"}>
+                      <Link to={"/airbnbPolicies"} className="rounded-full hover:bg-gray-300 p-2 transition-all duration-300">
                         <img
                           src="/images/information-button.png"
                           alt="infoButton"
