@@ -1,6 +1,6 @@
 #  Full-Stack Booking Application
 
-A comprehensive booking application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack with React and Vite. It provides a seamless platform for users to book various services, from restaurant reservations and hotel accommodations to event tickets and appointments. Whether you're a business owner looking to manage bookings or a user in search of hassle-free reservations, BookingX has you covered.
+A comprehensive booking application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack with React and Vite. It provides a seamless platform for users to book various services, from restaurant reservations and hotel accommodations to event tickets and appointments. Whether you're a business owner looking to manage bookings or a user in search of hassle-free reservations, AirBnB has you covered.
 
 **New Features:**
 
