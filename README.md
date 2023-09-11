@@ -23,9 +23,8 @@ A comprehensive booking application built using the MERN (MongoDB, Express.js, R
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Features](#features)
 - [Technologies Used](#technologies-used)
-- [Screenshots/Demo](#screenshots-demo)
+- [Screenshots/Demo](#screenshot)
 
 
 ## Installation
@@ -63,6 +62,12 @@ To run AirBnB, use the following commands:
     npm run dev
 
 Visit http://localhost:5173 in your web browser to access the application.
+
+Technologies Used
+MongoDB
+Express.js
+React.js with Vite
+Node.js
 
 ![AirBnB Screenshot](https://res.cloudinary.com/dljgkzwfz/image/upload/v1694427320/Github%20ReadMe%20Screenshots/Screenshot_73_hdcphh.png)
 
