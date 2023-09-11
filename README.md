@@ -26,6 +26,9 @@ A comprehensive booking application built using the MERN (MongoDB, Express.js, R
 - [Technologies Used](#technologies-used)
 - [Screenshots/Demo](#screenshot)
 
+![AirBnB Screenshot](https://res.cloudinary.com/dljgkzwfz/image/upload/v1694427320/Github%20ReadMe%20Screenshots/Screenshot_73_hdcphh.png)
+  
+
 
 ## Installation
 
@@ -69,7 +72,6 @@ Visit http://localhost:5173 in your web browser to access the application.
 - React.js with Vite
 - Node.js
 
-![AirBnB Screenshot](https://res.cloudinary.com/dljgkzwfz/image/upload/v1694427320/Github%20ReadMe%20Screenshots/Screenshot_73_hdcphh.png)
 
 
 
