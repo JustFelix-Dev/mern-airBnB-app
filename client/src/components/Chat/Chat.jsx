@@ -92,7 +92,7 @@ const Chat = () => {
                     exit={{ opacity: 0, scale: 0.9 }}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="relative leftChat"
+                    className="relative leftChat h-[400px]  overflow-auto"
                   >
                     <div
                       onClick={closeChats}

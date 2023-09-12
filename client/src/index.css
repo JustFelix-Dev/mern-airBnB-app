@@ -13,6 +13,13 @@
   @apply bg-black;
 }
 
+.leftChat::-webkit-scrollbar {
+  width: 0.3rem;
+}
+.leftChat::-webkit-scrollbar-thumb {
+  @apply bg-primary;
+}
+
 
 /* custom */
 .booking {
